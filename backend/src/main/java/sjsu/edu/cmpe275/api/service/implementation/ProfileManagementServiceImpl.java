@@ -63,6 +63,7 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 				}
 			}else {
 				profile.setOrganizationApprovalStatus(false);
+				profile.setOrganization(null);
 			}
 			profileRepository.save(profile);
 			return profile;

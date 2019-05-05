@@ -29,7 +29,7 @@ public class Organization {
     @JoinColumn(name = "owner_id")
 	private Profile owner;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeOrganization")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
 	private List<Profile> members = new ArrayList<Profile>();
 
 	public long getId() {
@@ -64,13 +64,13 @@ public class Organization {
 		this.description = description;
 	}
 
-//	public Profile getOwner() {
-//		return owner;
-//	}
-//
-//	public void setOwner(Profile owner) {
-//		this.owner = owner;
-//	}
+	public Profile getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Profile owner) {
+		this.owner = owner;
+	}
 
 	public List<Profile> getRequests() {
 		return this.getMembers().stream().filter(profile -> profile.isOrganizationApprovalStatus())

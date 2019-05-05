@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * JPA Entity class for User
  * @author Samarth
@@ -27,9 +29,7 @@ public class Profile {
 	@Column(unique=true, nullable=false)
 	private String screenName;
 	
-	private String firstName;
-	
-	private String lastName;
+	private String name;
 	
 	private String portraitUrl;
 	
@@ -41,7 +41,8 @@ public class Profile {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id")
-	private Organization employeeOrganization;
+	@JsonIgnore
+	private Organization organization;
 	
 	private Boolean organizationApprovalStatus;
 	
@@ -71,20 +72,12 @@ public class Profile {
 		this.screenName = screenName;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getName() {
+		return name;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setName(String firstName) {
+		this.name = firstName;
 	}
 
 	public String getPortraitUrl() {
@@ -119,12 +112,12 @@ public class Profile {
 		this.address = address;
 	}
 
-	public Organization getEmployeeOrganization() {
-		return employeeOrganization;
+	public Organization getOrganization() {
+		return organization;
 	}
 
-	public void setEmployeeOrganization(Organization organization) {
-		this.employeeOrganization = organization;
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
 	public boolean isOrganizationApprovalStatus() {

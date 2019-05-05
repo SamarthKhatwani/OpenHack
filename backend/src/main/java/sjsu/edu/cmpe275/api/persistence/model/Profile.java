@@ -1,10 +1,13 @@
-package sjsu.edu.cmpe275.api.model;
+package sjsu.edu.cmpe275.api.persistence.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * JPA Entity class for User
@@ -12,7 +15,7 @@ import javax.persistence.Id;
  *
  */
 @Entity
-public class User {
+public class Profile {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -20,14 +23,13 @@ public class User {
 	
 	@Column(unique=true, nullable=false)
 	private String email;
-	
-	@Column(nullable=false)
-	private String password;
-	
+		
 	@Column(unique=true, nullable=false)
 	private String screenName;
 	
-	private String name;
+	private String firstName;
+	
+	private String lastName;
 	
 	private String portraitUrl;
 	
@@ -37,7 +39,13 @@ public class User {
 	
 	private String address;
 	
-	private String teamRole;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_id")
+	private Organization employeeOrganization;
+	
+	private Boolean organizationApprovalStatus;
+	
+	private boolean isAmdin;
 
 	public long getId() {
 		return id;
@@ -55,14 +63,6 @@ public class User {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getScreenName() {
 		return screenName;
 	}
@@ -71,12 +71,20 @@ public class User {
 		this.screenName = screenName;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getPortraitUrl() {
@@ -111,16 +119,33 @@ public class User {
 		this.address = address;
 	}
 
-	public String getTeamRole() {
-		return teamRole;
+	public Organization getEmployeeOrganization() {
+		return employeeOrganization;
 	}
 
-	public void setTeamRole(String teamRole) {
-		this.teamRole = teamRole;
+	public void setEmployeeOrganization(Organization organization) {
+		this.employeeOrganization = organization;
+	}
+
+	public boolean isOrganizationApprovalStatus() {
+		return organizationApprovalStatus;
+	}
+
+	public void setOrganizationApprovalStatus(Boolean organizationApprovalStatus) {
+		this.organizationApprovalStatus = organizationApprovalStatus;
+	}
+
+	public boolean isAmdin() {
+		return isAmdin;
+	}
+
+	public void setAmdin(boolean isAmdin) {
+		this.isAmdin = isAmdin;
+	}
+
+	public Boolean getOrganizationApprovalStatus() {
+		return organizationApprovalStatus;
 	}
 	
-	public User() {
-		
-	}
 	
 }

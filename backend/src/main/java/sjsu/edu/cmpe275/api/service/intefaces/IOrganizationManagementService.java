@@ -11,4 +11,6 @@ public interface IOrganizationManagementService {
 
 	public List<Organization> getOrganizationByName(String name);
 	
+	public List<Organization> getOrganizationByNameIn(List<String> names);
+	
 }

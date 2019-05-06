@@ -14,5 +14,5 @@ public interface IAdminAuthAPI {
 	@RequestMapping(value = "/createUpdateHackathon", produces = {
 			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
 	public ResponseEntity<Object> createUpdateHackathon(@RequestHeader(value = "Authorization") String token,
-			@RequestBody HackathonRequest profileRequest);
+			@RequestBody HackathonRequest hackathonRequest);
 }

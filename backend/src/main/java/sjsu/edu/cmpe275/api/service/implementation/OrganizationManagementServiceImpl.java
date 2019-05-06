@@ -46,19 +46,9 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 		return organizationList;
 	}
 
-//	@Override
-//	public Organization createOrganization(String name, String ownerEmail, String description, String address) {
-//		
-//		Organization organization = new Organization();
-//		Optional<Organization> organizationWrapper = organizationRepository.findByName(name);
-//		if(organizationWrapper.isPresent()) {
-//			return null;
-//		}
-//		organization.setName(name);
-//		Profile profile = profileManagementService.getProfile(ownerEmail);
-//		organization.setDescription(description);
-//		organization.setAddress(address);
-//		return organizationRepository.save(organization);
-//	}
+	@Override
+	public List<Organization> getOrganizationByNameIn(List<String> names) {
+		return organizationRepository.findByNameIn(names);
+	}
 
 }

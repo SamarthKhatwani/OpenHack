@@ -25,7 +25,8 @@ public class NormalAuthAuthenticationAspect {
 	 * @param joinPoint
 	 * @return
 	 */
-	@Around("execution(* sjsu.edu.cmpe275.api.controller.interfaces.INormalAuthAPI.*(..))")
+	@Around("execution(* sjsu.edu.cmpe275.api.controller.interfaces.INormalAuthAPI.*(..)) || "
+			+ "execution(* sjsu.edu.cmpe275.api.controller.interfaces.IAdminAuthAPI.*(..))")
 	public ResponseEntity<Object> checkAuthenticationAspect(ProceedingJoinPoint joinPoint) throws Throwable{
 		try {	
 			Object[] args=joinPoint.getArgs();

@@ -1,36 +1,40 @@
 package sjsu.edu.cmpe275.api.resources;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class HackathonRequest {
-	
+public class HackathonResponse {
+	private boolean success;
+	private String message;
 	private String eventName;
-	
 	private String startDate;
-	
 	private String endDate;
-	
-	private String openDate;
-	
-	private String closeDate;
-	
 	private String description;
-	
-	private int teamMinSize;
-	
-	private int teamMaxSize;
-	
-	private List<String> judges = new ArrayList<>();
-	
-	private List<String> sponsors = new ArrayList<>();
-	
 	private float registrationFee;
-	
-	private float discount;
-	
+	private int teamMinSize;
+	private int teamMaxSize;
+	private List<String> judges;
+	private List<String> sponsors;
+	private Float discount;
+	private String openDate;
+	private String closeDate;
 	private boolean isFinalized;
-	
+
+	public boolean isSuccess() {
+		return success;
+	}
+
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public String getEventName() {
 		return eventName;
 	}
@@ -55,28 +59,20 @@ public class HackathonRequest {
 		this.endDate = endDate;
 	}
 
-	public String getOpenDate() {
-		return openDate;
-	}
-
-	public void setOpenDate(String openDate) {
-		this.openDate = openDate;
-	}
-
-	public String getCloseDate() {
-		return closeDate;
-	}
-
-	public void setCloseDate(String closeDate) {
-		this.closeDate = closeDate;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public float getRegistrationFee() {
+		return registrationFee;
+	}
+
+	public void setRegistrationFee(float registrationFee) {
+		this.registrationFee = registrationFee;
 	}
 
 	public int getTeamMinSize() {
@@ -111,20 +107,28 @@ public class HackathonRequest {
 		this.sponsors = sponsors;
 	}
 
-	public float getRegistrationFee() {
-		return registrationFee;
-	}
-
-	public void setRegistrationFee(float registrationFee) {
-		this.registrationFee = registrationFee;
-	}
-
-	public float getDiscount() {
+	public Float getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(float discount) {
+	public void setDiscount(Float discount) {
 		this.discount = discount;
+	}
+
+	public String getOpenDate() {
+		return openDate;
+	}
+
+	public void setOpenDate(String openDate) {
+		this.openDate = openDate;
+	}
+
+	public String getCloseDate() {
+		return closeDate;
+	}
+
+	public void setCloseDate(String closeDate) {
+		this.closeDate = closeDate;
 	}
 
 	public boolean isFinalized() {

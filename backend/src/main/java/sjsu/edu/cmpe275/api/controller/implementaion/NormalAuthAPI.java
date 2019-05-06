@@ -6,11 +6,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import sjsu.edu.cmpe275.api.controller.interfaces.INormalAuthAPI;
+import sjsu.edu.cmpe275.api.persistence.model.Organization;
 import sjsu.edu.cmpe275.api.persistence.model.Profile;
+import sjsu.edu.cmpe275.api.persistence.model.mapper.OrganizationToOrganizationResponseMapper;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.ProfileToProfileResponseMapper;
+import sjsu.edu.cmpe275.api.resources.OrganizationResponse;
 import sjsu.edu.cmpe275.api.resources.ProfileRequest;
 import sjsu.edu.cmpe275.api.resources.ProfileResponse;
 import sjsu.edu.cmpe275.api.resources.ResponseMessage;
+import sjsu.edu.cmpe275.api.service.implementation.OrganizationManagementServiceImpl;
+import sjsu.edu.cmpe275.api.service.intefaces.IOrganizationManagementService;
 import sjsu.edu.cmpe275.api.service.intefaces.IProfileManagementService;
 
 @Controller
@@ -20,7 +25,13 @@ public class NormalAuthAPI implements INormalAuthAPI {
 	private IProfileManagementService profileManagementService;
 	
 	@Autowired
+	private IOrganizationManagementService organizationManagementService;
+	
+	@Autowired
 	private ProfileToProfileResponseMapper profileToProfileResponseMapper;
+	
+	@Autowired
+	private OrganizationToOrganizationResponseMapper organizationToOrganizationResponseMapper;
 	
 	@Override
 	public ResponseEntity<Object> getProfile(String token, String email) {
@@ -42,6 +53,23 @@ public class NormalAuthAPI implements INormalAuthAPI {
 		}else {
 			return new ResponseEntity<Object>(new ResponseMessage(false,"Profile with given email doesn't exist" ), HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@Override
+	public ResponseEntity<Object> getOrganization(String token, String name) {
+		Organization organization = organizationManagementService.getOrganization(name);
+		if(organization == null) {
+			return new ResponseEntity<Object>(new ResponseMessage(false,"Organization with given email doesn't exist" ), HttpStatus.NOT_FOUND);
+		}
+		OrganizationResponse response = organizationToOrganizationResponseMapper.map(organization);
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+		
+	}
+
+	@Override
+	public ResponseEntity<Object> createOrganization(String token, String email) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

@@ -22,6 +22,8 @@ public class ProfileResponse {
 	private String organization;
 
 	private boolean organizationApprovalStatus;
+	
+	private boolean isAdmin;
 
 	public boolean isSuccess() {
 		return success;
@@ -109,5 +111,13 @@ public class ProfileResponse {
 
 	public void setOrganizationApprovalStatus(boolean organizationApprovalStatus) {
 		this.organizationApprovalStatus = organizationApprovalStatus;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 }

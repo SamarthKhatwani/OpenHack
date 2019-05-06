@@ -18,6 +18,7 @@ public class ProfileToProfileResponseMapper {
 		response.setOrganization(profile.getOrganization()!=null?profile.getOrganization().getName():null);
 		response.setSuccess(true);
 		response.setMessage("Successful");
+		response.setAdmin(profile.isAmdin());
 		return response;
 	}
 }

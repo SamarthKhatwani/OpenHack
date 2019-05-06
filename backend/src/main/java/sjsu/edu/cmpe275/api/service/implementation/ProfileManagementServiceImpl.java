@@ -1,5 +1,6 @@
 package sjsu.edu.cmpe275.api.service.implementation;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 			return null;
 		}
 	}
-
+	
 	@Override
 	@Transactional
 	public Profile updateProfile(ProfileRequest profileRequest) {
@@ -78,6 +79,7 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 	}
 
 	@Override
+	@Transactional
 	public Profile createProfile(ProfileRequest profileRequest) {
 		Profile profile = new Profile();
 		profile.setAboutMe(profileRequest.getAboutMe());
@@ -97,5 +99,13 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 		profile.setScreenName(profileRequest.getScreenName());
 		return profileRepository.save(profile);
 	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<Profile> getProfileByEmailIn(List<String> emails) {
+		return profileRepository.findByEmailIn(emails);
+	}
+	
+	
 
 }

@@ -69,5 +69,8 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 		return organizationRepository.save(organization);
 	}
 
+	public List<Organization> getOrganizationByNameIn(List<String> names) {
+		return organizationRepository.findByNameIn(names);
+	}
 
 }

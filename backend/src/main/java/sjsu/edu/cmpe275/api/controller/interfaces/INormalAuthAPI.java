@@ -23,7 +23,7 @@ public interface INormalAuthAPI {
 	
 	//Organizations
 	
-	@RequestMapping(value = "/searchOrganizations/", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
+	@RequestMapping(value = "/searchOrganizations", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
 	ResponseEntity<Object> searchOrganization(@RequestHeader(value = "Authorization") String token,
 			@RequestParam(value = "name", required = true) String name);
 //	

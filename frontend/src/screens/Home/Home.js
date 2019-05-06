@@ -129,13 +129,13 @@ export default class Home extends Component {
                     this.setState({ errorMessage: error.message, loginFailed: true })
                 })
             }
+            // To be handle later on
             else if (!socialAuthUser.user.emailVerified) {
                 this.setState({ errorMessage: 'Please Verify Email First!', loginFailed: true });
             }
             else {
-                alert('Login');
-                // localStorage.setItem(AppConstants.AUTH_TOKEN, socialAuthUser.credential.idToken);
-                // history.push('/dashboard') 
+                localStorage.setItem(AppConstants.AUTH_TOKEN, socialAuthUser.credential.idToken);
+                history.push('/dashboard'); 
             }
         }).catch(error => {
             console.log(error);
@@ -186,7 +186,7 @@ export default class Home extends Component {
             else {
                 Firebase.getInstance().auth.currentUser.getIdToken().then((token) => {
                     localStorage.setItem(AppConstants.AUTH_TOKEN, token);
-                    // history.push('/dashboard') 
+                    history.push('/dashboard'); 
                 });
             }
         }).catch(error => {

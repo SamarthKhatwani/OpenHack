@@ -43,7 +43,7 @@ public class ValidationAspect {
 		}
 		
 		if (request.getOrganization() != null
-				&& organizationManagementService.getOrganizationByName(request.getOrganization()) == null) {
+				&& organizationManagementService.getOrganization(request.getOrganization()) == null) {
 			throw new BadRequestException("Organization Doesn't Exist");
 		}
 		return (ResponseEntity<Object>) joinPoint.proceed();
@@ -57,7 +57,7 @@ public class ValidationAspect {
 			throw new BadRequestException("Email is required");
 		}
 		if (request.getOrganization() != null
-				&& organizationManagementService.getOrganizationByName(request.getOrganization()) == null) {
+				&& organizationManagementService.getOrganization(request.getOrganization()) == null) {
 			throw new BadRequestException("Organization Doesn't Exist");
 		}
 		return (ResponseEntity<Object>) joinPoint.proceed();

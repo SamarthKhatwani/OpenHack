@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Hackathon {
 	@Id
@@ -34,19 +36,21 @@ public class Hackathon {
 	@JoinTable(name = "HackathonJudge", joinColumns = {
 			@JoinColumn(name = "HackathonId", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "JudgeId", referencedColumnName = "id") })
+	@JsonIgnore
 	private List<Profile> judges = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(name = "HackathonSponsor", joinColumns = {
 			@JoinColumn(name = "HackathonId", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "OrganizationId", referencedColumnName = "id") })
+	@JsonIgnore
 	private List<Organization> sponsors = new ArrayList<>();
 	private float registrationFee;
 	private float discount;
 	private boolean isFinalized;
-	private boolean isOpen;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
+	@JsonIgnore
 	private List<Team> teams = new ArrayList<>();
 
 	public long getId() {
@@ -159,14 +163,6 @@ public class Hackathon {
 
 	public void setFinalized(boolean isFinalized) {
 		this.isFinalized = isFinalized;
-	}
-
-	public boolean isOpen() {
-		return isOpen;
-	}
-
-	public void setOpen(boolean isOpen) {
-		this.isOpen = isOpen;
 	}
 
 	public List<Team> getTeams() {

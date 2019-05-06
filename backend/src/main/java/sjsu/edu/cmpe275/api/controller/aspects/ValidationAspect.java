@@ -28,7 +28,7 @@ public class ValidationAspect {
 	@Around("execution(* sjsu.edu.cmpe275.api.controller.interfaces.INoAuthAPI.signup(..))")
 	public ResponseEntity<Object> validateProfileRequestSignUp(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object[] object = joinPoint.getArgs();
-		ProfileRequest request = (ProfileRequest) (object.length == 1 ? object[0] : object[1]);
+		ProfileRequest request = (ProfileRequest) object[0];
 		if (request.getEmail() == null) {
 			throw new BadRequestException("Email is required");
 		}
@@ -52,7 +52,7 @@ public class ValidationAspect {
 	@Around("execution(* sjsu.edu.cmpe275.api.controller.interfaces.INormalAuthAPI.updateProfile(..))")
 	public ResponseEntity<Object> validateProfileRequestUpdate(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object[] object = joinPoint.getArgs();
-		ProfileRequest request = (ProfileRequest) (object.length == 1 ? object[0] : object[1]);
+		ProfileRequest request = (ProfileRequest) object[1];
 		if (request.getEmail() == null) {
 			throw new BadRequestException("Email is required");
 		}

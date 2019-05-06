@@ -2,7 +2,6 @@ package sjsu.edu.cmpe275.api.controller.interfaces;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +29,8 @@ public interface INormalAuthAPI {
 	
 	@RequestMapping(value = "/createOrganization", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
 	ResponseEntity<Object> createOrganization(@RequestHeader(value = "Authorization") String token,
-			@RequestParam(value = "email", required = true) String email);
-
-
+			@RequestParam(value = "name", required = true) String name,
+			@RequestParam(value = "ownerEmail", required = true) String ownerEmail,
+			@RequestParam(value = "address", required = false) String address,
+			@RequestParam(value = "description", required = false) String description);
 }

@@ -1,5 +1,6 @@
 import AxiosService from "./AxiosService";
 import URI from "../constants/uri"
+import AppConstants from "../constants/AppConstants";
 
 export default class WebService extends AxiosService {
 
@@ -23,7 +24,7 @@ export default class WebService extends AxiosService {
     * Screen Name Lookup Call - User login api call
     * Takes success and failure operations
     *
-    * Required params: username, password and role in detail object.
+    * Required params: screenName
     */
     screenNameLookup(screenName, success, failure) {
         this.getCall(URI.LOOKUP_SCREEN_NAME + '/?screenName=' + screenName, success, failure, false);
@@ -33,10 +34,21 @@ export default class WebService extends AxiosService {
     * SignUp Call - User SignUp api call
     * Takes success and failure operations
     *
-    * Required params: firstName, lastName, email, password, role in detail object.
+    * Required params: Name, email, screenName in detail object.
     */
     signUp(details, success, failure) {
         this.postCall(URI.SIGNUP, details, success, failure, false);
+    }
+
+    /**
+    * Get Profile Call - Get Profile api call
+    * Takes success and failure operations
+    *
+    * Required params: null
+    */
+    getProfile(success, failure){
+        let user = JSON.parse(localStorage.getItem(AppConstants.USER_DETAILS));
+        this.getCall(URI.GET_PROFILE +'/?email='+ user.email, success, failure, true);
     }
 
 }

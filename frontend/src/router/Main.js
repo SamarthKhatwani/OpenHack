@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import Home from '../screens/Home/Home';
 import Dashboard from '../screens/Dashboard/Dashboard';
+import MyProfile from '../screens/MyProfile/MyProfile';
 // import ViewProfile from '../views/ViewProfile/ViewProfile';
 // import EditProfile from '../views/EditProfile/EditProfile';
 // import OwnerLogin from '../views/OwnerLogin/OwnerLogin';
@@ -18,7 +19,8 @@ class Main extends Component {
             <div>
                 {/*Render Different Component based on Route*/}
                 <Route exact path="/" component={Home} />
-                <Route path="/dashboard" component={Dashboard}/>                
+                <Route path="/dashboard" component={Dashboard}/>   
+                <Route path="/myProfile" component={MyProfile}/>                
             </div>
         )
     }

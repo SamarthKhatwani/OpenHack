@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import AppConstants from "../../constants/AppConstants";
 import Navbar from '../Navbar/Navbar';
 import WebService from '../../services/WebService';
-
+import Autocomplete from 'react-autocomplete';
 export default class MyProfile extends Component {
     constructor(props) {
         super(props);
@@ -12,18 +12,17 @@ export default class MyProfile extends Component {
             ackMessage: null,
             isAckPositive: null,
             isFormDirty: false,
+            organizationList: [],
+            displayOrganization: '',
             userProfile: {
-                user_aboutme: '',
-                user_city: '',
-                user_company: '',
-                user_first_name: "",
-                user_hometown: '',
-                user_languages: '',
-                user_last_name: "",
-                user_school: '',
-                user_gender: "Male",
-                user_phone_number: "",
-                profilePictureUrl: null
+                name: '',
+                address: '',
+                email: '',
+                screenName: "",
+                businessTitle: '',
+                aboutMe: '',
+                organization: "",
+                portraitUrl: null
             },
         };
     }
@@ -31,6 +30,20 @@ export default class MyProfile extends Component {
     componentDidMount() {
         WebService.getInstance().getProfile((response) => {
             console.log(response);
+            if (response.success) {
+                this.setState({ 
+                    userProfile: response,
+                    displayOrganization :  response.organization ?  response.organization : ''
+                });
+            }
+        }, (error) => {
+            console.log(error);
+        });
+        WebService.getInstance().searchOrganization((response) => {
+            console.log(response);
+            if (response.success) {
+                this.setState({ organizationList: response.organizationNames });
+            }
         }, (error) => {
             console.log(error);
         });
@@ -50,45 +63,51 @@ export default class MyProfile extends Component {
                     <div class="row profile-pic">
                         {/*this.renderProfilePicture()*/}
                         {/* <img class="rounded-circle" height="100" width="100" src={profile}/> */}
-                        <h1>{this.state.userProfile.user_first_name + " " + this.state.userProfile.user_last_name}</h1>
+                        <h1>{this.state.userProfile.name}</h1>
                     </div>
                     <div class="row profile-information">
                         <div class="col-9-lg">
                             <h2>Profile Information</h2><br />
                             <form onSubmit={this.handleSubmit.bind(this)}>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="user_first_name" value={this.state.userProfile.user_first_name} placeholder="First Name" required />
+                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="name" value={this.state.userProfile.name} placeholder="Name" required />
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="user_last_name" value={this.state.userProfile.user_last_name} placeholder="Last Name" required />
+                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="screenName" value={this.state.userProfile.screenName} placeholder="Screen Name" required disabled />
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control form-control-lg" rows="4" onChange={this.onChange} name="user_aboutme" value={this.state.userProfile.user_aboutme} placeholder="About me"></textarea>
+                                    <textarea class="form-control form-control-lg" rows="4" onChange={this.onChange} name="aboutMe" value={this.state.userProfile.aboutMe} placeholder="About me"></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="user_city" value={this.state.userProfile.user_city} placeholder="City" />
+                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="email" value={this.state.userProfile.email} placeholder="Email" disabled />
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="user_company" value={this.state.userProfile.user_company} placeholder="Company" />
+                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="businessTitle" value={this.state.userProfile.businessTitle} placeholder="Business Title" />
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="user_school" value={this.state.userProfile.user_school} placeholder="School" />
+                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="address" value={this.state.userProfile.address} placeholder="Address" />
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="user_hometown" value={this.state.userProfile.user_hometown} placeholder="Hometown" />
+                                    <Autocomplete
+                                        wrapperStyle={{ width: '100%' }}
+                                        inputProps={{ className: "form-control form-control-lg", name: "organization", placeholder:"Organization" }}
+                                        getItemValue={(item) => item}
+                                        items={this.state.organizationList}
+                                        renderItem={(item, isHighlighted) =>
+                                            <div style={{ background: isHighlighted ? 'lightgray' : 'white', padding:'5px' }}>
+                                                {item}
+                                            </div>
+                                        }
+                                        value={this.state.displayOrganization}
+                                        onSelect={(item) => {
+                                            let userProfile = Object.assign(this.state.userProfile, { organization: item });
+                                            this.setState({ userProfile, isFormDirty: true, displayOrganization:item });
+                                        }}
+                                        onChange={(event)=>{this.setState({displayOrganization: event.target.value})}}
+                                    />
                                 </div>
                                 <div class="form-group">
-                                    <select class="form-control" name="user_gender" value={this.state.userProfile.user_gender} onChange={this.onChange}>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="user_languages" value={this.state.userProfile.user_languages} placeholder="Languages" />
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" pattern="^\d{3}-\d{3}-\d{4}$" onChange={this.onChange} name="user_phone_number" value={this.state.userProfile.user_phone_number} placeholder="Phone Number (xxx-xxx-xxx)" />
+                                    <input type="text" class="form-control form-control-lg" onChange={this.onChange} name="portraitUrl" value={this.state.userProfile.portraitUrl} placeholder="Portrait URL" />
                                 </div>
                                 <div class="form-group save-button">
                                     <button type="submit" class="btn btn-primary btn-lg" disabled={!this.state.isFormDirty}>Save Changes</button>
@@ -100,20 +119,19 @@ export default class MyProfile extends Component {
             </div>
         );
     }
-
+    
     onChange = (event) => {
-        // if (event.target.name == 'profilePicture') {
-        //     this.uploadProfilePicture(event.target.files[0]);
-        // }
-        // else {
-        //     let userProfile = Object.assign(this.state.userProfile, { [event.target.name]: event.target.value });
-        //     this.setState({ userProfile, isFormDirty: true });
-        // }
+        let userProfile = Object.assign(this.state.userProfile, { [event.target.name]: event.target.value });
+        this.setState({ userProfile, isFormDirty: true });
     }
 
     handleSubmit(event) {
         event.preventDefault();
-
+        WebService.getInstance().updateProfile(this.state.userProfile,(response)=>{
+            console.log(response);
+        }, (error)=>{
+            console.log(error);
+        });
     }
 
     renderAcknowledgement() {

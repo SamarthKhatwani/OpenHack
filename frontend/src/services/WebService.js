@@ -46,9 +46,29 @@ export default class WebService extends AxiosService {
     *
     * Required params: null
     */
-    getProfile(success, failure){
+    getProfile(success, failure) {
         let user = JSON.parse(localStorage.getItem(AppConstants.USER_DETAILS));
-        this.getCall(URI.GET_PROFILE +'/?email='+ user.email, success, failure, true);
+        this.getCall(URI.GET_PROFILE + '/?email=' + user.email, success, failure, true);
     }
+
+    /**
+    * Search Organizations Call - Search Organizations api call
+    * Takes success and failure operations
+    *
+    * Required params: null
+    */
+    searchOrganization(success, failure) {
+        this.getCall(URI.SEARCH_ORGANIZATION + '/?name=' + "", success, failure, true);
+    }
+
+    /**
+    * Update User Profile Call - Update User Profile api call
+    * Takes success and failure operations
+    *
+    * Required params: null
+    */
+   updateProfile(details,success, failure) {
+    this.postCall(URI.UPDATE_PROFILE, details, success, failure, true);
+}
 
 }

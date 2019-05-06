@@ -49,7 +49,7 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 			if(profileRequest.getOrganization()!=null) {
 				if(profile.getOrganization()==null || !profileRequest.getOrganization().equals(profile.getOrganization().getName())) {
 					profile.setOrganizationApprovalStatus(false);
-					Organization organization = organizationManagementService.getOrganizationByName(profileRequest.getOrganization());
+					Organization organization = organizationManagementService.getOrganization(profileRequest.getOrganization());
 					profile.setOrganization(organization);
 				}
 			}else {
@@ -89,7 +89,7 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 		}
 		profile.setName(profileRequest.getName());
 		if(profileRequest.getOrganization()!=null) {
-			Organization organization = organizationManagementService.getOrganizationByName(profileRequest.getOrganization());
+			Organization organization = organizationManagementService.getOrganization(profileRequest.getOrganization());
 			profile.setOrganization(organization);
 		}
 		profile.setOrganizationApprovalStatus(false);

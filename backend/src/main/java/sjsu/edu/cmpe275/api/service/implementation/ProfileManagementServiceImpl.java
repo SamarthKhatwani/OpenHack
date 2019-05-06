@@ -20,6 +20,7 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 	@Autowired
 	private ProfileRepository profileRepository;
 	
+	@Autowired
 	private IOrganizationManagementService organizationManagementService;
 	
 	@Override

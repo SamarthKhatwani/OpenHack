@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import sjsu.edu.cmpe275.api.resources.OrganizationRequest;
 import sjsu.edu.cmpe275.api.resources.ProfileRequest;
 
 public interface INormalAuthAPI {
@@ -24,13 +25,10 @@ public interface INormalAuthAPI {
 	//Organizations
 	
 	@RequestMapping(value = "/searchOrganizations", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
-	ResponseEntity<Object> searchOrganization(@RequestHeader(value = "Authorization") String token,
+	public ResponseEntity<Object> searchOrganization(@RequestHeader(value = "Authorization") String token,
 			@RequestParam(value = "name", required = true) String name);
-//	
-//	@RequestMapping(value = "/createOrganization", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
-//	ResponseEntity<Object> createOrganization(@RequestHeader(value = "Authorization") String token,
-//			@RequestParam(value = "name", required = true) String name,
-//			@RequestParam(value = "ownerEmail", required = true) String ownerEmail,
-//			@RequestParam(value = "address", required = false) String address,
-//			@RequestParam(value = "description", required = false) String description);
+	
+	@RequestMapping(value = "/createOrganization", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
+	public ResponseEntity<Object> createOrganization(@RequestHeader(value = "Authorization") String token,
+			@RequestBody OrganizationRequest organizationRequest);
 }

@@ -57,22 +57,10 @@ public class NormalAuthAPI implements INormalAuthAPI {
 	}
 	
 	@Override
-	public ResponseEntity<Object> getOrganization(String token, String name) {
-		List<Organization> organization = organizationManagementService.getOrganizationByName(name);
-		if(organization == null) {
-			return new ResponseEntity<Object>(new ResponseMessage(false,"Organization with given name doesn't exist" ), HttpStatus.NOT_FOUND);
-		}
-		OrganizationByNameResponse response = organizationToOrganizationByNameResponseMapper.map(organization);
+	public ResponseEntity<Object> searchOrganization(String token, String name) {
+		List<Organization> organizations = organizationManagementService.getOrganizationByName(name);
+		OrganizationByNameResponse response = organizationToOrganizationByNameResponseMapper.map(organizations);
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
-		
 	}
-
-	@Override
-	public ResponseEntity<Object> createOrganization(String token, String name, String ownerEmail, String address,
-			String description) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 }

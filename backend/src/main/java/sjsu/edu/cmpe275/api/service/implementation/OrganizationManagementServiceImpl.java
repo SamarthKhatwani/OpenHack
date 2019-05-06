@@ -1,5 +1,6 @@
 package sjsu.edu.cmpe275.api.service.implementation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,22 +39,26 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 	@Override
 	@Transactional(readOnly =true)
 	public List<Organization> getOrganizationByName(String name){
-		return null;
+		if(name == null) {
+			return new ArrayList<Organization>();
+		}
+		List<Organization> organizationList = organizationRepository.findByNameContaining(name);
+		return organizationList;
 	}
 
-	@Override
-	public Organization createOrganization(String name, String ownerEmail, String description, String address) {
-		
-		Organization organization = new Organization();
-		Optional<Organization> organizationWrapper = organizationRepository.findByName(name);
-		if(organizationWrapper.isPresent()) {
-			return null;
-		}
-		organization.setName(name);
-		Profile profile = profileManagementService.getProfile(ownerEmail);
-		organization.setDescription(description);
-		organization.setAddress(address);
-		return organizationRepository.save(organization);
-	}
+//	@Override
+//	public Organization createOrganization(String name, String ownerEmail, String description, String address) {
+//		
+//		Organization organization = new Organization();
+//		Optional<Organization> organizationWrapper = organizationRepository.findByName(name);
+//		if(organizationWrapper.isPresent()) {
+//			return null;
+//		}
+//		organization.setName(name);
+//		Profile profile = profileManagementService.getProfile(ownerEmail);
+//		organization.setDescription(description);
+//		organization.setAddress(address);
+//		return organizationRepository.save(organization);
+//	}
 
 }

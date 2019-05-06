@@ -71,6 +71,19 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 			return null;
 		}
 	}
+
 	
+	@Override
+	@Transactional(readOnly=true)
+	public Profile getProfileByScreenName(String screenName) {
+		Optional<Profile> profileWrapper = profileRepository.findByScreenName(screenName);
+		if (profileWrapper.isPresent()) {
+			Profile profile = profileWrapper.get();
+			Utils.fetchLazyAttributeFromProfile(profile);
+			return profile;
+		} else {
+			return null;
+		}
+	}
 
 }

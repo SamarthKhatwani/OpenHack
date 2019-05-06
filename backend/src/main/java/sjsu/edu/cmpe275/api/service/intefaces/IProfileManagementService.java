@@ -7,6 +7,8 @@ public interface IProfileManagementService {
 	
 	public Profile getProfile(String email);
 	
+	public Profile getProfileByScreenName(String screenName);
+	
 	public Profile updateProfile(ProfileRequest profileRequest);
 	
 }

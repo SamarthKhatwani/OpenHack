@@ -26,7 +26,7 @@ public class Profile {
 	@Column(unique=true, nullable=false)
 	private String email;
 		
-	@Column(unique=true, nullable=false)
+	@Column(unique=true)
 	private String screenName;
 	
 	private String name;

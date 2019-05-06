@@ -11,4 +11,6 @@ public interface IProfileManagementService {
 	
 	public Profile updateProfile(ProfileRequest profileRequest);
 	
+	public Profile createProfile(ProfileRequest profileRequest);
+	
 }

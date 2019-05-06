@@ -1,0 +1,30 @@
+.bg-color{
+    background-color: #fba034e8
+}
+.navbar-brand{
+    color: white;
+    font-weight: 900;
+}
+
+.dropdown-menu{
+    text-align: center;
+    padding: 15px;
+}
+
+.dropdown-menu span {
+    color: #337ab7;
+    padding-top: 30px;
+    text-decoration: none;
+}
+
+.glyphicon-user{
+    font-size: 30px; 
+}
+
+.navbar-fixed-right{
+    float: right;
+    margin-top: 10px;
+    margin-right: 30px;
+    display: flex;
+    flex-direction: row
+}

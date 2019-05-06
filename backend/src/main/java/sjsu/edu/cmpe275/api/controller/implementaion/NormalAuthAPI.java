@@ -11,8 +11,11 @@ import sjsu.edu.cmpe275.api.controller.interfaces.INormalAuthAPI;
 import sjsu.edu.cmpe275.api.persistence.model.Organization;
 import sjsu.edu.cmpe275.api.persistence.model.Profile;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.OrganizationToOrganizationByNameResponseMapper;
+import sjsu.edu.cmpe275.api.persistence.model.mapper.OrganizationToOrganizationResponseMapper;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.ProfileToProfileResponseMapper;
 import sjsu.edu.cmpe275.api.resources.OrganizationByNameResponse;
+import sjsu.edu.cmpe275.api.resources.OrganizationRequest;
+import sjsu.edu.cmpe275.api.resources.OrganizationResponse;
 import sjsu.edu.cmpe275.api.resources.ProfileRequest;
 import sjsu.edu.cmpe275.api.resources.ProfileResponse;
 import sjsu.edu.cmpe275.api.resources.ResponseMessage;
@@ -33,6 +36,9 @@ public class NormalAuthAPI implements INormalAuthAPI {
 	
 	@Autowired
 	private OrganizationToOrganizationByNameResponseMapper organizationToOrganizationByNameResponseMapper;
+	
+	@Autowired
+	private OrganizationToOrganizationResponseMapper organizationToOrganizationResponseMapper;
 	
 	@Override
 	public ResponseEntity<Object> getProfile(String token, String email) {
@@ -60,6 +66,13 @@ public class NormalAuthAPI implements INormalAuthAPI {
 	public ResponseEntity<Object> searchOrganization(String token, String name) {
 		List<Organization> organizations = organizationManagementService.getOrganizationByName(name);
 		OrganizationByNameResponse response = organizationToOrganizationByNameResponseMapper.map(organizations);
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Object> createOrganization(String token, OrganizationRequest organizationRequest) {
+		Organization organization = organizationManagementService.createOrganization(organizationRequest);
+		OrganizationResponse response = organizationToOrganizationResponseMapper.map(organization);
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
 

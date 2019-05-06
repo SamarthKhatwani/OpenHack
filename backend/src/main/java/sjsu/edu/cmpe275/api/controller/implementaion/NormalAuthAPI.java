@@ -14,7 +14,6 @@ import sjsu.edu.cmpe275.api.resources.OrganizationResponse;
 import sjsu.edu.cmpe275.api.resources.ProfileRequest;
 import sjsu.edu.cmpe275.api.resources.ProfileResponse;
 import sjsu.edu.cmpe275.api.resources.ResponseMessage;
-import sjsu.edu.cmpe275.api.service.implementation.OrganizationManagementServiceImpl;
 import sjsu.edu.cmpe275.api.service.intefaces.IOrganizationManagementService;
 import sjsu.edu.cmpe275.api.service.intefaces.IProfileManagementService;
 
@@ -57,9 +56,9 @@ public class NormalAuthAPI implements INormalAuthAPI {
 	
 	@Override
 	public ResponseEntity<Object> getOrganization(String token, String name) {
-		Organization organization = organizationManagementService.getOrganization(name);
+		Organization organization = organizationManagementService.getOrganizationByName(name);
 		if(organization == null) {
-			return new ResponseEntity<Object>(new ResponseMessage(false,"Organization with given email doesn't exist" ), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Object>(new ResponseMessage(false,"Organization with given name doesn't exist" ), HttpStatus.NOT_FOUND);
 		}
 		OrganizationResponse response = organizationToOrganizationResponseMapper.map(organization);
 		return new ResponseEntity<Object>(response, HttpStatus.OK);

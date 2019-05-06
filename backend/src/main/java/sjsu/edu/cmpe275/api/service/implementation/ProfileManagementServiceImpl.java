@@ -6,26 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sjsu.edu.cmpe275.api.exceptions.BadRequestException;
 import sjsu.edu.cmpe275.api.persistence.model.Organization;
 import sjsu.edu.cmpe275.api.persistence.model.Profile;
-import sjsu.edu.cmpe275.api.persistence.repository.OrganizationRepository;
 import sjsu.edu.cmpe275.api.persistence.repository.ProfileRepository;
 import sjsu.edu.cmpe275.api.resources.ProfileRequest;
+import sjsu.edu.cmpe275.api.service.intefaces.IOrganizationManagementService;
 import sjsu.edu.cmpe275.api.service.intefaces.IProfileManagementService;
 
 @Service
 public class ProfileManagementServiceImpl implements IProfileManagementService {
 
-	private ProfileRepository profileRepository;
-	private OrganizationRepository organizationRepository;
-	
 	@Autowired
-	public ProfileManagementServiceImpl(ProfileRepository profileRepository,
-			OrganizationRepository organizationRepository){
-		this.profileRepository = profileRepository;
-		this.organizationRepository = organizationRepository;
-	}
+	private ProfileRepository profileRepository;
+	
+	private IOrganizationManagementService organizationManagementService;
 	
 	@Override
 	@Transactional(readOnly=true)
@@ -53,13 +47,10 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 			profile.setName(profileRequest.getName());
 			profile.setPortraitUrl(profileRequest.getPortraitUrl());
 			if(profileRequest.getOrganization()!=null) {
-				Optional<Organization> organizationWrapper = organizationRepository.findByName(profileRequest.getOrganization());
-				if (!organizationWrapper.isPresent()) {
-					throw new  BadRequestException("Organization Doesn't Exist");
-				}
 				if(profile.getOrganization()==null || !profileRequest.getOrganization().equals(profile.getOrganization().getName())) {
 					profile.setOrganizationApprovalStatus(false);
-					profile.setOrganization(organizationWrapper.get());
+					Organization organization = organizationManagementService.getOrganizationByName(profileRequest.getOrganization());
+					profile.setOrganization(organization);
 				}
 			}else {
 				profile.setOrganizationApprovalStatus(false);
@@ -84,6 +75,27 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public Profile createProfile(ProfileRequest profileRequest) {
+		Profile profile = new Profile();
+		profile.setAboutMe(profileRequest.getAboutMe());
+		profile.setAddress(profileRequest.getAddress());
+		profile.setBusinessTitle(profileRequest.getBusinessTitle());
+		profile.setEmail(profileRequest.getEmail());
+		if(profileRequest.getEmail().endsWith("@sjsu.edu")) {
+			profile.setAmdin(true);	
+		}
+		profile.setName(profileRequest.getName());
+		if(profileRequest.getOrganization()!=null) {
+			Organization organization = organizationManagementService.getOrganizationByName(profileRequest.getOrganization());
+			profile.setOrganization(organization);
+		}
+		profile.setOrganizationApprovalStatus(false);
+		profile.setPortraitUrl(profileRequest.getPortraitUrl());
+		profile.setScreenName(profileRequest.getScreenName());
+		return profileRepository.save(profile);
 	}
 
 }

@@ -1,6 +1,8 @@
 package sjsu.edu.cmpe275.api.resources;
 
 public class ProfileRequest {
+	
+	private String screenName;
 
 	private String email;
 
@@ -18,6 +20,14 @@ public class ProfileRequest {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public String getScreenName() {
+		return screenName;
+	}
+
+	public void setScreenName(String screenName) {
+		this.screenName = screenName;
 	}
 
 	public void setEmail(String email) {

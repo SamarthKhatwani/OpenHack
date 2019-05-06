@@ -14,12 +14,12 @@ import sjsu.edu.cmpe275.api.resources.ProfileRequest;
 public interface INormalAuthAPI {
 
 	@RequestMapping(value = "/getProfile", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
-	ResponseEntity<Object> getProfile(@RequestHeader(value = "Authorization") String token,
+	public ResponseEntity<Object> getProfile(@RequestHeader(value = "Authorization") String token,
 			@RequestParam(value = "email", required = true) String email);
 
 	@RequestMapping(value = "/updateProfile", produces = {
 			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
-	ResponseEntity<Object> updateProfile(@RequestHeader(value = "Authorization") String token,
+	public ResponseEntity<Object> updateProfile(@RequestHeader(value = "Authorization") String token,
 			@RequestBody ProfileRequest profileRequest);
 	
 	//Organizations
@@ -31,5 +31,6 @@ public interface INormalAuthAPI {
 	@RequestMapping(value = "/createOrganization", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
 	ResponseEntity<Object> createOrganization(@RequestHeader(value = "Authorization") String token,
 			@RequestParam(value = "email", required = true) String email);
+
 
 }

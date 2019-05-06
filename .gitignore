@@ -41,3 +41,4 @@ node_modules/
 mvnw
 mvnw.cmd
 package-lock.json
+.factorypath

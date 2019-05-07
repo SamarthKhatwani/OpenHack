@@ -1,5 +1,6 @@
 package sjsu.edu.cmpe275.api.controller.implementaion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import sjsu.edu.cmpe275.api.persistence.model.mapper.OrganizationToOrganizationB
 import sjsu.edu.cmpe275.api.persistence.model.mapper.OrganizationToOrganizationResponseMapper;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.ProfileToProfileResponseMapper;
 import sjsu.edu.cmpe275.api.resources.OrganizationByNameResponse;
+import sjsu.edu.cmpe275.api.resources.OrganizationMembershipRequest;
+import sjsu.edu.cmpe275.api.resources.OrganizationMemberships;
 import sjsu.edu.cmpe275.api.resources.OrganizationRequest;
 import sjsu.edu.cmpe275.api.resources.OrganizationResponse;
 import sjsu.edu.cmpe275.api.resources.ProfileRequest;
@@ -74,6 +77,28 @@ public class NormalAuthAPI implements INormalAuthAPI {
 		Organization organization = organizationManagementService.createOrganization(organizationRequest);
 		OrganizationResponse response = organizationToOrganizationResponseMapper.map(organization);
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<Object> listRequestOrganizaion(String token, String email) {
+		List<Organization> myOrganizations = organizationManagementService.getOwnedOrganizations(email);
+		List<OrganizationMemberships> response = new ArrayList<OrganizationMemberships>();
+		for (Organization myOrgaanization : myOrganizations) {
+			OrganizationMemberships organizationMembership = new OrganizationMemberships();
+			organizationMembership.setName(myOrgaanization.getName());
+			List<Profile> membershipRequests = myOrgaanization.getRequests();
+			for (Profile profile : membershipRequests) {
+				OrganizationMembershipRequest organizationMembershipRequest = new OrganizationMembershipRequest();
+				organizationMembershipRequest.setEmail(profile.getEmail());
+				organizationMembershipRequest.setName(profile.getName());
+				organizationMembership.addMembershipRequest(organizationMembershipRequest);
+			}
+			if (!membershipRequests.isEmpty()) {
+				response.add(organizationMembership);
+			}
+
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }

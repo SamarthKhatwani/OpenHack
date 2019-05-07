@@ -20,7 +20,7 @@ public class OpenHackApplication {
 		
 		FileInputStream serviceAccount;
 		try {
-			serviceAccount = new FileInputStream("/Users/yashmahajan/Documents/MySJSU/Spring2019/CMPE275/OpenHack/backend/src/main/resources/cmpe-256-open-hack-firebase-adminsdk-apq9y-1291eec13e.json");
+			serviceAccount = new FileInputStream("src/main/resources/cmpe-256-open-hack-firebase-adminsdk-apq9y-1291eec13e.json");
 			FirebaseOptions options = new FirebaseOptions.Builder()
 					  .setCredentials(GoogleCredentials.fromStream(serviceAccount))
 					  .setDatabaseUrl("https://cmpe-256-open-hack.firebaseio.com")

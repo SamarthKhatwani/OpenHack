@@ -31,4 +31,8 @@ public interface INormalAuthAPI {
 	@RequestMapping(value = "/createOrganization", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
 	public ResponseEntity<Object> createOrganization(@RequestHeader(value = "Authorization") String token,
 			@RequestBody OrganizationRequest organizationRequest);
+	
+	@RequestMapping(value = "/listRequestOrganizaion", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
+	public ResponseEntity<Object> listRequestOrganizaion(@RequestHeader(value = "Authorization") String token,
+			@RequestParam(value = "email", required = true) String email);;
 }

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import './Home.css';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import AppConstants from "../../constants/AppConstants";
 import Navbar from '../Navbar/Navbar';
 import Firebase from '../../services/FirebaseService';
@@ -45,8 +45,13 @@ export default class Home extends Component {
     // SamSham46
 
     render() {
+        let redirectVar = null;
+        if (localStorage.getItem(AppConstants.AUTH_TOKEN)) {
+            redirectVar = <Redirect to="/dashboard" />
+        }
         return (
             <div className="container login">
+                {redirectVar}
                 <Navbar></Navbar>
                 <div className="row login-main">
                     {this.renderFailedLogin()}
@@ -135,6 +140,7 @@ export default class Home extends Component {
             }
             else {
                 localStorage.setItem(AppConstants.AUTH_TOKEN, socialAuthUser.credential.idToken);
+                localStorage.setItem(AppConstants.USER_DETAILS, JSON.stringify(socialAuthUser.user));
                 history.push('/dashboard'); 
             }
         }).catch(error => {
@@ -186,6 +192,7 @@ export default class Home extends Component {
             else {
                 Firebase.getInstance().auth.currentUser.getIdToken().then((token) => {
                     localStorage.setItem(AppConstants.AUTH_TOKEN, token);
+                    localStorage.setItem(AppConstants.USER_DETAILS, JSON.stringify(authUser.user));
                     history.push('/dashboard'); 
                 });
             }

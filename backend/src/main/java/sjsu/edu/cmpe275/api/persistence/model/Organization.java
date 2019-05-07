@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Organization {
 	@Id
@@ -27,9 +29,11 @@ public class Organization {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email", referencedColumnName = "email")
+	@JsonIgnore
 	private Profile email;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
+	@JsonIgnore
 	private List<Profile> members = new ArrayList<Profile>();
 
 	public long getId() {

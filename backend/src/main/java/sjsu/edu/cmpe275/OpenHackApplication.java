@@ -27,15 +27,6 @@ public class OpenHackApplication {
 					  .build();
 
 			FirebaseApp.initializeApp(options);
-//					UserRecord user=null;
-//					try {
-//						user = FirebaseAuth.getInstance().getUser("buk5J9nvmmMbMy3BOUJlR9V0ySo1");
-//					} catch (FirebaseAuthException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					String name=user.getEmail();
-//					System.out.println(name);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

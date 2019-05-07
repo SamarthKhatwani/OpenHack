@@ -27,7 +27,7 @@ public class Organization {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email", referencedColumnName = "email")
-	private Profile owner;
+	private Profile email;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
 	private List<Profile> members = new ArrayList<Profile>();
@@ -64,12 +64,12 @@ public class Organization {
 		this.description = description;
 	}
 
-	public Profile getOwner() {
-		return owner;
+	public Profile getEmail() {
+		return email;
 	}
 
-	public void setOwner(Profile owner) {
-		this.owner = owner;
+	public void setEmail(Profile owner) {
+		this.email = owner;
 	}
 
 	public List<Profile> getRequests() {

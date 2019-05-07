@@ -1,5 +1,7 @@
 package sjsu.edu.cmpe275.api.controller.aspects;
 
+import java.util.Map;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -29,9 +31,15 @@ public class AuthenticationAuthorizationAspect {
 		Object[] args=joinPoint.getArgs();
 		String headerToken =(String)args[0];
 		FirebaseToken verifiedToken=FirebaseAuth.getInstance().verifyIdToken(headerToken);
-		Profile profile = profileManagementService.getProfile(verifiedToken.getEmail());
-		if(profile==null || !profile.isAmdin()) {
-			return new ResponseEntity<Object>(new ResponseMessage(false, "User is forbidden to access admin route"), HttpStatus.FORBIDDEN);
+		Map<String,Object> userClaims=verifiedToken.getClaims();
+		Object adminClaim=userClaims.get("admin");
+		if(adminClaim!=null) {
+			if(!Boolean.parseBoolean((adminClaim.toString()))) {
+				return new ResponseEntity<Object>(new ResponseMessage(false, "User does not have admin privileges"), HttpStatus.FORBIDDEN);
+			}
+		}
+		else {
+			return new ResponseEntity<Object>(new ResponseMessage(false, "User does not have admin privileges"), HttpStatus.FORBIDDEN);
 		}
 		return (ResponseEntity<Object>) joinPoint.proceed();
 	}

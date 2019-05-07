@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import sjsu.edu.cmpe275.api.persistence.model.Organization;
+import sjsu.edu.cmpe275.api.persistence.model.Profile;
 
 public interface OrganizationRepository extends CrudRepository<Organization, Long> {
 	@Transactional(readOnly = true)
@@ -19,5 +20,5 @@ public interface OrganizationRepository extends CrudRepository<Organization, Lon
 	public List<Organization> findByNameIn(List<String> names);
 	
 	@Transactional(readOnly =true)
-	public List<Organization> findByOwner(String email);
+	public List<Organization> findByEmail(Profile email);
 }

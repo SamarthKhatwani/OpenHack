@@ -28,11 +28,7 @@ public class OrganizationAuthAPI implements IOrganizationAuthAPI {
 			ResponseMessage response = new ResponseMessage(true, "Successful");
 			return new ResponseEntity<Object>(response, HttpStatus.OK);
 		}
-	}
-	
-
-	
-	
+	}	
 }
 
 

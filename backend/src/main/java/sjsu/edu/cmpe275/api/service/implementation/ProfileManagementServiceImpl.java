@@ -107,4 +107,22 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 		return profileRepository.findByEmailIn(emails);
 	}
 
+	@Override
+	public Profile updateOrganizationApprovalStatus(Boolean isApproved, String email) {
+		Optional<Profile> profileWrapper = profileRepository.findByEmail(email);
+		if (profileWrapper.isPresent()) {
+			Profile profile = profileWrapper.get();
+			if(isApproved == true) {
+				profile.setOrganizationApprovalStatus(true);
+			}else {
+				profile.setOrganizationApprovalStatus(false);
+				profile.setOrganization(null);
+			}
+			profileRepository.save(profile);
+			return profile;
+		} else {
+			return null;
+		}
+	}
+
 }

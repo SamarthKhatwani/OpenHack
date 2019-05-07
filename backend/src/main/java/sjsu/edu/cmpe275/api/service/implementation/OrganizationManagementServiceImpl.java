@@ -65,7 +65,7 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 		organization.setAddress(organizationRequest.getAddress());
 		organization.setName(organizationRequest.getName());
 		Profile owner = profileManagementService.getProfile(organizationRequest.getEmail());
-		organization.setEmail(owner);
+		organization.setOwner(owner);
 		return organizationRepository.save(organization);
 	}
 
@@ -85,7 +85,8 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 		if ((profile = profileManagementService.getProfile(email)) == null) {
 			throw new BadRequestException("A user with the given email id doesn't exist");
 		}
-		return profile != null ? organizationRepository.findByEmail(profile) : new ArrayList<>();
+		List<Organization> orgs = organizationRepository.findByOwnerEmail(profile.getEmail());
+		return profile != null ? orgs : new ArrayList<>();
 	}
 
 }

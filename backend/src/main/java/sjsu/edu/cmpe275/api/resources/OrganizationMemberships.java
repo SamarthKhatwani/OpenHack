@@ -1,11 +1,12 @@
 package sjsu.edu.cmpe275.api.resources;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrganizationMemberships {
 	
 	private String name;
-	private List<OrganizationMembershipRequest> membershipRequet;
+	private List<OrganizationMembershipRequest> membershipRequest = new ArrayList<>();
 	
 	
 	public String getName() {
@@ -14,13 +15,13 @@ public class OrganizationMemberships {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<OrganizationMembershipRequest> getMembershipRequet() {
-		return membershipRequet;
+	public List<OrganizationMembershipRequest> getMembershipRequest() {
+		return membershipRequest;
 	}
-	public void setMembershipRequet(List<OrganizationMembershipRequest> membershipRequet) {
-		this.membershipRequet = membershipRequet;
+	public void setMembershipRequest(List<OrganizationMembershipRequest> membershipRequet) {
+		this.membershipRequest = membershipRequet;
 	}
 	public void addMembershipRequest(OrganizationMembershipRequest organizationMembershipRequest) {
-		this.membershipRequet.add(organizationMembershipRequest);
+		this.membershipRequest.add(organizationMembershipRequest);
 	}
 }

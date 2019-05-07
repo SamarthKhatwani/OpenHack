@@ -14,8 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Organization {
 	@Id
@@ -28,12 +26,10 @@ public class Organization {
 	private String description;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email", referencedColumnName = "email")
-	@JsonIgnore
-	private Profile email;
+    @JoinColumn(name = "owner", referencedColumnName = "email")
+	private Profile owner;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
-	@JsonIgnore
 	private List<Profile> members = new ArrayList<Profile>();
 
 	public long getId() {
@@ -68,16 +64,17 @@ public class Organization {
 		this.description = description;
 	}
 
-	public Profile getEmail() {
-		return email;
+	public Profile getOwner() {
+		return owner;
 	}
 
-	public void setEmail(Profile owner) {
-		this.email = owner;
+	public void setOwner(Profile owner) {
+		this.owner = owner;
 	}
 
 	public List<Profile> getRequests() {
-		return this.getMembers().stream().filter(profile -> profile.isOrganizationApprovalStatus())
+		this.getMembers().size();
+		return this.getMembers().stream().filter(profile -> !profile.isOrganizationApprovalStatus())
 				.collect(Collectors.toList());
 	}
 

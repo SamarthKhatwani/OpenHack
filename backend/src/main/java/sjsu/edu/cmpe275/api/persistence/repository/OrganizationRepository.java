@@ -17,4 +17,7 @@ public interface OrganizationRepository extends CrudRepository<Organization, Lon
 	
 	@Transactional(readOnly =true)
 	public List<Organization> findByNameIn(List<String> names);
+	
+	@Transactional(readOnly =true)
+	public List<Organization> findByOwner(String email);
 }

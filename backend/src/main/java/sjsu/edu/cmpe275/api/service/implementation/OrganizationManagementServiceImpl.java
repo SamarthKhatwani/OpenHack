@@ -73,4 +73,17 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 		return organizationRepository.findByNameIn(names);
 	}
 
+	@Override
+	public List<org.springframework.context.annotation.Profile> getRequestsByOrganizationName(String organization) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Organization> getOwnedOrganizations(String email) {
+		return organizationRepository.findByOwner(email);
+	}
+
+	
+
 }

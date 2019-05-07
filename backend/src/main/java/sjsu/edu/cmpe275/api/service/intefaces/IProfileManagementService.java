@@ -16,4 +16,6 @@ public interface IProfileManagementService {
 	public Profile createProfile(ProfileRequest profileRequest);
 
 	public List<Profile> getProfileByEmailIn(List<String> emails);
+
+	public Profile updateOrganizationApprovalStatus(Boolean isApproved, String email);
 }

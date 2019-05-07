@@ -26,7 +26,7 @@ public class Organization {
 	private String description;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "email", referencedColumnName = "email")
 	private Profile owner;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")

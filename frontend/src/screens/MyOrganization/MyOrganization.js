@@ -18,7 +18,11 @@ export default class MyOrganization extends Component {
     }
 
     componentDidMount() {
-
+        WebService.getInstance().getOrganizationList((response) => {
+            console.log(response);
+        }, (error) => {
+            console.log(error);
+        });
     }
 
     render() {
@@ -31,9 +35,9 @@ export default class MyOrganization extends Component {
                 {redirectVar}
                 <Navbar></Navbar>
                 <div className="row create-row">
-                    <a class="btn btn-info btn-lg" onClick={this.openModal.bind(this)}>
+                    <button type="button" class="btn btn-dark btn-lg" onClick={this.openModal.bind(this)}>
                         <span class="glyphicon glyphicon-plus"></span> Create Organization
-                    </a>
+                    </button>
                 </div>
                 <div className="row myorg">
                     {this.renderOrganizations()}
@@ -48,9 +52,27 @@ export default class MyOrganization extends Component {
         this.state.myOrganizations.map((org, index) => {
             views.push(
                 <Collapsible trigger="Start here">
-                    <p>This is the collapsible content. It can be any element or React component you like.</p>
-                    <p>It can even be another Collapsible component. Check out the next section!</p>
+                    {this.renderRequest([1,2,3])}
                 </Collapsible>
+            );
+        });
+        return views;
+    }
+
+    renderRequest(requests) {
+        let views = [];
+        requests.map((request, index) => {
+            views.push(
+                <div className="request-row">
+                    <h5>Yash</h5>
+                    <h5>yash@gmail.com</h5>
+                    <button class="btn btn-success">
+                        <span class="glyphicon glyphicon-ok"></span> Accept
+                    </button>
+                    <button href="#" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove"></span> Decline
+                    </button>
+                </div>
             );
         });
         return views;

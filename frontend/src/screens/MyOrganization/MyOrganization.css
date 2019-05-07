@@ -19,6 +19,11 @@
     margin-bottom: 10px;
 }
 
+.btn-dark{
+    background: #333333;
+    color: white;
+}
+
 .required{
     color: red;
 }
@@ -28,8 +33,14 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-bottom: 20px;
 }
 
+.request-row{
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
 
 .Collapsible {
     background-color: white; 
@@ -54,19 +65,21 @@
   
 .Collapsible__trigger {
     display: block;
-    font-weight: 400;
+    font-weight: bold;
+    font-size: large;
     text-decoration: none;
     color: #333333;
     position: relative;
     border: 1px solid white;
     padding: 10px;
-    background: #00ac9d;
+    background: #5bbfdd;
     color: white; 
 }
 
 .Collapsible__trigger:after {
     font-family: 'FontAwesome';
     content: '\f107';
+    font-weight: bold;
     position: absolute;
     right: 10px;
     top: 10px;
@@ -84,13 +97,16 @@
   
   .CustomTriggerCSS {
     background-color: lightcoral;
-    transition: background-color 200ms ease; }
+    transition: background-color 200ms ease; 
+}
   
   .CustomTriggerCSS--open {
-    background-color: darkslateblue; }
+    background-color: darkslateblue; 
+}
   
   .Collapsible__custom-sibling {
     padding: 5px;
     font-size: 12px;
     background-color: #CBB700;
-    color: black; }
+    color: black; 
+}

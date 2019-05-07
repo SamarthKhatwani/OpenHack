@@ -31,9 +31,9 @@ export default class MyProfile extends Component {
         WebService.getInstance().getProfile((response) => {
             console.log(response);
             if (response.success) {
-                this.setState({ 
+                this.setState({
                     userProfile: response,
-                    displayOrganization :  response.organization ?  response.organization : ''
+                    displayOrganization: response.organization ? response.organization : ''
                 });
             }
         }, (error) => {
@@ -90,20 +90,28 @@ export default class MyProfile extends Component {
                                 <div class="form-group">
                                     <Autocomplete
                                         wrapperStyle={{ width: '100%' }}
-                                        inputProps={{ className: "form-control form-control-lg", name: "organization", placeholder:"Organization" }}
+                                        inputProps={{className:"autoinput", name: "organization", placeholder: "Organization" }}
                                         getItemValue={(item) => item}
                                         items={this.state.organizationList}
                                         renderItem={(item, isHighlighted) =>
-                                            <div style={{ background: isHighlighted ? 'lightgray' : 'white', padding:'5px' }}>
+                                            <div style={{ background: isHighlighted ? 'lightgray' : 'white', padding: '5px' }}>
                                                 {item}
                                             </div>
                                         }
-                                        value={this.state.displayOrganization}
+                                        renderInput={(props) =>
+                                            <div className="form-control form-control-lg">
+                                                <input {...props} />
+                                                {this.state.userProfile.organization ? 
+                                                    <span className={this.state.userProfile.organizationApprovalStatus ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-time"}></span>
+                                                    : null}
+                                            </div>
+                                        }
+                                        value={this.state.userProfile.organization ? this.state.userProfile.organization : ''}
                                         onSelect={(item) => {
                                             let userProfile = Object.assign(this.state.userProfile, { organization: item });
-                                            this.setState({ userProfile, isFormDirty: true, displayOrganization:item });
+                                            this.setState({ userProfile, isFormDirty: true, ackMessage: null });
                                         }}
-                                        onChange={(event)=>{this.setState({displayOrganization: event.target.value})}}
+                                        onChange={this.onChange}
                                     />
                                 </div>
                                 <div class="form-group">
@@ -119,18 +127,32 @@ export default class MyProfile extends Component {
             </div>
         );
     }
-    
+
     onChange = (event) => {
-        let userProfile = Object.assign(this.state.userProfile, { [event.target.name]: event.target.value });
-        this.setState({ userProfile, isFormDirty: true });
+        console.log(event.target.name);
+        let userProfile = null;
+        if (event.target.name == 'organization') {
+            userProfile = Object.assign(this.state.userProfile, { organization: event.target.value.length > 0 ? event.target.value : null });
+        }
+        else {
+            userProfile = Object.assign(this.state.userProfile, { [event.target.name]: event.target.value });
+        }
+        this.setState({ userProfile, isFormDirty: true, ackMessage: null });
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        WebService.getInstance().updateProfile(this.state.userProfile,(response)=>{
+        WebService.getInstance().updateProfile(this.state.userProfile, (response) => {
             console.log(response);
-        }, (error)=>{
+            if (response.success) {
+                this.setState({ userProfile: response, ackMessage: response.message, isAckPositive: true })
+            }
+            else {
+                this.setState({ ackMessage: response.message, isAckPositive: false })
+            }
+        }, (error) => {
             console.log(error);
+            this.setState({ ackMessage: error, isAckPositive: false })
         });
     }
 

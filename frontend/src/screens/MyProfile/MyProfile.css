@@ -26,6 +26,13 @@
     justify-content: center
 }
 
+.autoinput{
+    height: 100%;
+    width: 98%;
+    margin-right: 5px;
+    border: none;
+}
+
 .profile-pic{
     text-align: center;
 }
@@ -36,6 +43,13 @@
     padding: 20px;
     padding-bottom: 10px;
     margin-bottom: 20px;
+}
+.glyphicon-ok{
+    color: green
+}
+
+.glyphicon-time{
+    color: red
 }
 
 .profile-information .save-button{

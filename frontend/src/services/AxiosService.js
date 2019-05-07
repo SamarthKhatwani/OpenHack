@@ -22,7 +22,6 @@ class AxiosService {
         else {
             config = { withCredentials: true };
         }
-        console.log(config);
         try {
             const response = await this.api.post(path, details, config);
             success(this.handleResponse(response));

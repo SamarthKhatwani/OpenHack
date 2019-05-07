@@ -1,5 +1,7 @@
 package sjsu.edu.cmpe275.api.persistence.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *
  */
 @Entity
-public class Profile {
+public class Profile implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -41,7 +43,6 @@ public class Profile {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id")
-	@JsonIgnore
 	private Organization organization;
 	
 	private Boolean organizationApprovalStatus;

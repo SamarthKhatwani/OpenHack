@@ -16,6 +16,7 @@ import sjsu.edu.cmpe275.api.persistence.model.mapper.OrganizationToOrganizationR
 import sjsu.edu.cmpe275.api.persistence.model.mapper.ProfileToProfileResponseMapper;
 import sjsu.edu.cmpe275.api.resources.OrganizationByNameResponse;
 import sjsu.edu.cmpe275.api.resources.OrganizationMembershipRequest;
+import sjsu.edu.cmpe275.api.resources.OrganizationMembershipResponse;
 import sjsu.edu.cmpe275.api.resources.OrganizationMemberships;
 import sjsu.edu.cmpe275.api.resources.OrganizationRequest;
 import sjsu.edu.cmpe275.api.resources.OrganizationResponse;
@@ -80,7 +81,7 @@ public class NormalAuthAPI implements INormalAuthAPI {
 	}
 	
 	@Override
-	public ResponseEntity<Object> listRequestOrganizaion(String token, String email) {
+	public ResponseEntity<Object> listRequestOrganization(String token, String email) {
 		List<Organization> myOrganizations = organizationManagementService.getOwnedOrganizations(email);
 		List<OrganizationMemberships> response = new ArrayList<OrganizationMemberships>();
 		for (Organization myOrgaanization : myOrganizations) {
@@ -98,7 +99,15 @@ public class NormalAuthAPI implements INormalAuthAPI {
 			}
 
 		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		OrganizationMembershipResponse membershipResponse = new OrganizationMembershipResponse();
+		membershipResponse.setSuccess(true);
+		if(response.isEmpty()) {
+			membershipResponse.setMessage("No entries found");
+		}else {
+			membershipResponse.setMessage("Successful");
+		}
+		membershipResponse.setOrganization(response);
+		return new ResponseEntity<>(membershipResponse, HttpStatus.OK);
 	}
 
 }

@@ -16,13 +16,12 @@ class AxiosService {
     async postCall(path, details, success, failure, isAuthorized = false) {
         let config;
         if (isAuthorized) {
-            let token = JSON.parse(localStorage.getItem(AppConstants.AUTH_TOKEN));
+            let token = localStorage.getItem(AppConstants.AUTH_TOKEN);
             config = { headers: { 'Authorization': (token ? token : {}) }, withCredentials: true };
         }
         else {
             config = { withCredentials: true };
         }
-        console.log(config);
         try {
             const response = await this.api.post(path, details, config);
             success(this.handleResponse(response));
@@ -36,7 +35,7 @@ class AxiosService {
     async getCall(path, success, failure, isAuthorized = false) {
         let config;
         if (isAuthorized) {
-            let token = JSON.parse(localStorage.getItem(AppConstants.AUTH_TOKEN));
+            let token = localStorage.getItem(AppConstants.AUTH_TOKEN);
             config = { headers: { 'Authorization': (token ? token : {}) }, withCredentials: true };
         }
         else {
@@ -55,7 +54,7 @@ class AxiosService {
     async deleteCall(path, details = null, success, failure, isAuthorized = false) {
         let config;
         if (isAuthorized) {
-            let token = JSON.parse(localStorage.getItem(AppConstants.AUTH_TOKEN));
+            let token = localStorage.getItem(AppConstants.AUTH_TOKEN);
             config = { headers: { 'Authorization': (token ? token : {}) }, withCredentials: true };
         }
         else {

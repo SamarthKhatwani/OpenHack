@@ -13,7 +13,7 @@ class Navbar extends Component {
                 <nav className="navbar-expand-sm bg-color navbar-dark">
                     <div className="container-fluid">
                         <div className="navbar-header">
-                            <Link to="/"> <span className="navbar-brand header-white">Open Hack</span></Link>
+                            <Link to="/dashboard"> <span className="navbar-brand header-white">Open Hack</span></Link>
                         </div>
                         <div className="navbar-fixed-right">
                             {this.renderMenu()}
@@ -31,7 +31,8 @@ class Navbar extends Component {
                         <span class="glyphicon glyphicon-user"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <span class="dropdown-item">My Profile</span><br /><br />
+                    <Link to="/myProfile"><span class="dropdown-item">My Profile</span></Link>
+                    <br /><br />
                         <span class="dropdown-item" onClick={this.logout.bind(this)}>Logout</span>
                     </div>
                 </div>

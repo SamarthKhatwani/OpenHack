@@ -1,0 +1,127 @@
+.myprofile{
+    width: inherit;
+    margin-top: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+    padding-right: 0px;
+}
+
+.profile-container{
+    border-top: 1px solid #cccccc;
+    padding-top: 15px;
+}
+
+.profile-information{
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.profile-container .alert-danger, .profile-container .alert-success {
+    height: 50px;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.autoinput{
+    height: 100%;
+    width: 98%;
+    margin-right: 5px;
+    border: none;
+}
+
+.profile-pic{
+    text-align: center;
+}
+
+.profile-information .col-9-lg {
+    border: 1px solid #cccccc;
+    margin-top: 20px;
+    padding: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.glyphicon-ok{
+    color: green
+}
+
+.glyphicon-time{
+    color: red
+}
+
+.profile-information .save-button{
+    text-align: center;
+}
+
+textarea[name=user_aboutme] {
+    resize: none;
+}
+
+.avatar-upload {
+    position: relative;
+    max-width: 205px;
+    margin: 50px auto;
+}
+ 
+.avatar-upload .avatar-edit {
+    position: absolute;
+    right: 12px;
+    z-index: 1;
+    top: 10px;
+}
+
+.avatar-upload .avatar-edit input {
+    display: none;
+}
+
+.avatar-upload .avatar-edit label {
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0;
+    border-radius: 100%;
+    background: #FFFFFF;
+    border: 1px solid transparent;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    font-weight: normal;
+    transition: all .2s ease-in-out;
+    padding:5px;
+} 
+
+.avatar-upload .avatar-edit label:hover {
+    background: #f1f1f1;
+    border-color: #d6d6d6;
+}
+
+.avatar-upload .avatar-edit label:after {
+    font-family: 'FontAwesome';
+    color: #757575;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: auto;
+}
+
+.avatar-preview {
+    width: 192px;
+    height: 192px;
+    position: relative;
+    border-radius: 100%;
+    border: 2px solid #116db3;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-preview > div {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}

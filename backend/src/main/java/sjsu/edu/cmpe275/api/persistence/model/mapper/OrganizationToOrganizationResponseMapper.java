@@ -18,7 +18,7 @@ public class OrganizationToOrganizationResponseMapper {
 	public OrganizationResponse map(Organization organization) {
 		
 		OrganizationResponse response = mapper.convertValue(organization, OrganizationResponse.class);
-		response.setEmail(organization.getOwner()!=null?organization.getOwner().getEmail():null);
+		response.setEmail(organization.getEmail()!=null?organization.getEmail().getEmail():null);
 		response.setSuccess(true);
 		response.setMessage("Success");
 		return response;

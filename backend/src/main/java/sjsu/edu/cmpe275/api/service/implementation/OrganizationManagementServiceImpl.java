@@ -65,7 +65,7 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 		organization.setAddress(organizationRequest.getAddress());
 		organization.setName(organizationRequest.getName());
 		Profile owner = profileManagementService.getProfile(organizationRequest.getEmail());
-		organization.setOwner(owner);
+		organization.setEmail(owner);
 		return organizationRepository.save(organization);
 	}
 
@@ -81,7 +81,8 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 
 	@Override
 	public List<Organization> getOwnedOrganizations(String email) {
-		return organizationRepository.findByOwner(email);
+		Profile profile = profileManagementService.getProfile(email);
+		return profile!=null ? organizationRepository.findByEmail(profile):new ArrayList<>();
 	}
 
 	

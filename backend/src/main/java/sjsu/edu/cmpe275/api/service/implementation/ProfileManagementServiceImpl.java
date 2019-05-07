@@ -106,7 +106,5 @@ public class ProfileManagementServiceImpl implements IProfileManagementService {
 	public List<Profile> getProfileByEmailIn(List<String> emails) {
 		return profileRepository.findByEmailIn(emails);
 	}
-	
-	
 
 }

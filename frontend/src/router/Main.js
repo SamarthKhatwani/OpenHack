@@ -3,15 +3,7 @@ import { Route } from 'react-router-dom';
 import Home from '../screens/Home/Home';
 import Dashboard from '../screens/Dashboard/Dashboard';
 import MyProfile from '../screens/MyProfile/MyProfile';
-// import ViewProfile from '../views/ViewProfile/ViewProfile';
-// import EditProfile from '../views/EditProfile/EditProfile';
-// import OwnerLogin from '../views/OwnerLogin/OwnerLogin';
-// import OwnerSignUp from '../views/OwnerSignUp/OwnerSignUp';
-// import PostProperty from '../views/PostProperty/PostProperty';
-// import PropertyListing from '../views/PropertyListing/PropertyListing';
-// import ViewProperty from '../views/ViewProperty/ViewProperty';
-// import Inbox from '../views/Inbox/Inbox';
-// import Conversation from '../views/Conversation/Conversation';
+import MyOrganization from '../screens/MyOrganization/MyOrganization';
 //Create a Main Component
 class Main extends Component {
     render() {
@@ -20,21 +12,12 @@ class Main extends Component {
                 {/*Render Different Component based on Route*/}
                 <Route exact path="/" component={Home} />
                 <Route path="/dashboard" component={Dashboard}/>   
-                <Route path="/myProfile" component={MyProfile}/>                
+                <Route path="/myProfile" component={MyProfile}/>  
+                <Route path="/myOrganization" component={MyOrganization}/>                
             </div>
         )
     }
 }
-// <Route path="/login" component={Login}/>
-// <Route path="/ownerLogin" component={OwnerLogin}/>
-// <Route path="/signUp" component={SignUp}/>
-// <Route path="/ownerSignUp" component={OwnerSignUp}/>
-// <Route path="/viewProfile" component={ViewProfile}/>
-// <Route path="/editProfile" component={EditProfile}/>
-// <Route path="/postProperty" component={PostProperty}/>
-// <Route path="/searchProperty" component={PropertyListing}/>
-// <Route path="/viewProperty" component={ViewProperty}/>
-// <Route path="/inbox" component={Inbox}/>
-// <Route path="/conversation" component={Conversation}/>
+
 //Export The Main Component
 export default Main;

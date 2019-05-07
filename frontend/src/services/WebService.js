@@ -67,8 +67,20 @@ export default class WebService extends AxiosService {
     *
     * Required params: null
     */
-   updateProfile(details,success, failure) {
-    this.postCall(URI.UPDATE_PROFILE, details, success, failure, true);
+    updateProfile(details, success, failure) {
+        this.postCall(URI.UPDATE_PROFILE, details, success, failure, true);
+    }
+
+    /**
+    * Create Organization Call - Create Organizationapi call
+    * Takes success and failure operations
+    *
+    * Required params: Name, Address, Description
+    */
+   createOrganization(details, success, failure) {
+    this.postCall(URI.CREATE_ORGANIZATION, details, success, failure, true);
 }
+
+
 
 }

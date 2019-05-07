@@ -7,6 +7,7 @@ const URI = {
     SIGNUP: "/signup",
     GET_PROFILE: "/getProfile",
     UPDATE_PROFILE:"/updateProfile",
-    SEARCH_ORGANIZATION:"searchOrganizations"
+    SEARCH_ORGANIZATION:"/searchOrganizations",
+    CREATE_ORGANIZATION:"/createOrganization",
 };
 export default URI;

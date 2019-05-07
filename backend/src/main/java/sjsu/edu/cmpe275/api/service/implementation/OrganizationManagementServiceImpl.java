@@ -17,18 +17,18 @@ import sjsu.edu.cmpe275.api.service.intefaces.IOrganizationManagementService;
 import sjsu.edu.cmpe275.api.service.intefaces.IProfileManagementService;
 
 @Service
-public class OrganizationManagementServiceImpl implements IOrganizationManagementService{
-	
+public class OrganizationManagementServiceImpl implements IOrganizationManagementService {
+
 	@Autowired
 	private OrganizationRepository organizationRepository;
-	
+
 	@Autowired
 	private IProfileManagementService profileManagementService;
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Organization getOrganization(String name) {
-		if(name==null) {
+		if (name == null) {
 			return null;
 		}
 		Optional<Organization> organizationWrapper = organizationRepository.findByName(name);
@@ -37,11 +37,11 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 		}
 		return null;
 	}
-	
+
 	@Override
-	@Transactional(readOnly =true)
-	public List<Organization> getOrganizationByName(String name){
-		if(name == null) {
+	@Transactional(readOnly = true)
+	public List<Organization> getOrganizationByName(String name) {
+		if (name == null) {
 			return new ArrayList<Organization>();
 		}
 		List<Organization> organizationList = organizationRepository.findByNameContaining(name);
@@ -50,14 +50,14 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 
 	@Override
 	public Organization createOrganization(OrganizationRequest organizationRequest) {
-		if(organizationRequest.getEmail() == null) {
+		if (organizationRequest.getEmail() == null) {
 			throw new BadRequestException("Owner mail not provided");
 		}
-		if(profileManagementService.getProfile(organizationRequest.getEmail())==null) {
+		if (profileManagementService.getProfile(organizationRequest.getEmail()) == null) {
 			throw new BadRequestException("User with given email doesn't exist");
 		}
 		Organization alternateOrganization = getOrganization(organizationRequest.getName());
-		if(alternateOrganization != null) {
+		if (alternateOrganization != null) {
 			throw new BadRequestException("Organization with the same name already exists");
 		}
 		Organization organization = new Organization();
@@ -81,9 +81,12 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 
 	@Override
 	public List<Organization> getOwnedOrganizations(String email) {
-		return organizationRepository.findByOwner(email);
+		Profile profile = null;
+		if ((profile = profileManagementService.getProfile(email)) == null) {
+			throw new BadRequestException("A user with the given email id doesn't exist");
+		}
+		List<Organization> orgs = organizationRepository.findByOwnerEmail(profile.getEmail());
+		return profile != null ? orgs : new ArrayList<>();
 	}
-
-	
 
 }

@@ -26,7 +26,7 @@ public class Organization {
 	private String description;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email", referencedColumnName = "email")
+    @JoinColumn(name = "owner", referencedColumnName = "email")
 	private Profile owner;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
@@ -73,7 +73,8 @@ public class Organization {
 	}
 
 	public List<Profile> getRequests() {
-		return this.getMembers().stream().filter(profile -> profile.isOrganizationApprovalStatus())
+		this.getMembers().size();
+		return this.getMembers().stream().filter(profile -> !profile.isOrganizationApprovalStatus())
 				.collect(Collectors.toList());
 	}
 

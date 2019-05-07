@@ -81,6 +81,9 @@ public class OrganizationManagementServiceImpl implements IOrganizationManagemen
 
 	@Override
 	public List<Organization> getOwnedOrganizations(String email) {
+		if(profileManagementService.getProfile(email) == null) {
+			throw new BadRequestException("A user with the given email id doesn't exist");
+		}
 		return organizationRepository.findByOwner(email);
 	}
 

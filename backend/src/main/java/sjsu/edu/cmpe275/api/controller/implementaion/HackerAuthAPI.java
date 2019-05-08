@@ -31,6 +31,14 @@ public class HackerAuthAPI implements IHackerAuthAPI {
 		Quotation quotation=hackathonManagementService.fetchQuotation(email, eventName);
 		return new ResponseEntity<Object>(quotation, HttpStatus.OK);
 	}
+
+	@Override
+	public ResponseEntity<Object> makePayment(String token, Quotation quotation) throws ParseException {
+		hackathonManagementService.makePayment(quotation);
+		ResponseMessage response = new ResponseMessage(true, "Successful");
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+		
+	}
 	
 	
 

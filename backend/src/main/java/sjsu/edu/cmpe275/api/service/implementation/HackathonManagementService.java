@@ -256,14 +256,20 @@ public class HackathonManagementService implements IHackathonManagementService {
 	public Quotation fetchQuotation(String email, String eventName) {
 		Quotation quotation = new Quotation();
 		Profile profile = profileManagementService.getProfile(email);
+		if(profile==null) {
+			throw new BadRequestException("User Profile does not exist");
+		}
 		Organization profileOrganization = profile.getOrganization();
 		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
+		if(!hackathonWrapper.isPresent()) {
+			throw new BadRequestException("Hackathon event does not exist");
+		}
 		Hackathon hackathon = hackathonWrapper.get();
 		boolean organizationPresent = false;
-		HackathonTeamProfile hackathonTeamProfile = hacathonTeamProfileRepository.findByHackathonAndProfile(eventName,
-				email);
-		if (profileOrganization != null) {
-			String profileOrganizationName = profileOrganization.getName();
+
+		HackathonTeamProfile hackathonTeamProfile=hacathonTeamProfileRepository.findByHackathonAndProfile(eventName, email);
+		if (profileOrganization != null) {	
+			String profileOrganizationName=profileOrganization.getName();
 			List<Organization> hackathonSponsors = hackathon.getSponsors();
 			for (Organization sponsor : hackathonSponsors) {
 				if (sponsor.getName().equals(profileOrganizationName)) {
@@ -292,6 +298,7 @@ public class HackathonManagementService implements IHackathonManagementService {
 		quotation.setSuccess(true);
 		return quotation;
 	}
+
 
 	@Override
 	public Hackathon retrieveHackathonDetail(String email, String role, String eventName) throws ParseException {
@@ -325,5 +332,35 @@ public class HackathonManagementService implements IHackathonManagementService {
 		} else {
 			throw new BadRequestException("invalid role value");
 		}
+	}
+	@Override
+	public boolean makePayment(Quotation quotation) throws ParseException {
+		boolean result=true;
+		String eventName=quotation.getEventName();
+		String  email=quotation.getEmail();
+		HackathonTeamProfile hackathonTeamProfile=hacathonTeamProfileRepository.findByHackathonAndProfile(eventName, email);
+		if(hackathonTeamProfile==null) {
+			throw new BadRequestException("Hackathon team profile does not exist");
+		}
+		if(hackathonTeamProfile.isPaid()) {
+			result=false;
+			throw new BadRequestException("User has already made payment");
+		}
+		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
+		if(!hackathonWrapper.isPresent()) {
+			throw new BadRequestException("Hackathon event does not exist");
+		}
+		Hackathon hackathon = hackathonWrapper.get();
+		Date eventCloseDate=hackathon.getCloseDate();
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date currentDate = inputFormatter.parse(inputFormatter.format(new Date()));
+		if(currentDate.after(eventCloseDate)) {
+			result= false;
+			throw new BadRequestException("Event has already started, no payments will be accepted now");
+		}
+		hackathonTeamProfile.setPaid(true);
+		hacathonTeamProfileRepository.save(hackathonTeamProfile);
+		return result;
+
 	}
 }

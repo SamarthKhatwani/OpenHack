@@ -221,4 +221,33 @@ public class HackathonManagementService implements IHackathonManagementService {
 		hackathon.setTeamMaxSize(hackathonRequest.getTeamMaxSize());
 		hackathon.setTeamMinSize(hackathonRequest.getTeamMinSize());
 	}
+
+	@Override
+	public List<Hackathon> retrieveHackathon(String email, String role) throws ParseException {
+		Profile profile = profileManagementService.getProfile(email);
+		if(profile==null) {
+			throw new BadRequestException("user with given email doesn't exist");
+		}
+		if(profile.isAmdin() && !role.equals(OHConstants.ADMIN_ROLE)) {
+			throw new BadRequestException("user with given email doesn't have role "+role);
+		}
+		
+		if(role.equals(OHConstants.ADMIN_ROLE)) {
+			List<Hackathon> hackathons = new ArrayList<>();
+			hackathonRepository.findAll().forEach(hackathons::add);
+			return hackathons;
+		}else if(role.equals(OHConstants.HACKER_ROLE)) {
+			DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = inputFormatter.parse(inputFormatter.format(new Date()));
+			String currentDate = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(date);
+			List<String> hackathons = hacathonTeamProfileRepository.findHackathonByProfile(email);
+			String hacks = String.join("', '", hackathons);
+			hacks= " ( "+hacks+" ) ";
+			return hackathonRepository.findHackathonBeforeStartAndNameIn(currentDate, hackathons);
+		}else if(role.equals(OHConstants.JUDGE_ROLE)){
+			return profile.getHackathonJudge();
+		}else {
+			throw new BadRequestException("invalid role value");
+		}
+	}
 }

@@ -23,5 +23,7 @@ public interface IHackathonManagementService {
 	public Quotation fetchQuotation(String email, String eventName);
 	
 	public boolean makePayment(Quotation quotation) throws ParseException;
+	
+	public boolean submitCode(String teamName, String eventName, String url) throws ParseException;
 
 }

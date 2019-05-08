@@ -1,6 +1,7 @@
 import axios from 'axios';
 import URI from "../constants/uri";
 import AppConstants from "../constants/AppConstants";
+import { history } from '../router/history';
 class AxiosService {
     constructor() { }
 
@@ -81,7 +82,8 @@ class AxiosService {
 
     handleError(error) {
         if (error.response && error.response.status === 401) {
-            // logoutReset();
+            localStorage.clear();
+            history.push('/');
         }
         if (error.response) {
             const errorMessage = (error.response.data && error.response.data.message) || error.message;

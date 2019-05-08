@@ -90,7 +90,7 @@ export default class MyProfile extends Component {
                                 <div class="form-group">
                                     <Autocomplete
                                         wrapperStyle={{ width: '100%' }}
-                                        inputProps={{className:"autoinput", name: "organization", placeholder: "Organization" }}
+                                        inputProps={{ className: "autoinput", name: "organization", placeholder: "Organization" }}
                                         getItemValue={(item) => item}
                                         items={this.state.organizationList}
                                         renderItem={(item, isHighlighted) =>
@@ -101,7 +101,7 @@ export default class MyProfile extends Component {
                                         renderInput={(props) =>
                                             <div className="form-control form-control-lg">
                                                 <input {...props} />
-                                                {this.state.userProfile.organization ? 
+                                                {this.state.userProfile.organization ?
                                                     <span className={this.state.userProfile.organizationApprovalStatus ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-time"}></span>
                                                     : null}
                                             </div>

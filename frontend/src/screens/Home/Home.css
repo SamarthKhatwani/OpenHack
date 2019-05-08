@@ -10,13 +10,13 @@
     justify-content: space-between;
 }
 
-.btn-success {
+.login .btn-success {
     background-color: #fba034e8;
     border:1px solid #fba034e8;
     margin-bottom: 10px;
 }
 
-.btn-success:active:focus, .btn-success:active:hover, .btn-success:hover, .btn-success:active, .btn-success:visited, .btn-success:focus{
+.login .btn-success:active:focus, .login .btn-success:active:hover, .login .btn-success:hover, .login .btn-success:active, .login .btn-success:visited, .login .btn-success:focus{
     background-color: #fba034e8;
     border:1px solid #fba034e8
 }

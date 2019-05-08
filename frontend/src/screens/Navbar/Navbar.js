@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './Navbar.css';
 import { Link } from 'react-router-dom';
 import AppConstants from '../../constants/AppConstants';
@@ -26,22 +26,27 @@ class Navbar extends Component {
     renderMenu() {
         if (localStorage.getItem(AppConstants.AUTH_TOKEN)) {
             return (
-                <div class="nav-item dropdown pull-right">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span class="glyphicon glyphicon-user"></span>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <Link to="/myProfile"><span class="dropdown-item">My Profile</span></Link>
-                    <br /><br />
-                        <span class="dropdown-item" onClick={this.logout.bind(this)}>Logout</span>
+                <Fragment>
+                    <div class="nav-item item-link">
+                        <Link to="/myOrganization"><a class="nav-link">My Organizations</a></Link>
                     </div>
-                </div>
+                    <div class="nav-item dropdown pull-right">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="glyphicon glyphicon-user"></span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <Link to="/myProfile"><span class="dropdown-item">My Profile</span></Link>
+                            <br /><br />
+                            <span class="dropdown-item" onClick={this.logout.bind(this)}>Logout</span>
+                        </div>
+                    </div>
+                </Fragment>
             );
         }
     }
 
-    logout(){
-        Firebase.getInstance().signOut().then(()=>{
+    logout() {
+        Firebase.getInstance().signOut().then(() => {
             localStorage.clear();
             history.push('/');
         });

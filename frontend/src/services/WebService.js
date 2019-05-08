@@ -52,6 +52,17 @@ export default class WebService extends AxiosService {
     }
 
     /**
+    * Get Organization List Call - Get Profile api call
+    * Takes success and failure operations
+    *
+    * Required params: null
+    */
+   getOrganizationList(success, failure) {
+    let user = JSON.parse(localStorage.getItem(AppConstants.USER_DETAILS));
+    this.getCall(URI.GET_LIST_ORGANIZATION + '/?email=' + user.email, success, failure, true);
+}
+
+    /**
     * Search Organizations Call - Search Organizations api call
     * Takes success and failure operations
     *
@@ -67,8 +78,20 @@ export default class WebService extends AxiosService {
     *
     * Required params: null
     */
-   updateProfile(details,success, failure) {
-    this.postCall(URI.UPDATE_PROFILE, details, success, failure, true);
+    updateProfile(details, success, failure) {
+        this.postCall(URI.UPDATE_PROFILE, details, success, failure, true);
+    }
+
+    /**
+    * Create Organization Call - Create Organizationapi call
+    * Takes success and failure operations
+    *
+    * Required params: Name, Address, Description
+    */
+   createOrganization(details, success, failure) {
+    this.postCall(URI.CREATE_ORGANIZATION, details, success, failure, true);
 }
+
+
 
 }

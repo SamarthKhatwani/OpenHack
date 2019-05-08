@@ -139,9 +139,14 @@ export default class Home extends Component {
                 this.setState({ errorMessage: 'Please Verify Email First!', loginFailed: true });
             }
             else {
-                localStorage.setItem(AppConstants.AUTH_TOKEN, socialAuthUser.credential.idToken);
-                localStorage.setItem(AppConstants.USER_DETAILS, JSON.stringify(socialAuthUser.user));
-                history.push('/dashboard'); 
+                // localStorage.setItem(AppConstants.AUTH_TOKEN, socialAuthUser.credential.idToken);
+                // localStorage.setItem(AppConstants.USER_DETAILS, JSON.stringify(socialAuthUser.user));
+                // history.push('/dashboard'); 
+                Firebase.getInstance().auth.currentUser.getIdToken().then((token) => {
+                    localStorage.setItem(AppConstants.AUTH_TOKEN, token);
+                    localStorage.setItem(AppConstants.USER_DETAILS, JSON.stringify(socialAuthUser.user));
+                    history.push('/dashboard'); 
+                });
             }
         }).catch(error => {
             console.log(error);

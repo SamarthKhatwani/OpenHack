@@ -1,20 +1,25 @@
-body{
-    background: url("./img/hackathon-pattern.png");
-    background-color: #e4e4e4;
-}
-body{
-    font-family: 'Montesarrat', sans-serif;
+.create-hackathon{
+    width: inherit;
+    margin-top: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+    padding-right: 0px;
 }
 
-h1, h2, h3, h4, h5{
-    font-family: 'Gugi', cursive;
+.rajat_hackathon_form_wrapper{
+    display: flex;
+    justify-content: center;
+}
+
+.rajat-row{
+    width: 70%;
 }
 
 .rajat_container{
     background-color: #e4e4e4;
 }
 .rajat_hacakathon_list_card{
-    width: 60%;
+    min-width: 0;
     word-wrap: break-word;
     background-color: #ffffff85;
     background-clip: border-box;
@@ -51,11 +56,8 @@ h1, h2, h3, h4, h5{
     background-image: none;
     background-color: #fba847;
     text-shadow: none;
+    padding: 14px
 }
-
-
-
-
 
 
 .rajat_hackathon_form_wrapper{

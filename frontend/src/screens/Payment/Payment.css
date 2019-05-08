@@ -1,0 +1,53 @@
+.payment{
+    width: inherit;
+    margin-top: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+    padding-right: 0px;
+}
+
+.payment h2{
+    font-family: 'Gugi', cursive;
+}
+
+.payment .rajat_container{
+  background-color: transparent;
+}
+
+.payment .rajat_hacakathon_bill_container{
+    width: 40%;
+    margin: 0 auto;
+    padding: 10px 50px;;
+    background-color: white;
+    text-align: center;
+    box-shadow: 2px 2px 2px 2px #00000057;
+    margin-top: 50px;
+}
+
+.payment .rajat_hackathon_bill_details{
+    font-family: monospace;
+    padding-top: 20px;
+    font-size: 20px;
+}
+
+.payment .rajat_hackathon_bill_details .row{
+    margin-bottom: 10px;
+}
+.payment .bill-left{
+    text-align: left;
+}
+
+.payment .bill-right{
+    text-align: right;
+}
+
+.payment .bill_total_row{
+    border-top: 1px dashed black;
+}
+
+.payment .rajat_register, .payment .rajat_register:hover{
+    background-image: none;
+    background-color: #fba847;
+    text-shadow: none;
+    width: 40%;
+}

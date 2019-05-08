@@ -11,6 +11,9 @@ const URI = {
     SEARCH_ORGANIZATION: "/searchOrganizations",
     CREATE_ORGANIZATION: "/createOrganization",
     GET_LIST_ORGANIZATION: "/listRequestOrganization",
-    RESPOND_REQUEST:"/respondRequestOrganizaion"
+    RESPOND_REQUEST:"/respondRequestOrganizaion",
+    CREATE_UPDATE_HACKATHON:"/createUpdateHackathon",
+    FETCH_PRICE:"/fetchPrice",
+    LIST_HACKATHON:"/listHackathon"
 };
 export default URI;

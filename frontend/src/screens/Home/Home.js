@@ -144,8 +144,18 @@ export default class Home extends Component {
                 // history.push('/dashboard'); 
                 Firebase.getInstance().auth.currentUser.getIdToken().then((token) => {
                     localStorage.setItem(AppConstants.AUTH_TOKEN, token);
-                    localStorage.setItem(AppConstants.USER_DETAILS, JSON.stringify(socialAuthUser.user));
-                    history.push('/dashboard'); 
+                    localStorage.setItem(AppConstants.USER_FIREBASE_DETAILS, JSON.stringify(socialAuthUser.user));
+                    WebService.getInstance().getProfile((response)=>{
+                        if(response.success){
+                            localStorage.setItem(AppConstants.USER_DETAILS, JSON.stringify(response));
+                            history.push('/dashboard'); 
+                        }
+                        else{
+                            this.setState({ errorMessage: response.message, loginFailed: true });
+                        }
+                    },(error)=>{
+                        this.setState({ errorMessage: error.message, loginFailed: true });
+                    })
                 });
             }
         }).catch(error => {
@@ -197,8 +207,18 @@ export default class Home extends Component {
             else {
                 Firebase.getInstance().auth.currentUser.getIdToken().then((token) => {
                     localStorage.setItem(AppConstants.AUTH_TOKEN, token);
-                    localStorage.setItem(AppConstants.USER_DETAILS, JSON.stringify(authUser.user));
-                    history.push('/dashboard'); 
+                    localStorage.setItem(AppConstants.USER_FIREBASE_DETAILS, JSON.stringify(authUser.user));
+                    WebService.getInstance().getProfile((response)=>{
+                        if(response.success){
+                            localStorage.setItem(AppConstants.USER_DETAILS, JSON.stringify(response));
+                            history.push('/dashboard'); 
+                        }
+                        else{
+                            this.setState({ errorMessage: response.message, loginFailed: true });
+                        }
+                    },(error)=>{
+                        this.setState({ errorMessage: error.message, loginFailed: true });
+                    })
                 });
             }
         }).catch(error => {

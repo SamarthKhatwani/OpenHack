@@ -13,16 +13,36 @@ export default class MyOrganization extends Component {
         super(props);
         this.state = {
             modalIsOpen: false,
-            myOrganizations: [1, 2, 3, 4, 5]
+            myOrganizations: [],
+            isAckPositive: false,
+            ackMessage: null
         }
     }
 
     componentDidMount() {
+        this.getOrganizations();
+    }
+
+    getOrganizations() {
         WebService.getInstance().getOrganizationList((response) => {
             console.log(response);
+            if (response.success) {
+                this.setState({ myOrganizations: response.organization })
+            }
         }, (error) => {
+            this.setState({ isAckPositive: false, ackMessage: error })
             console.log(error);
         });
+    }
+
+    renderAcknowledgement() {
+        if (this.state.ackMessage) {
+            return (
+                <div class="alert" className={this.state.isAckPositive ? 'alert-success' : 'alert-danger'} role="alert">
+                    {this.state.ackMessage}
+                </div>
+            );
+        }
     }
 
     render() {
@@ -35,6 +55,7 @@ export default class MyOrganization extends Component {
                 {redirectVar}
                 <Navbar></Navbar>
                 <div className="row create-row">
+                    {this.renderAcknowledgement()}
                     <button type="button" class="btn btn-dark btn-lg" onClick={this.openModal.bind(this)}>
                         <span class="glyphicon glyphicon-plus"></span> Create Organization
                     </button>
@@ -51,8 +72,8 @@ export default class MyOrganization extends Component {
         let views = []
         this.state.myOrganizations.map((org, index) => {
             views.push(
-                <Collapsible trigger="Start here">
-                    {this.renderRequest([1,2,3])}
+                <Collapsible trigger={org.name}>
+                    {this.renderRequest(org.membershipRequest)}
                 </Collapsible>
             );
         });
@@ -61,15 +82,24 @@ export default class MyOrganization extends Component {
 
     renderRequest(requests) {
         let views = [];
+        if (requests.length == 0) {
+            return (
+                <div className="request-row">
+                    <h5>No Request Available</h5>
+                </div>
+            );
+        }
         requests.map((request, index) => {
+            let pReq = { email: request.email, isApproved: true };
+            let nReq = { email: request.email, isApproved: false };
             views.push(
                 <div className="request-row">
-                    <h5>Yash</h5>
-                    <h5>yash@gmail.com</h5>
-                    <button class="btn btn-success">
+                    <h5>{request.name}</h5>
+                    <h5>{request.email}</h5>
+                    <button class="btn btn-success" onClick={this.respondRequest.bind(this, pReq)}>
                         <span class="glyphicon glyphicon-ok"></span> Accept
                     </button>
-                    <button href="#" class="btn btn-danger">
+                    <button href="#" class="btn btn-danger" onClick={this.respondRequest.bind(this, nReq)}>
                         <span class="glyphicon glyphicon-remove"></span> Decline
                     </button>
                 </div>
@@ -130,10 +160,26 @@ export default class MyOrganization extends Component {
         WebService.getInstance().createOrganization(req, (response) => {
             console.log(response);
             if (response.success) {
-                this.closeModal()
+                this.getOrganizations();
+                this.closeModal();
+                this.setState({ name: null, description: null, address: null });
             }
         }, (error) => {
             console.log(error);
+        })
+    }
+
+    respondRequest(req) {
+        WebService.getInstance().respondRequest(req, (response) => {
+            if (response.success) {
+                this.getOrganizations();
+                this.setState({ isAckPositive: true, ackMessage: response.message })
+            }
+            else {
+                this.setState({ isAckPositive: false, ackMessage: response.message })
+            }
+        }, (error) => {
+            this.setState({ isAckPositive: false, ackMessage: error })
         })
     }
 

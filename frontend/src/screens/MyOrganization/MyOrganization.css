@@ -6,10 +6,19 @@
     padding-right: 0px;
 }
 
+.myorganization .alert-danger, .myorganization .alert-success {
+    height: 50px;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
 .create-row{
     margin-top: 20px;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column
 }
 
 .modal{ display:block; }
@@ -19,7 +28,7 @@
     margin-bottom: 10px;
 }
 
-.btn-dark{
+.myorganization .btn-dark, .myorganization .btn-dark:active:focus, .myorganization .btn-dark:active:hover, .myorganization .btn-dark:hover, .myorganization .btn-dark:active, .myorganization .btn-dark:visited, .myorganization .btn-dark:focus{
     background: #333333;
     color: white;
 }

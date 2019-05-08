@@ -1,0 +1,77 @@
+
+body{
+    background: url("./img/hackathon-pattern.png");
+    background-color: #e4e4e4;
+}
+
+body{
+    font-family: 'Montesarrat', sans-serif;
+}
+
+h1, h2, h3, h4, h5{
+    font-family: 'Gugi', cursive;
+}
+
+.rajat_container{
+    background-color: #e4e4e4;
+}
+
+.rajat_hackathon_detail_view_heading_div{
+    padding-top: 50px;
+}
+
+.rajat_hackathon_detail_view_description_div p{
+    font-family: monospace;   
+}
+
+.rajat_hackathon_detail_view_description_div{
+    padding-top: 10px;
+}
+
+.rajat_hackathon_detail_view_details_div{
+    margin-top: 20px;
+    font-family: monospace;
+    font-weight: bold;
+    color: #363636;
+}
+
+.rajat_hackathon_detail_heading{
+    font-family: font-family: 'Gugi', cursive;
+    color: #363636;
+    font-weight: 100;
+    border-bottom: 1px solid #363636;
+    background-color: #99cdad;
+    margin-right: 10px;
+}
+
+.rajat_hackathon_form_wrapper{
+    margin-top: 50px;
+    padding: 10px;
+}
+
+.rajat_hackathon_form_wrapper_div{
+    border-left: 2px solid #fba747;
+}
+.rajat_hackathon_registration_form label{
+    font-family: 'Gugi', cursive;
+}
+.rajat_form_row{
+    margin-top: 10px;
+    margin-bottom: 3px;
+}
+
+.rajat_register,
+.rajat_register:hover{
+    background-image: none;
+    background-color: #fba847;
+    text-shadow: none;
+}
+
+.rajat_grading_form_wrapper{
+    margin-top: 50px;
+}
+
+.rajat_hackathon_submission_row{
+    border-bottom: 2px dashed #c5d9ae;
+    padding-bottom: 10px;
+}

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="hackathon_list_view.css">
+    <link href="https://fonts.googleapis.com/css?family=Gugi|Montserrat|Source+Sans+Pro" rel="stylesheet">
+    
+</head>
+<body>
+ 
+<div class="container rajat_container">
+    
+      <div class="card rajat_hacakathon_list_card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8 rajat_hackathon_list_description_col">
+                    <h4 class="card-title">Event Name</h4>
+                    <p class="card-text rajat_hackathon_list_description">Description. Some example text. Some example text. Some example text. Some example text. Some example text. Some example text.</p>
+                    <a href="#" class="btn btn-default rajat_register">Register</a>
+                </div>
+                <div class="col-md-4 rajat_hackathon_info">
+                    <p><span class="rajat_muted_span">start-date: </span>05/20/2019</p>
+                    <p><span class="rajat_muted_span">end-date: </span>05/25/2019</p>
+                    <p><span class="rajat_muted_span">Team size: </span>3 to 5 members</p>
+                    <p><span class="rajat_muted_span">Registration Fee: $</span>200</p>
+                </div>
+            </div>  
+        </div>
+      </div>
+    
+    
+    <div class="card rajat_hacakathon_list_card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8 rajat_hackathon_list_description_col">
+                    <h4 class="card-title">Event Name</h4>
+                    <p class="card-text rajat_hackathon_list_description">Description. Some example text. Some example text. Some example text. Some example text. Some example text. Some example text.</p>
+                    <a href="#" class="btn btn-default rajat_register">Register</a>
+                </div>
+                <div class="col-md-4 rajat_hackathon_info">
+                    <p><span class="rajat_muted_span">start-date: </span>05/20/2019</p>
+                    <p><span class="rajat_muted_span">end-date: </span>05/25/2019</p>
+                    <p><span class="rajat_muted_span">Team size: </span>3 to 5 members</p>
+                    <p><span class="rajat_muted_span">Registration Fee: $</span>200</p>
+                </div>
+            </div>  
+        </div>
+      </div>
+    
+    <div class="card rajat_hacakathon_list_card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8 rajat_hackathon_list_description_col">
+                    <h4 class="card-title">Event Name</h4>
+                    <p class="card-text rajat_hackathon_list_description">Description. Some example text. Some example text. Some example text. Some example text. Some example text. Some example text.</p>
+                    <a href="#" class="btn btn-default rajat_register">Register</a>
+                </div>
+                <div class="col-md-4 rajat_hackathon_info">
+                    <p><span class="rajat_muted_span">start-date: </span>05/20/2019</p>
+                    <p><span class="rajat_muted_span">end-date: </span>05/25/2019</p>
+                    <p><span class="rajat_muted_span">Team size: </span>3 to 5 members</p>
+                    <p><span class="rajat_muted_span">Registration Fee: $</span>200</p>
+                </div>
+            </div>  
+        </div>
+      </div>
+    
+    
+    
+    <h1>Create/Update Hackathon</h1>
+    
+    <div class="rajat_hackathon_form_wrapper">
+        <div class="row">
+            <div class="col-md-4 rajat_hackathon_form_details">
+                <h2>Form</h2>
+            </div>
+            <div class="col-md-8 rajat_hackathon_form_wrapper_div">
+                <div class="rajat_hackathon_form_div">
+                    <form class="rajat_hackathon_registration_form">
+                
+                      <div class="form-group">
+                        <label for="eventName">Event Name</label>
+                        <input type="text" class="form-control" id="eventName" aria-describedby="eventName" placeholder="Event name">
+                        <small id="emailHelp" class="form-text text-muted">Event name should be unique.</small>
+                      </div>
+                        
+                      <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" id="description" placeholder="Description">
+                      </div>
+                        
+                      <div class="hackathon_dates">
+                        <div class="row">
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="startDate">Start Date</label>
+                                    <div class='input-group date' id='startDate'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="endDate">End Date</label>
+                                    <div class='input-group date' id='endDate'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#startDate').datetimepicker();
+                                });
+                            </script>
+                        </div>
+                      </div>
+                                         
+                        
+                    <div class="Judges">
+                        <label for="judges">Judges</label>
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" placeholder="judge">
+                            <span class="input-group-btn">
+                                <button class="btn rajat_register" type="button">+</button>
+                            </span>
+                        </div>
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" placeholder="judge">
+                            <span class="input-group-btn">
+                                <button class="btn rajat_register" type="button">+</button>
+                            </span>
+                        </div>
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" placeholder="judge">
+                            <span class="input-group-btn">
+                                <button class="btn rajat_register" type="button">+</button>
+                            </span>
+                        </div>
+                    </div> 
+                        
+                    <div class="sponsors">
+                        <label for="judges">Sponsors</label>
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" placeholder="sponsors">
+                            <span class="input-group-btn">
+                                <button class="btn rajat_register" type="button">+</button>
+                            </span>
+                        </div>
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" placeholder="sponsors">
+                            <span class="input-group-btn">
+                                <button class="btn rajat_register" type="button">+</button>
+                            </span>
+                        </div>
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" placeholder="sponsors">
+                            <span class="input-group-btn">
+                                <button class="btn rajat_register" type="button">+</button>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="team_size rajat_form_row">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="teanMinSize">Minimum team size</label>
+                                <input type="number" class="form-control" placeholder="Minimum team size">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="teanMaxSize">Mazimum team size</label>
+                                <input type="number" class="form-control" placeholder="Mazimum team size">
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="fees rajat_form_row">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="registrationFee">Registration Fee</label>
+                                <input type="number" class="form-control" placeholder="Registration Fee">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="discount">Discount</label>
+                                <input type="number" class="form-control" placeholder="discount">
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="">
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6"></div>
+                        </div>
+                    </div>
+                        
+                        
+                    <div class="hackathon_open_close_dates rajat_form_row">
+                        <div class="row">
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="openDate">Open Date</label>
+                                    <div class='input-group date' id='openDate'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="closeDate">Close Date</label>
+                                    <div class='input-group date' id='closeDate'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#startDate').datetimepicker();
+                                });
+                            </script>
+                        </div>
+                      </div>
+                        
+                        
+                      <div class="form-group">
+                        <input type="checkbox" class="form-check-input" id="isFinalized">
+                        <label class="form-check-label" for="isFinalized">Is Hackathon Finalized?</label>
+                      </div>
+                    
+                    <button type="submit" class="btn rajat_register">Submit</button>
+                </form>
+               </div>
+                
+            </div>
+        </div>
+    
+    </div>
+    
+    
+</div>
+
+   
+</body>
+</html>

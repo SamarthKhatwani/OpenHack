@@ -125,7 +125,7 @@ public class NormalAuthAPI implements INormalAuthAPI {
 	public ResponseEntity<Object> listHackathon(String token, String email, String role) throws ParseException {
 		List<HackathonResponse> hackathonResponse = new ArrayList<>();
 		List<Hackathon> hackathons = hackathonManagementService.retrieveHackathon(email, role);
-		for(Hackathon hackathon: hackathons) {
+		for (Hackathon hackathon : hackathons) {
 			hackathonResponse.add(hackathonReponseMapper.map(hackathon, false, false, false));
 		}
 		AllHackathonResponse response = new AllHackathonResponse();

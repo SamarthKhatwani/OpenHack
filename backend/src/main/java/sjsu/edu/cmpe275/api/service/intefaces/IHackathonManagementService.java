@@ -16,7 +16,12 @@ public interface IHackathonManagementService {
 
 	public List<Hackathon> retrieveHackathon(String email, String role) throws ParseException;
 
-	public Quotation fetchQuotation(String email, String eventName);
 
 	public Hackathon retrieveHackathonDetail(String email, String role, String eventName) throws ParseException;
+
+	
+	public Quotation fetchQuotation(String email, String eventName);
+	
+	public boolean makePayment(Quotation quotation) throws ParseException;
+
 }

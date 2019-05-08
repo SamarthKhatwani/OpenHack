@@ -1,5 +1,6 @@
 package sjsu.edu.cmpe275.api.persistence.model.mapper;
 
+import java.text.ParseException;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
@@ -10,7 +11,7 @@ import sjsu.edu.cmpe275.api.resources.HackathonResponse;
 @Component
 public class HackathonToHackathonReponseMapper {
 
-	public HackathonResponse map(Hackathon hackathon) {
+	public HackathonResponse map(Hackathon hackathon) throws ParseException {
 		HackathonResponse response = new HackathonResponse();
 		response.setCloseDate(hackathon.getCloseDate());
 		response.setDescription(hackathon.getDescription());

@@ -1,13 +1,14 @@
 package sjsu.edu.cmpe275.api.resources;
 
+import java.util.Date;
 import java.util.List;
 
 public class HackathonResponse {
 	private boolean success;
 	private String message;
 	private String eventName;
-	private String startDate;
-	private String endDate;
+	private Date startDate;
+	private Date endDate;
 	private String description;
 	private float registrationFee;
 	private int teamMinSize;
@@ -15,8 +16,8 @@ public class HackathonResponse {
 	private List<String> judges;
 	private List<String> sponsors;
 	private Float discount;
-	private String openDate;
-	private String closeDate;
+	private Date openDate;
+	private Date closeDate;
 	private boolean isFinalized;
 
 	public boolean isSuccess() {
@@ -43,19 +44,19 @@ public class HackathonResponse {
 		this.eventName = eventName;
 	}
 
-	public String getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
@@ -115,19 +116,19 @@ public class HackathonResponse {
 		this.discount = discount;
 	}
 
-	public String getOpenDate() {
+	public Date getOpenDate() {
 		return openDate;
 	}
 
-	public void setOpenDate(String openDate) {
+	public void setOpenDate(Date openDate) {
 		this.openDate = openDate;
 	}
 
-	public String getCloseDate() {
+	public Date getCloseDate() {
 		return closeDate;
 	}
 
-	public void setCloseDate(String closeDate) {
+	public void setCloseDate(Date closeDate) {
 		this.closeDate = closeDate;
 	}
 

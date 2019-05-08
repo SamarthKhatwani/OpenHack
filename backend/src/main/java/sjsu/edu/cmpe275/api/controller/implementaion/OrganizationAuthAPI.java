@@ -20,6 +20,9 @@ public class OrganizationAuthAPI implements IOrganizationAuthAPI {
 	@Override
 	public ResponseEntity<Object> respondRequestOrganizaion(String token,
 			OrganizationApprovalRequest organizationApprovalRequest) {
+		if(organizationApprovalRequest.getIsApproved() == null || organizationApprovalRequest.getEmail()==null) {
+			return new ResponseEntity<Object>(new ResponseMessage(false, "email and isApproved is required"), HttpStatus.BAD_REQUEST);
+		}
 		Profile profile = profileManagementService.updateOrganizationApprovalStatus(organizationApprovalRequest.getIsApproved(), organizationApprovalRequest.getEmail());
 		if(profile == null) {
 			ResponseMessage response = new ResponseMessage(false, "User with the given email doesn't exist");

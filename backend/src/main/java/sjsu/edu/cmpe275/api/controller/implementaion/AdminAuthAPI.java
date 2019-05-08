@@ -1,5 +1,7 @@
 package sjsu.edu.cmpe275.api.controller.implementaion;
 
+import java.text.ParseException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class AdminAuthAPI implements IAdminAuthAPI {
 	private HackathonToHackathonReponseMapper hackathonToHackathonReponseMapper;
 	
 	@Override
-	public ResponseEntity<Object> createUpdateHackathon(String token, HackathonRequest hackathonRequest) {
+	public ResponseEntity<Object> createUpdateHackathon(String token, HackathonRequest hackathonRequest) throws ParseException {
 		Hackathon hackathon = hackathonManagementService.createOrUpdateHackathon(hackathonRequest);
 		HackathonResponse response = hackathonToHackathonReponseMapper.map(hackathon);
 		return new ResponseEntity<Object>(response, HttpStatus.OK);

@@ -28,6 +28,9 @@ class Navbar extends Component {
             return (
                 <Fragment>
                     <div class="nav-item item-link">
+                        <Link to="/myOrganization"><a class="nav-link">My Judgements</a></Link>
+                    </div>
+                    <div class="nav-item item-link">
                         <Link to="/myOrganization"><a class="nav-link">My Organizations</a></Link>
                     </div>
                     <div class="nav-item dropdown pull-right">

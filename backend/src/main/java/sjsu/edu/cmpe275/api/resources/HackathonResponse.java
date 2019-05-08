@@ -2,6 +2,7 @@ package sjsu.edu.cmpe275.api.resources;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class HackathonResponse {
 	private boolean success;
@@ -19,6 +20,7 @@ public class HackathonResponse {
 	private Date openDate;
 	private Date closeDate;
 	private boolean isFinalized;
+	private Map<String, TeamDetailResponse> team;
 
 	public boolean isSuccess() {
 		return success;
@@ -138,6 +140,14 @@ public class HackathonResponse {
 
 	public void setFinalized(boolean isFinalized) {
 		this.isFinalized = isFinalized;
+	}
+
+	public Map<String, TeamDetailResponse> getTeam() {
+		return team;
+	}
+
+	public void setTeam(Map<String, TeamDetailResponse> team) {
+		this.team = team;
 	}
 
 }

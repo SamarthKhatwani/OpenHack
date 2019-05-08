@@ -26,7 +26,7 @@ public class AdminAuthAPI implements IAdminAuthAPI {
 	@Override
 	public ResponseEntity<Object> createUpdateHackathon(String token, HackathonRequest hackathonRequest) throws ParseException {
 		Hackathon hackathon = hackathonManagementService.createOrUpdateHackathon(hackathonRequest);
-		HackathonResponse response = hackathonToHackathonReponseMapper.map(hackathon, true, true, false);
+		HackathonResponse response = hackathonToHackathonReponseMapper.map(hackathon, true, true, false, null);
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
 

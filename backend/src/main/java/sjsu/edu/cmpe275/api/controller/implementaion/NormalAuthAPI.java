@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+import sjsu.edu.cmpe275.OHConstants;
 import sjsu.edu.cmpe275.api.controller.interfaces.INormalAuthAPI;
 import sjsu.edu.cmpe275.api.persistence.model.Hackathon;
 import sjsu.edu.cmpe275.api.persistence.model.Organization;
@@ -126,7 +127,7 @@ public class NormalAuthAPI implements INormalAuthAPI {
 		List<HackathonResponse> hackathonResponse = new ArrayList<>();
 		List<Hackathon> hackathons = hackathonManagementService.retrieveHackathon(email, role);
 		for (Hackathon hackathon : hackathons) {
-			hackathonResponse.add(hackathonReponseMapper.map(hackathon, false, false, false));
+			hackathonResponse.add(hackathonReponseMapper.map(hackathon, false, false, false, null));
 		}
 		AllHackathonResponse response = new AllHackathonResponse();
 		response.setSuccess(true);
@@ -135,4 +136,15 @@ public class NormalAuthAPI implements INormalAuthAPI {
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
 
+	@Override
+	public ResponseEntity<Object> detailHackathon(String token, String email, String role, String eventName)
+			throws ParseException {
+		Hackathon hackathon = hackathonManagementService.retrieveHackathonDetail(email, role, eventName);
+		if(OHConstants.ADMIN_ROLE.equals(role)) {
+			return new ResponseEntity<Object>(hackathonReponseMapper.map(hackathon, true, true, false, null), HttpStatus.OK);
+		}else if(OHConstants.HACKER_ROLE.equals(role)){
+			return new ResponseEntity<Object>(hackathonReponseMapper.map(hackathon, false, true, true, email), HttpStatus.OK);
+		}
+		return null;
+	}
 }

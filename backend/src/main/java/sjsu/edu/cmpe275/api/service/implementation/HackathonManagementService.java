@@ -243,8 +243,7 @@ public class HackathonManagementService implements IHackathonManagementService {
 			Date date = inputFormatter.parse(inputFormatter.format(new Date()));
 			String currentDate = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(date);
 			List<String> hackathons = hacathonTeamProfileRepository.findHackathonByProfile(email);
-			String hacks = String.join("', '", hackathons);
-			hacks = " ( " + hacks + " ) ";
+			hackathons.add("###");
 			return hackathonRepository.findHackathonBeforeStartAndNameIn(currentDate, hackathons);
 		} else if (role.equals(OHConstants.JUDGE_ROLE)) {
 			return profile.getHackathonJudge();
@@ -261,9 +260,10 @@ public class HackathonManagementService implements IHackathonManagementService {
 		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
 		Hackathon hackathon = hackathonWrapper.get();
 		boolean organizationPresent = false;
-		HackathonTeamProfile hackathonTeamProfile=hacathonTeamProfileRepository.findByHackathonAndProfile(eventName, email);
+		HackathonTeamProfile hackathonTeamProfile = hacathonTeamProfileRepository.findByHackathonAndProfile(eventName,
+				email);
 		if (profileOrganization != null) {
-			String profileOrganizationName=profileOrganization.getName();
+			String profileOrganizationName = profileOrganization.getName();
 			List<Organization> hackathonSponsors = hackathon.getSponsors();
 			for (Organization sponsor : hackathonSponsors) {
 				if (sponsor.getName().equals(profileOrganizationName)) {
@@ -285,11 +285,45 @@ public class HackathonManagementService implements IHackathonManagementService {
 		quotation.setDiscountPercent(discountPercentage);
 		quotation.setOriginalPrice(hackathonFee);
 		quotation.setEventName(eventName);
-		if(hackathonTeamProfile!=null) {
+		if (hackathonTeamProfile != null) {
 			quotation.setTeamName(hackathonTeamProfile.getTeamName());
 		}
 		quotation.setMessage("Success");
 		quotation.setSuccess(true);
 		return quotation;
+	}
+
+	@Override
+	public Hackathon retrieveHackathonDetail(String email, String role, String eventName) throws ParseException {
+		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
+		if (!hackathonWrapper.isPresent()) {
+			throw new BadRequestException("hackathon doesn't exist");
+		}
+		Profile profile = profileManagementService.getProfile(email);
+		if (profile == null) {
+			throw new BadRequestException("user with given email doesn't exist");
+		}
+		if (profile.isAmdin() && !role.equals(OHConstants.ADMIN_ROLE)) {
+			throw new BadRequestException("user with given email doesn't have role " + role);
+		}
+
+		Hackathon hackathon = hackathonWrapper.get();
+		if (role.equals(OHConstants.ADMIN_ROLE)) {
+			return hackathon;
+		} else if (role.equals(OHConstants.HACKER_ROLE)) {
+			if (hackathon.getJudges().stream().anyMatch(judge -> judge.getEmail().equals(email))) {
+				throw new BadRequestException("user is a judge for this event");
+			}else {
+				return hackathon;
+			}
+		} else if (role.equals(OHConstants.JUDGE_ROLE)) {
+			if (hackathon.getJudges().stream().anyMatch(judge -> judge.getEmail().equals(email))) {
+				return hackathon;
+			} else {
+				throw new BadRequestException("user is not a judge for this event");
+			}
+		} else {
+			throw new BadRequestException("invalid role value");
+		}
 	}
 }

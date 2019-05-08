@@ -41,9 +41,20 @@ public interface INormalAuthAPI {
 	public ResponseEntity<Object> listRequestOrganization(@RequestHeader(value = "Authorization") String token,
 			@RequestParam(value = "email", required = true) String email);
 
+	//hackathon
+	
 	@RequestMapping(value = "/listHackathon", produces = {
 			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
 	public ResponseEntity<Object> listHackathon(@RequestHeader(value = "Authorization") String token,
 			@RequestParam(value = "email", required = true) String email, 
 			@RequestParam(value = "role", required = true) String role) throws ParseException;
+	
+	@RequestMapping(value = "/detailHackathon", produces = {
+			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
+	public ResponseEntity<Object> detailHackathon(@RequestHeader(value = "Authorization") String token,
+			@RequestParam(value = "email", required = true) String email, 
+			@RequestParam(value = "role", required = true) String role,
+			@RequestParam(value = "eventName", required = true) String eventName) throws ParseException;
+	
+	
 }

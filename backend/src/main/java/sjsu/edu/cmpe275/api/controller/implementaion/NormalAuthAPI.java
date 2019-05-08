@@ -108,10 +108,7 @@ public class NormalAuthAPI implements INormalAuthAPI {
 				organizationMembershipRequest.setName(profile.getName());
 				organizationMembership.addMembershipRequest(organizationMembershipRequest);
 			}
-			if (!membershipRequests.isEmpty()) {
-				response.add(organizationMembership);
-			}
-
+			response.add(organizationMembership);
 		}
 		OrganizationMembershipResponse membershipResponse = new OrganizationMembershipResponse();
 		membershipResponse.setSuccess(true);

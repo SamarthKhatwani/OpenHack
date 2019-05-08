@@ -363,4 +363,47 @@ public class HackathonManagementService implements IHackathonManagementService {
 		return result;
 
 	}
+	
+	public boolean submitCode(String teamName, String eventName, String url) throws ParseException {
+		boolean validationsPassed=true;
+		List<HackathonTeamProfile> hackathonTeamProfiles= hacathonTeamProfileRepository.findByHackathonAndTeam(eventName, teamName);
+		boolean notRegistered=false;
+		for(HackathonTeamProfile hackathonProfile: hackathonTeamProfiles) {
+			if(!hackathonProfile.isPaid()){
+				notRegistered= true;
+				break;
+			}
+		}
+		if(notRegistered) {
+			validationsPassed=false;
+			throw new BadRequestException("All team members have not yet completed registration !!");
+		}
+		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
+		if(!hackathonWrapper.isPresent()) {
+			throw new BadRequestException("Hackathon event does not exist");
+		}
+		Hackathon hackathon = hackathonWrapper.get();
+		Date eventOpenDate=hackathon.getOpenDate();
+		Date eventCloseDate=hackathon.getCloseDate();
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date currentDate = inputFormatter.parse(inputFormatter.format(new Date()));
+		if(currentDate.after(eventCloseDate)) {
+			validationsPassed= false;
+			throw new BadRequestException("Event has been closed for submissions, no url can be submitted now");
+		}
+		if(currentDate.before(eventOpenDate)) {
+			validationsPassed= false;
+			throw new BadRequestException("Event has not been opened for submissions, urls can only be submitted after open date");
+		}
+		if(validationsPassed) {
+			for(HackathonTeamProfile hackathonProfile: hackathonTeamProfiles) {
+				if(hackathonProfile.isLead()) {
+					hackathonProfile.setSubmission(url);
+					hacathonTeamProfileRepository.save(hackathonProfile);
+				}
+			}
+		}
+		return validationsPassed;
+		
+	}
 }

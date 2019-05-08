@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import sjsu.edu.cmpe275.api.controller.interfaces.IHackerAuthAPI;
+import sjsu.edu.cmpe275.api.resources.CodeSubmitRequest;
 import sjsu.edu.cmpe275.api.resources.Quotation;
 import sjsu.edu.cmpe275.api.resources.ResponseMessage;
 import sjsu.edu.cmpe275.api.resources.TeamRegisterRequest;
@@ -38,6 +39,13 @@ public class HackerAuthAPI implements IHackerAuthAPI {
 		ResponseMessage response = new ResponseMessage(true, "Successful");
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 		
+	}
+
+	@Override
+	public ResponseEntity<Object> submitCode(String token, CodeSubmitRequest codeSubmitRequest) throws ParseException {
+		hackathonManagementService.submitCode(codeSubmitRequest.getTeamName(), codeSubmitRequest.getEventName(), codeSubmitRequest.getUrl());
+		ResponseMessage response = new ResponseMessage(true, "Successful");
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
 	
 	

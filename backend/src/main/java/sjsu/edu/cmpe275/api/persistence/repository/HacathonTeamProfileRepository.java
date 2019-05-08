@@ -15,5 +15,10 @@ public interface HacathonTeamProfileRepository extends CrudRepository<HackathonT
 	@Query(value="SELECT * from hackathon_team_profile h where h.hackathon_id = ?1 and h.hacker= ?2", nativeQuery=true)
 	public HackathonTeamProfile findByHackathonAndProfile(String eventName, String email);
 	
+
 	public List<HackathonTeamProfile> findByTeamName(String teamName);
+
+	@Query(value="SELECT * from hackathon_team_profile h where h.hackathon_id = ?1 and h.team_name= ?2", nativeQuery=true)
+	public List<HackathonTeamProfile> findByHackathonAndTeam(String eventName, String teamName);
+
 }

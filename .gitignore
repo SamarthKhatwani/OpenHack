@@ -42,3 +42,4 @@ mvnw
 mvnw.cmd
 package-lock.json
 .factorypath
+backend/src/main/java/sjsu/edu/cmpe275/OpenHackApplication.java

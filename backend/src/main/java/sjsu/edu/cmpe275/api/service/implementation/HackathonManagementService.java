@@ -143,6 +143,9 @@ public class HackathonManagementService implements IHackathonManagementService {
 			if (judgeEmails.contains(member.getEmail())) {
 				throw new BadRequestException("user is already a judge " + member.getEmail());
 			}
+			if(profile.isAmdin()) {
+				throw new BadRequestException("user is already a admin " + member.getEmail());
+			}
 			userToBeRegistered.add(profile);
 			roles.add(member.getRole());
 		}

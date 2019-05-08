@@ -27,6 +27,9 @@ public class RegisterHackathonEmailAspect {
 
 	@Value("${register.email.content}")
 	private String content;
+	
+	@Value("${register.email.page}")
+	private String page;
 
 	@AfterReturning(pointcut = "execution(* sjsu.edu.cmpe275.api.controller.interfaces.IHackerAuthAPI.registerHackathon(..))", returning = "response")
 	public ResponseEntity<Object> sendEmailAspect(JoinPoint joinPoint, ResponseEntity<Object> response) {
@@ -38,7 +41,7 @@ public class RegisterHackathonEmailAspect {
 			message.setSubject(request.getEmail() + subject.replace("\"", "") + request.getEventName());
 			String[] splits = content.split("#");
 			message.setText(splits[0].replace("\"", "") + request.getEventName() + splits[1].replace("\"", "")
-					+ "http://someUrl");
+					+ page);
 			javaMailSender.send(message);
 		}
 		return response;

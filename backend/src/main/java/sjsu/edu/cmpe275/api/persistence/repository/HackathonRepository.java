@@ -14,4 +14,5 @@ public interface HackathonRepository extends CrudRepository<Hackathon, Long> {
 
 	@Query(value = "SELECT * FROM Hackathon h WHERE h.start_date = ?1 or h.event_name in ?2", nativeQuery=true)
 	public List<Hackathon> findHackathonBeforeStartAndNameIn(String date, List<String> names);
+	
 }

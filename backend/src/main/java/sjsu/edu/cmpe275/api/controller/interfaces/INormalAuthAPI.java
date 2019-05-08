@@ -1,5 +1,7 @@
 package sjsu.edu.cmpe275.api.controller.interfaces;
 
+import java.text.ParseException;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,18 +23,27 @@ public interface INormalAuthAPI {
 			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
 	public ResponseEntity<Object> updateProfile(@RequestHeader(value = "Authorization") String token,
 			@RequestBody ProfileRequest profileRequest);
-	
-	//Organizations
-	
-	@RequestMapping(value = "/searchOrganizations", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
+
+	// Organizations
+
+	@RequestMapping(value = "/searchOrganizations", produces = {
+			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
 	public ResponseEntity<Object> searchOrganization(@RequestHeader(value = "Authorization") String token,
 			@RequestParam(value = "name", required = true) String name);
-	
-	@RequestMapping(value = "/createOrganization", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
+
+	@RequestMapping(value = "/createOrganization", produces = {
+			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
 	public ResponseEntity<Object> createOrganization(@RequestHeader(value = "Authorization") String token,
 			@RequestBody OrganizationRequest organizationRequest);
-	
-	@RequestMapping(value = "/listRequestOrganization", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
+
+	@RequestMapping(value = "/listRequestOrganization", produces = {
+			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
 	public ResponseEntity<Object> listRequestOrganization(@RequestHeader(value = "Authorization") String token,
-			@RequestParam(value = "email", required = true) String email);;
+			@RequestParam(value = "email", required = true) String email);
+
+	@RequestMapping(value = "/listHackathon", produces = {
+			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
+	public ResponseEntity<Object> listHackathon(@RequestHeader(value = "Authorization") String token,
+			@RequestParam(value = "email", required = true) String email, 
+			@RequestParam(value = "role", required = true) String role) throws ParseException;
 }

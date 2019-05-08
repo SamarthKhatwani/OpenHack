@@ -11,7 +11,7 @@ import sjsu.edu.cmpe275.api.resources.HackathonResponse;
 @Component
 public class HackathonToHackathonReponseMapper {
 
-	public HackathonResponse map(Hackathon hackathon) throws ParseException {
+	public HackathonResponse map(Hackathon hackathon, boolean mapJudge, boolean mapSponsor, boolean mapTeam) throws ParseException {
 		HackathonResponse response = new HackathonResponse();
 		response.setCloseDate(hackathon.getCloseDate());
 		response.setDescription(hackathon.getDescription());
@@ -24,8 +24,12 @@ public class HackathonToHackathonReponseMapper {
 		response.setStartDate(hackathon.getStartDate());
 		response.setTeamMaxSize(hackathon.getTeamMaxSize());
 		response.setTeamMinSize(hackathon.getTeamMinSize());
-		response.setJudges(hackathon.getJudges().stream().map(h->h.getEmail()).collect(Collectors.toList()));
-		response.setSponsors(hackathon.getSponsors().stream().map(h->h.getName()).collect(Collectors.toList()));
+		if(mapJudge){
+			response.setJudges(hackathon.getJudges().stream().map(h->h.getEmail()).collect(Collectors.toList()));
+		}
+		if(mapSponsor){
+			response.setSponsors(hackathon.getSponsors().stream().map(h->h.getName()).collect(Collectors.toList()));
+		}
 		response.setSuccess(true);
 		response.setMessage("Successful");
 		return response;

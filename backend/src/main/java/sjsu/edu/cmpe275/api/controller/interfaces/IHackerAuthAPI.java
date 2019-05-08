@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import sjsu.edu.cmpe275.api.resources.HackathonRequest;
+import sjsu.edu.cmpe275.api.resources.TeamRegisterRequest;
 
-public interface IAdminAuthAPI {
+public interface IHackerAuthAPI {
 	
-	@RequestMapping(value = "/createUpdateHackathon", produces = {
+	@RequestMapping(value = "/registerHackathon", produces = {
 			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
-	public ResponseEntity<Object> createUpdateHackathon(@RequestHeader(value = "Authorization") String token,
-			@RequestBody HackathonRequest hackathonRequest) throws ParseException;
+	public ResponseEntity<Object> registerHackathon(@RequestHeader(value = "Authorization") String token,
+			@RequestBody TeamRegisterRequest teamRegisterRequest) throws ParseException;
 }

@@ -1,19 +1,22 @@
 package sjsu.edu.cmpe275.api.resources;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 public class HackathonRequest {
-	
+	@NotNull
 	private String eventName;
-	
-	private String startDate;
-	
-	private String endDate;
-	
-	private String openDate;
-	
-	private String closeDate;
+	@NotNull
+	private Date startDate;
+	@NotNull
+	private Date endDate;
+	@NotNull
+	private Date openDate;
+	@NotNull
+	private Date closeDate;
 	
 	private String description;
 	
@@ -39,35 +42,35 @@ public class HackathonRequest {
 		this.eventName = eventName;
 	}
 
-	public String getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
-	public String getOpenDate() {
+	public Date getOpenDate() {
 		return openDate;
 	}
 
-	public void setOpenDate(String openDate) {
+	public void setOpenDate(Date openDate) {
 		this.openDate = openDate;
 	}
 
-	public String getCloseDate() {
+	public Date getCloseDate() {
 		return closeDate;
 	}
 
-	public void setCloseDate(String closeDate) {
+	public void setCloseDate(Date closeDate) {
 		this.closeDate = closeDate;
 	}
 

@@ -31,24 +31,25 @@ public class NormalAuthAPI implements INormalAuthAPI {
 
 	@Autowired
 	private IProfileManagementService profileManagementService;
-	
+
 	@Autowired
 	private IOrganizationManagementService organizationManagementService;
-	
+
 	@Autowired
 	private ProfileToProfileResponseMapper profileToProfileResponseMapper;
-	
+
 	@Autowired
 	private OrganizationToOrganizationByNameResponseMapper organizationToOrganizationByNameResponseMapper;
-	
+
 	@Autowired
 	private OrganizationToOrganizationResponseMapper organizationToOrganizationResponseMapper;
-	
+
 	@Override
 	public ResponseEntity<Object> getProfile(String token, String email) {
 		Profile profile = profileManagementService.getProfile(email);
-		if(profile == null) {
-			return new ResponseEntity<Object>(new ResponseMessage(false,"Profile with given email doesn't exist" ), HttpStatus.NOT_FOUND);
+		if (profile == null) {
+			return new ResponseEntity<Object>(new ResponseMessage(false, "Profile with given email doesn't exist"),
+					HttpStatus.NOT_FOUND);
 		}
 		ProfileResponse response = profileToProfileResponseMapper.map(profile);
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
@@ -57,15 +58,16 @@ public class NormalAuthAPI implements INormalAuthAPI {
 	@Override
 	public ResponseEntity<Object> updateProfile(String token, ProfileRequest profileRequest) {
 		Profile profile = profileManagementService.updateProfile(profileRequest);
-		if(profile != null ) {
+		if (profile != null) {
 			ProfileResponse response = profileToProfileResponseMapper.map(profile);
 			return new ResponseEntity<Object>(response, HttpStatus.OK);
-			
-		}else {
-			return new ResponseEntity<Object>(new ResponseMessage(false,"Profile with given email doesn't exist" ), HttpStatus.NOT_FOUND);
+
+		} else {
+			return new ResponseEntity<Object>(new ResponseMessage(false, "Profile with given email doesn't exist"),
+					HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@Override
 	public ResponseEntity<Object> searchOrganization(String token, String name) {
 		List<Organization> organizations = organizationManagementService.getOrganizationByName(name);
@@ -79,7 +81,7 @@ public class NormalAuthAPI implements INormalAuthAPI {
 		OrganizationResponse response = organizationToOrganizationResponseMapper.map(organization);
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
-	
+
 	@Override
 	public ResponseEntity<Object> listRequestOrganization(String token, String email) {
 		List<Organization> myOrganizations = organizationManagementService.getOwnedOrganizations(email);
@@ -94,16 +96,13 @@ public class NormalAuthAPI implements INormalAuthAPI {
 				organizationMembershipRequest.setName(profile.getName());
 				organizationMembership.addMembershipRequest(organizationMembershipRequest);
 			}
-			if (!membershipRequests.isEmpty()) {
-				response.add(organizationMembership);
-			}
-
+			response.add(organizationMembership);
 		}
 		OrganizationMembershipResponse membershipResponse = new OrganizationMembershipResponse();
 		membershipResponse.setSuccess(true);
-		if(response.isEmpty()) {
+		if (response.isEmpty()) {
 			membershipResponse.setMessage("No entries found");
-		}else {
+		} else {
 			membershipResponse.setMessage("Successful");
 		}
 		membershipResponse.setOrganization(response);

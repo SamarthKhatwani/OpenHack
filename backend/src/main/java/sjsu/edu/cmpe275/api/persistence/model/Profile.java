@@ -1,17 +1,16 @@
 package sjsu.edu.cmpe275.api.persistence.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.OneToMany;
 
 /**
  * JPA Entity class for User
@@ -22,10 +21,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Profile implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
-	
-	@Column(unique=true, nullable=false)
 	private String email;
 		
 	@Column(unique=true)
@@ -48,14 +43,12 @@ public class Profile implements Serializable {
 	private Boolean organizationApprovalStatus;
 	
 	private boolean isAmdin;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
+	
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy="judges")
+	private List<Hackathon> hackathonJudge;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="profile")
+	private List<HackathonTeamProfile> hackathonTeamProfiles;
 
 	public String getEmail() {
 		return email;
@@ -140,6 +133,21 @@ public class Profile implements Serializable {
 	public Boolean getOrganizationApprovalStatus() {
 		return organizationApprovalStatus;
 	}
-	
-	
+
+	public List<Hackathon> getHackathonJudge() {
+		return hackathonJudge;
+	}
+
+	public void setHackathonJudge(List<Hackathon> hackathonJudge) {
+		this.hackathonJudge = hackathonJudge;
+	}
+
+	public List<HackathonTeamProfile> getHackathonTeamProfiles() {
+		return hackathonTeamProfiles;
+	}
+
+	public void setHackathonTeamProfiles(List<HackathonTeamProfile> hackathonTeamProfiles) {
+		this.hackathonTeamProfiles = hackathonTeamProfiles;
+	}
+
 }

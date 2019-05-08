@@ -28,7 +28,6 @@ public class OpenHackApplication {
 
 			FirebaseApp.initializeApp(options);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

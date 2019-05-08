@@ -1,65 +1,53 @@
 package sjsu.edu.cmpe275.api.persistence.model;
 
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-public class Hackathon {
+public class Hackathon implements Serializable{
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-
 	private String eventName;
-	private String startDate;
-	private String endDate;
+	private Date startDate;
+	private Date endDate;
 
-	private String openDate;
-	private String closeDate;
+	private Date openDate;
+	private Date closeDate;
 
 	private String description;
 	private int teamMinSize;
 	private int teamMaxSize;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name = "HackathonJudge", joinColumns = {
-			@JoinColumn(name = "HackathonId", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "JudgeId", referencedColumnName = "id") })
-	@JsonIgnore
+			@JoinColumn(name = "HackathonId", referencedColumnName = "eventName") }, inverseJoinColumns = {
+					@JoinColumn(name = "JudgeId", referencedColumnName = "email") })
 	private List<Profile> judges = new ArrayList<>();
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name = "HackathonSponsor", joinColumns = {
-			@JoinColumn(name = "HackathonId", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "OrganizationId", referencedColumnName = "id") })
-	@JsonIgnore
+			@JoinColumn(name = "HackathonId", referencedColumnName = "eventName") }, inverseJoinColumns = {
+					@JoinColumn(name = "OrganizationId", referencedColumnName = "name") })
 	private List<Organization> sponsors = new ArrayList<>();
+		
 	private float registrationFee;
 	private float discount;
 	private boolean isFinalized;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
-	@JsonIgnore
-	private List<Team> teams = new ArrayList<>();
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "hackathon")
+	private List<HackathonTeamProfile> teams = new ArrayList<>();
 
 	public String getEventName() {
 		return eventName;
@@ -69,35 +57,51 @@ public class Hackathon {
 		this.eventName = eventName;
 	}
 
-	public String getStartDate() {
-		return startDate;
+	public Date getStartDate() throws ParseException {
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = inputFormatter.parse(inputFormatter.format(startDate));
+		return date;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) throws ParseException {
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = inputFormatter.parse(inputFormatter.format(startDate));
 		this.startDate = startDate;
 	}
 
-	public String getEndDate() {
-		return endDate;
+	public Date getEndDate() throws ParseException {
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = inputFormatter.parse(inputFormatter.format(endDate));
+		return date;
 	}
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) throws ParseException {
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = inputFormatter.parse(inputFormatter.format(endDate));
 		this.endDate = endDate;
 	}
 
-	public String getOpenDate() {
-		return openDate;
+	public Date getOpenDate() throws ParseException {
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = inputFormatter.parse(inputFormatter.format(openDate));
+		return date;
 	}
 
-	public void setOpenDate(String openDate) {
+	public void setOpenDate(Date openDate) throws ParseException {
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = inputFormatter.parse(inputFormatter.format(openDate));
 		this.openDate = openDate;
 	}
 
-	public String getCloseDate() {
-		return closeDate;
+	public Date getCloseDate() throws ParseException {
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = inputFormatter.parse(inputFormatter.format(closeDate));
+		return date;
 	}
 
-	public void setCloseDate(String closeDate) {
+	public void setCloseDate(Date closeDate) throws ParseException {
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = inputFormatter.parse(inputFormatter.format(closeDate));
 		this.closeDate = closeDate;
 	}
 
@@ -165,12 +169,14 @@ public class Hackathon {
 		this.isFinalized = isFinalized;
 	}
 
-	public List<Team> getTeams() {
+	public List<HackathonTeamProfile> getTeams() {
 		return teams;
 	}
 
-	public void setTeams(List<Team> teams) {
+	public void setTeams(List<HackathonTeamProfile> teams) {
 		this.teams = teams;
 	}
+
+
 
 }

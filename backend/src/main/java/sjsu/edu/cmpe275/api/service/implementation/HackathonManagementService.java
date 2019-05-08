@@ -1,7 +1,13 @@
 package sjsu.edu.cmpe275.api.service.implementation;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -10,13 +16,17 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sjsu.edu.cmpe275.OHConstants;
 import sjsu.edu.cmpe275.api.exceptions.BadRequestException;
 import sjsu.edu.cmpe275.api.persistence.model.Hackathon;
+import sjsu.edu.cmpe275.api.persistence.model.HackathonTeamProfile;
 import sjsu.edu.cmpe275.api.persistence.model.Organization;
 import sjsu.edu.cmpe275.api.persistence.model.Profile;
-import sjsu.edu.cmpe275.api.persistence.model.Team;
+import sjsu.edu.cmpe275.api.persistence.repository.HacathonTeamProfileRepository;
 import sjsu.edu.cmpe275.api.persistence.repository.HackathonRepository;
 import sjsu.edu.cmpe275.api.resources.HackathonRequest;
+import sjsu.edu.cmpe275.api.resources.TeamMemberRequest;
+import sjsu.edu.cmpe275.api.resources.TeamRegisterRequest;
 import sjsu.edu.cmpe275.api.service.intefaces.IHackathonManagementService;
 import sjsu.edu.cmpe275.api.service.intefaces.IOrganizationManagementService;
 import sjsu.edu.cmpe275.api.service.intefaces.IProfileManagementService;
@@ -28,6 +38,9 @@ public class HackathonManagementService implements IHackathonManagementService {
 	private HackathonRepository hackathonRepository;
 
 	@Autowired
+	private HacathonTeamProfileRepository hacathonTeamProfileRepository;
+
+	@Autowired
 	private IProfileManagementService profileManagementService;
 
 	@Autowired
@@ -35,7 +48,7 @@ public class HackathonManagementService implements IHackathonManagementService {
 
 	@Override
 	@Transactional
-	public Hackathon createOrUpdateHackathon(HackathonRequest hackathonRequest) {
+	public Hackathon createOrUpdateHackathon(HackathonRequest hackathonRequest) throws ParseException {
 		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(hackathonRequest.getEventName());
 		Hackathon hackathon = null;
 		if (hackathonWrapper.isPresent()) {
@@ -51,23 +64,111 @@ public class HackathonManagementService implements IHackathonManagementService {
 		return hackathonRepository.save(hackathon);
 	}
 
+	@Override
+	@Transactional
+	public boolean registerUserHackathon(TeamRegisterRequest teamRegisterRequest) throws ParseException {
+		if (teamRegisterRequest.getTeamMembers() == null || teamRegisterRequest.getTeamMembers().isEmpty()) {
+			throw new BadRequestException("Atleast one team member is required");
+		}
+		if(!teamRegisterRequest.getTeamMembers().stream().anyMatch(mem -> mem.getEmail().contains(teamRegisterRequest.getEmail()))) {
+			throw new BadRequestException("You should be ateam member");
+		}
+		List<Profile> userToBeRegistered = new ArrayList<>();
+		List<String> roles = new ArrayList<>();
+		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(teamRegisterRequest.getEventName());
+		Hackathon hackathon = validateRegister(hackathonWrapper, teamRegisterRequest, userToBeRegistered, roles);
+
+		Profile lead = null;
+		int i = 0;
+		for (Profile user : userToBeRegistered) {
+			HackathonTeamProfile member = new HackathonTeamProfile();
+			if (user.getEmail().equals(teamRegisterRequest.getEmail())) {
+				member.setLead(true);
+			}
+			member.setHackathon(hackathon);
+			member.setHackathonTeamProfile(teamRegisterRequest.getEventName() + OHConstants.DELIMIT_HACK_TEAM_PROFILE
+					+ teamRegisterRequest.getTeamName() + OHConstants.DELIMIT_HACK_TEAM_PROFILE + user.getEmail());
+			member.setProfile(user);
+			member.setRole(roles.get(i++));
+			member.setTeamName(teamRegisterRequest.getTeamName());
+			hacathonTeamProfileRepository.save(member);
+		}
+		//hacathonTeamProfileRepository.save(hackathon);
+		return true;
+	}
+
+	private Hackathon validateRegister(Optional<Hackathon> hackathonWrapper, TeamRegisterRequest teamRegisterRequest,
+			List<Profile> userToBeRegistered, List<String> roles) throws ParseException {
+		if (!hackathonWrapper.isPresent()) {
+			throw new BadRequestException("Hackathon doesn't exist with given name");
+		}
+		Hackathon hackathon = hackathonWrapper.get();
+		if (hackathon.getTeamMinSize() > teamRegisterRequest.getTeamMembers().size()) {
+			throw new BadRequestException("minimum team member should be" + hackathon.getTeamMinSize());
+		}
+		if (hackathon.getTeamMaxSize() < teamRegisterRequest.getTeamMembers().size()) {
+			throw new BadRequestException("maximum team member should be" + hackathon.getTeamMaxSize());
+		}
+		if (hackathon.isFinalized()) {
+			throw new BadRequestException("Hackathon already finalized");
+		}
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date currentDate = inputFormatter.parse(inputFormatter.format(new Date()));
+		if (hackathon.getOpenDate().compareTo(currentDate) < 0) {
+			throw new BadRequestException("Hackathon already started can't register");
+		}
+		List<String> reservedNames = hackathon.getTeams().stream().map(team -> team.getTeamName())
+				.collect(Collectors.toList());
+
+		List<String> reservedEmails = hackathon.getTeams().stream().map(team -> {
+			String[] splits = team.getHackathonTeamProfile().split(OHConstants.DELIMIT_HACK_TEAM_PROFILE);
+			return splits[2];
+		}).collect(Collectors.toList());
+
+		List<String> judgeEmails = hackathon.getJudges().stream().map(judge -> judge.getEmail())
+				.collect(Collectors.toList());
+
+		if (reservedNames.contains(teamRegisterRequest.getTeamName())) {
+			throw new BadRequestException("Team name already exist for this hackathon");
+		}
+
+		for (TeamMemberRequest member : teamRegisterRequest.getTeamMembers()) {
+			Profile profile = profileManagementService.getProfile(member.getEmail());
+			if (profile == null) {
+				throw new BadRequestException("user doesn't exist with email " + member.getEmail());
+			}
+			if (reservedEmails.contains(member.getEmail())) {
+				throw new BadRequestException("user with email already registered " + member.getEmail());
+			}
+			if (judgeEmails.contains(member.getEmail())) {
+				throw new BadRequestException("user is already a judge " + member.getEmail());
+			}
+			if(profile.isAmdin()) {
+				throw new BadRequestException("user is already a admin " + member.getEmail());
+			}
+			userToBeRegistered.add(profile);
+			roles.add(member.getRole());
+		}
+		return hackathon;
+	}
+
 	private void mapSponsors(HackathonRequest hackathonRequest, Hackathon hackathon) {
-		if(hackathonRequest.getJudges()==null || hackathonRequest.getJudges().isEmpty()) {
+		if (hackathonRequest.getJudges() == null || hackathonRequest.getJudges().isEmpty()) {
 			hackathon.setSponsors(new ArrayList<>());
 			return;
 		}
 		List<Organization> sponsors = organizationManagementService
 				.getOrganizationByNameIn(hackathonRequest.getSponsors());
 		if (sponsors.size() != hackathonRequest.getSponsors().size()) {
-			List<String> invalidSponsors = hackathonRequest.getSponsors().stream()
-					.filter(s -> !sponsors.contains(s)).collect(Collectors.toList());
+			List<String> invalidSponsors = hackathonRequest.getSponsors().stream().filter(s -> !sponsors.contains(s))
+					.collect(Collectors.toList());
 			throw new BadRequestException("Sponsors " + invalidSponsors + " doesn't exist");
 		}
 		hackathon.setSponsors(sponsors);
 	}
 
 	private void mapJudges(HackathonRequest hackathonRequest, Hackathon hackathon) {
-		if(hackathonRequest.getJudges()==null || hackathonRequest.getJudges().isEmpty()) {
+		if (hackathonRequest.getJudges() == null || hackathonRequest.getJudges().isEmpty()) {
 			throw new BadRequestException("Atleast one Judge is required");
 		}
 		List<Profile> judges = profileManagementService.getProfileByEmailIn(hackathonRequest.getJudges());
@@ -80,14 +181,22 @@ public class HackathonManagementService implements IHackathonManagementService {
 	}
 
 	private void mapIsFinalized(HackathonRequest hackathonRequest, Hackathon hackathon) {
-		List<Team> teams = hackathon.getTeams();
+		List<HackathonTeamProfile> teams = hackathon.getTeams();
 
 		if (teams.isEmpty() || !hackathonRequest.isFinalized()) {
 			hackathon.setFinalized(hackathonRequest.isFinalized());
 		} else {
 			boolean canFinalize = true;
-			for (Team team : teams) {
-				if (team.isRegistrationSuccess() && team.getScore() == null) {
+			Map<String, List<HackathonTeamProfile>> hackathonTeamProfilemap = teams.stream()
+					.collect(Collectors.groupingBy(team -> {
+						String name = team.getHackathonTeamProfile();
+						name = name.substring(0, name.lastIndexOf(OHConstants.DELIMIT_HACK_TEAM_PROFILE));
+						return name;
+					}));
+			for (Entry<String, List<HackathonTeamProfile>> teamEntry : hackathonTeamProfilemap.entrySet()) {
+				if (teamEntry.getValue().stream().anyMatch(team -> {
+					return !team.isPaid() || team.getScore() == null;
+				})) {
 					canFinalize = false;
 					break;
 				}
@@ -100,7 +209,8 @@ public class HackathonManagementService implements IHackathonManagementService {
 		}
 	}
 
-	private void mapBasicHackathonRequestParam(HackathonRequest hackathonRequest, Hackathon hackathon) {
+	private void mapBasicHackathonRequestParam(HackathonRequest hackathonRequest, Hackathon hackathon)
+			throws ParseException {
 		hackathon.setCloseDate(hackathonRequest.getCloseDate());
 		hackathon.setDescription(hackathonRequest.getDescription());
 		hackathon.setDiscount(hackathonRequest.getDiscount());
@@ -111,5 +221,4 @@ public class HackathonManagementService implements IHackathonManagementService {
 		hackathon.setTeamMaxSize(hackathonRequest.getTeamMaxSize());
 		hackathon.setTeamMinSize(hackathonRequest.getTeamMinSize());
 	}
-
 }

@@ -35,13 +35,13 @@ public class RegisterHackathonEmailAspect {
 	public ResponseEntity<Object> sendEmailAspect(JoinPoint joinPoint, ResponseEntity<Object> response) {
 		Object[] args = joinPoint.getArgs();
 		TeamRegisterRequest request = (TeamRegisterRequest) args[1];
-		for (TeamMemberRequest m : request.getTeamMembers()) {
+		for (TeamMemberRequest member : request.getTeamMembers()) {
 			SimpleMailMessage message = new SimpleMailMessage();
-			message.setTo(m.getEmail());
+			message.setTo(member.getEmail());
 			message.setSubject(request.getEmail() + subject.replace("\"", "") + request.getEventName());
 			String[] splits = content.split("#");
 			message.setText(splits[0].replace("\"", "") + request.getEventName() + splits[1].replace("\"", "")
-					+ page);
+					+ page+"?email="+member.getEmail()+"&eventName="+request.getEventName());
 			javaMailSender.send(message);
 		}
 		return response;

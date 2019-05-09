@@ -11,9 +11,19 @@ import sjsu.edu.cmpe275.api.resources.TeamRegisterRequest;
 public interface IHackathonManagementService {
 
 	public Hackathon createOrUpdateHackathon(HackathonRequest hackathonRequest) throws ParseException;
-	
+
 	public boolean registerUserHackathon(TeamRegisterRequest teamRegisterRequest) throws ParseException;
-	
+
 	public List<Hackathon> retrieveHackathon(String email, String role) throws ParseException;
+
+
+	public Hackathon retrieveHackathonDetail(String email, String role, String eventName) throws ParseException;
+
+	
 	public Quotation fetchQuotation(String email, String eventName);
+	
+	public boolean makePayment(Quotation quotation) throws ParseException;
+	
+	public boolean submitCode(String teamName, String eventName, String url) throws ParseException;
+
 }

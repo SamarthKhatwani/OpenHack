@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import sjsu.edu.cmpe275.api.resources.CodeSubmitRequest;
+import sjsu.edu.cmpe275.api.resources.Quotation;
 import sjsu.edu.cmpe275.api.resources.TeamRegisterRequest;
 
 public interface IHackerAuthAPI {
@@ -22,5 +24,15 @@ public interface IHackerAuthAPI {
 	@RequestMapping(value="/fetchPrice",produces= { MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.GET)
 	public ResponseEntity<Object> fetchPriceForPayment(@RequestHeader(value="Authorization") String token,
 			@RequestParam String email, @RequestParam String eventName) throws ParseException;	
+	
+	@RequestMapping(value = "/makePayment", produces = {
+			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
+	public ResponseEntity<Object> makePayment(@RequestHeader(value = "Authorization") String token,
+			@RequestBody Quotation quotation) throws ParseException;
+	
+	@RequestMapping(value = "/submitCode", produces = {
+			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.POST)
+	public ResponseEntity<Object> submitCode(@RequestHeader(value = "Authorization") String token,
+			@RequestBody CodeSubmitRequest codeSubmitRequest) throws ParseException;
 	
 }

@@ -10,6 +10,7 @@ var Modal = require('react-bootstrap-modal')
 export default class CreateHackathon extends Component {
     constructor(props) {
         super(props);
+        this.mode="create";
         this.state = {
             modalIsOpen: false,
             eventName: "",
@@ -29,6 +30,44 @@ export default class CreateHackathon extends Component {
         };
     }
 
+    componentDidMount(){
+        if(this.props.location){
+            if(this.props.location.state && this.props.location.state.eventName){
+                this.getHackathonDetails(this.props.location.state.eventName, "admin");
+                this.mode="update";
+            }
+        }
+    }
+
+    getHackathonDetails(eventName, role) {
+        WebService.getInstance().getHackathonDetail(eventName, role, (response) => {
+            console.log(response);
+            if (response.success) {
+                this.setState({ 
+                    eventName: response.eventName,
+                    description: response.description,
+                    startDate: new Date(response.startDate).toISOString().substr(0, 10),
+                    endDate: new Date(response.endDate).toISOString().substr(0, 10),
+                    judges: response.judges.join(','),
+                    sponsors: response.sponsors.join(','),
+                    teamMaxSize: response.teamMaxSize,
+                    teamMinSize: response.teamMinSize,
+                    registrationFee: response.registrationFee,
+                    discount: response.discount,
+                    openDate: new Date(response.openDate).toISOString().substr(0, 10),
+                    closeDate: new Date(response.closeDate).toISOString().substr(0, 10),
+                    isFinalized: response.finalized,
+                 });
+            }
+            else{
+                this.setState({failedCreation:true, errorMessage:response.message});
+            }
+        }, (error) => {
+            console.log(error);
+            this.setState({failedCreation:true, errorMessage:error});
+        });
+    }
+
     onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value, isFormDirty: true, failedCreation: false });
     }
@@ -43,6 +82,7 @@ export default class CreateHackathon extends Component {
             openDate, closeDate, isFinalized },(response) => {
             console.log(response);
             if (response.success) {
+                alert(response.message);
                 history.push('/dashboard');
             }
         }, (error) => {
@@ -74,14 +114,14 @@ export default class CreateHackathon extends Component {
                 <div class="rajat_hackathon_form_wrapper">
                     <div class="row rajat-row">
                         <div class="col-md-4 rajat_hackathon_form_details">
-                            <h2>Create Hackathon</h2>
+                            <h2>{this.mode == 'create' ? "Create Hackathon" : "Update Hackathon"}</h2>
                         </div>
                         <div class="col-md-8 rajat_hackathon_form_wrapper_div">
                             <div class="rajat_hackathon_form_div">
                                 <form class="rajat_hackathon_registration_form" onSubmit={this.onSubmit.bind(this)}>
                                     <div class="form-group">
                                         <label for="eventName">Event Name</label>
-                                        <input type="text" class="form-control" name="eventName" onChange={this.onChange.bind(this)} value={this.state.eventName} placeholder="Event name" required />
+                                        <input type="text" class="form-control" name="eventName" onChange={this.onChange.bind(this)} value={this.state.eventName} disabled={this.mode != 'create'  ? true : false } placeholder="Event name" required />
                                         <small id="emailHelp" class="form-text text-muted">Event name should be unique.</small>
                                     </div>
                                     <div class="form-group">

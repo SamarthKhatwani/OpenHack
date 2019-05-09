@@ -1,0 +1,95 @@
+.hack-detail{
+    width: inherit;
+    margin-top: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+    padding-right: 0px;
+}
+
+.create-row{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column
+}
+
+.hack-detail .alert-danger, .hack-detail .alert-success {
+    height: 50px;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.hack-detail .rajat_container{
+    background-color: #ffffff;
+}
+
+.hack-detail h1, h2, h3, h4, h5{
+    font-family: 'Gugi', cursive;
+}
+
+.hack-detail .rajat_hackathon_detail_view_heading_div{
+    padding-top: 50px;
+}
+
+.hack-detail .rajat_hackathon_detail_view_description_div p{
+    font-family: monospace;   
+}
+
+.hack-detail .rajat_hackathon_detail_view_description_div{
+    padding-top: 10px;
+}
+
+.hack-detail .rajat_hackathon_detail_view_details_div{
+    margin-top: 20px;
+    font-family: monospace;
+    font-weight: bold;
+    color: #363636;
+}
+
+.hack-detail .rajat_hackathon_detail_heading{
+    font-family: 'Gugi', cursive;
+    color: #363636;
+    font-weight: 100;
+    border-bottom: 1px solid #363636;
+    background-color: #99cdad;
+    margin-right: 10px;
+}
+
+.hack-detail .rajat_hackathon_form_wrapper{
+    margin-top: 50px;
+    padding: 10px;
+    width: 80%;
+    margin: 5%;
+    background-color: #ffffff
+}
+
+.hack-detail .rajat_hackathon_form_wrapper_div{
+    border-left: 2px solid #fba747;
+}
+.hack-detail .rajat_hackathon_registration_form label{
+    font-family: 'Gugi', cursive;
+}
+.hack-detail .rajat_form_row{
+    margin-top: 10px;
+    margin-bottom: 3px;
+}
+
+.hack-detail .rajat_register, .hack-detail .rajat_register:hover{
+    background-image: none;
+    background-color: #fba847;
+    text-shadow: none;
+    margin-top: 10px
+}
+
+.rajat_grading_form_wrapper{
+    margin-top: 50px;
+}
+
+.rajat_hackathon_submission_row{
+    border-bottom: 2px dashed #c5d9ae;
+    padding-bottom: 10px;
+}
+

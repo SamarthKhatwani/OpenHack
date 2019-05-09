@@ -57,9 +57,20 @@ export default class WebService extends AxiosService {
     *
     * Required params: null
     */
-    getHackathon(role,success, failure) {
+    getHackathon(role, success, failure) {
         let user = JSON.parse(localStorage.getItem(AppConstants.USER_FIREBASE_DETAILS));
-        this.getCall(URI.LIST_HACKATHON + '/?email=' + user.email +'&role='+ role, success, failure, true);
+        this.getCall(URI.LIST_HACKATHON + '/?email=' + user.email + '&role=' + role, success, failure, true);
+    }
+
+    /**
+   * Get Hackathon Call - Get Hackathon api call
+   * Takes success and failure operations
+   *
+   * Required params: null
+   */
+    getHackathonDetail(eventName, role, success, failure) {
+        let user = JSON.parse(localStorage.getItem(AppConstants.USER_FIREBASE_DETAILS));
+        this.getCall(URI.DETAIL_HACKATHON + '/?email=' + user.email + '&role=' + role + '&eventName=' + eventName, success, failure, true);
     }
 
     /**
@@ -133,6 +144,35 @@ export default class WebService extends AxiosService {
         this.postCall(URI.CREATE_UPDATE_HACKATHON, details, success, failure, true);
     }
 
+    /**
+   * Create Update Hackathon Request Call - Create Update Hackathon Request api call
+   * Takes success and failure operations
+   *
+   * Required params:
+   */
+    makePayment(details, success, failure) {
+        this.postCall(URI.MAKE_PAYMENT, details, success, failure, true);
+    }
+
+    /**
+  * Create Update Hackathon Request Call - Create Update Hackathon Request api call
+  * Takes success and failure operations
+  *
+  * Required params:
+  */
+    registerHackathon(details, success, failure) {
+        this.postCall(URI.REGISTER_HACKATHON, details, success, failure, true);
+    }
+
+    /**
+* Create Update Hackathon Request Call - Create Update Hackathon Request api call
+* Takes success and failure operations
+*
+* Required params:
+*/
+    submitHackathon(details, success, failure) {
+        this.postCall(URI.SUBMIT_HACKATHON, details, success, failure, true);
+    }
 
 
 }

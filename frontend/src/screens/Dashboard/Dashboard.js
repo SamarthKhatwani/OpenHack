@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import AppConstants from "../../constants/AppConstants";
 import Navbar from '../Navbar/Navbar';
 import WebService from '../../services/WebService';
+import { history } from '../../router/history';
 var Modal = require('react-bootstrap-modal')
 
 export default class Home extends Component {
@@ -78,13 +79,12 @@ export default class Home extends Component {
         let views = []
         this.state.hackathons.map((hack, index) => {
             views.push(
-                    <div class="card rajat_hack_hacakathon_list_card">
+                    <div class="card rajat_hack_hacakathon_list_card" onClick={()=>{this.onHackClick(hack.eventName)}}>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8 rajat_hackathon_list_description_col">
                                     <h4 class="card-title">{hack.eventName}</h4>
                                     <p class="card-text rajat_hackathon_list_description">{hack.description}</p>
-                                   
                                 </div>
                                 <div class="col-md-4 rajat_hackathon_info">
                                     <p><span class="rajat_muted_span">Starts On  </span>{new Date(hack.startDate).toDateString()}</p>
@@ -98,6 +98,15 @@ export default class Home extends Component {
             );
         });
         return views;
+    }
+
+    onHackClick(eventName){
+        if(this.user.admin){
+            history.push('/createHackathon',{eventName:eventName})
+        }
+        else{
+            history.push('/detail',{eventName:eventName})
+        }
     }
 
     openModal() {

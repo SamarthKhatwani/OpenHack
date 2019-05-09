@@ -6,6 +6,15 @@
     padding-right: 0px;
 }
 
+.dashboard .alert-danger, .dashboard .alert-success {
+    height: 50px;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
 .dashboard .btn-dark, .dashboard .btn-dark:active:focus, .dashboard .btn-dark:active:hover, .dashboard .btn-dark:hover, .dashboard .btn-dark:active, .dashboard .btn-dark:visited, .dashboard .btn-dark:focus{
     background: #333333;
     color: white;
@@ -27,11 +36,11 @@
 }
 
 
-.rajat_hack_container{
+.dashboard .rajat_hack_container{
     background-color: transparent;
     
 }
-.rajat_hack_hacakathon_list_card{
+.dashboard .rajat_hack_hacakathon_list_card{
     width: 60%;
     word-wrap: break-word;
     background-color: #ffffff;
@@ -43,29 +52,29 @@
     margin-top: 13px;
 }
 
-.rajat_hack_hacakathon_list_card:hover{
+.dashboard .rajat_hack_hacakathon_list_card:hover{
     box-shadow: 4px 4px 4px 4px rgba(0,0,0,0.2);
     cursor: pointer;
 }
 
-.rajat_hackathon_card_link,
-.rajat_hackathon_card_link:hover{
+.dashboard .rajat_hackathon_card_link,
+.dashboard .rajat_hackathon_card_link:hover{
     color: inherit;
     position: block;
 }
 
-.rajat_hackathon_list_description_col{
+.dashboard .rajat_hackathon_list_description_col{
     border-right: 2px solid #fba747
 }
 
-.rajat_hackathon_list_description{
+.dashboard .rajat_hackathon_list_description{
     color: #404040;
 }
 
-.rajat_muted_span{
+.dashboard .rajat_muted_span{
     color: grey;
 }
 
-.rajat_hackathon_info>p{
+.dashboard .rajat_hackathon_info>p{
     margin: 0 0 5px;
 }

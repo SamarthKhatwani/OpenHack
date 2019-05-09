@@ -6,6 +6,7 @@ import MyProfile from '../screens/MyProfile/MyProfile';
 import MyOrganization from '../screens/MyOrganization/MyOrganization';
 import CreateHackathon from '../screens/CreateHackathon/CreateHackathon';
 import Payment from '../screens/Payment/Payment';
+import HackathonDetail from '../screens/HackathonDetail/HackathonDetail';
 //Create a Main Component
 class Main extends Component {
     render() {
@@ -17,7 +18,8 @@ class Main extends Component {
                 <Route path="/myProfile" component={MyProfile}/>  
                 <Route path="/myOrganization" component={MyOrganization}/> 
                 <Route path="/createHackathon" component={CreateHackathon}/>        
-                <Route path="/payment" component={Payment}/>                
+                <Route path="/payment" component={Payment}/>       
+                <Route path="/detail" component={HackathonDetail}/>                
             </div>
         )
     }

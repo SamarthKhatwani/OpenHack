@@ -28,7 +28,7 @@ class Navbar extends Component {
             return (
                 <Fragment>
                     <div class="nav-item item-link">
-                        <Link to="/myOrganization"><a class="nav-link">My Judgements</a></Link>
+                        <a class="nav-link">My Judgements</a>
                     </div>
                     <div class="nav-item item-link">
                         <Link to="/myOrganization"><a class="nav-link">My Organizations</a></Link>

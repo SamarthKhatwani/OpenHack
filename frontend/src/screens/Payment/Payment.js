@@ -49,7 +49,7 @@ export default class Payment extends Component {
         WebService.getInstance().makePayment({...this.state.quotation, email: this.state.email},(response)=>{
             if(response.success){
                 alert("Payment Successfull");
-                history("/dashboard");
+                history.push("/dashboard");
             }
             else{
                 alert(response.message);

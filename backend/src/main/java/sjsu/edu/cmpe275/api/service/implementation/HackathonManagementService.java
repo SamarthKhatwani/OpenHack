@@ -333,6 +333,32 @@ public class HackathonManagementService implements IHackathonManagementService {
 			throw new BadRequestException("invalid role value");
 		}
 	}
+	
+	public List<HackathonTeamProfile> retrieveHackathonDetailJudge(String email, String role, String eventName) throws ParseException {
+		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
+		if (!hackathonWrapper.isPresent()) {
+			throw new BadRequestException("hackathon doesn't exist");
+		}
+		Profile profile = profileManagementService.getProfile(email);
+		if (profile == null) {
+			throw new BadRequestException("user with given email doesn't exist");
+		}
+		if (profile.isAmdin() && !role.equals(OHConstants.ADMIN_ROLE)) {
+			throw new BadRequestException("user with given email doesn't have role " + role);
+		}
+
+		Hackathon hackathon = hackathonWrapper.get();
+		if (role.equals(OHConstants.JUDGE_ROLE)) {
+			if (hackathon.getJudges().stream().anyMatch(judge -> judge.getEmail().equals(email))) {
+				return hacathonTeamProfileRepository.findByHackathon(hackathon);
+			} else {
+				throw new BadRequestException("user is not a judge for this event");
+			}
+		} else {
+			throw new BadRequestException("invalid role value");
+		}
+	}
+	
 	@Override
 	public boolean makePayment(Quotation quotation) throws ParseException {
 		boolean result=true;

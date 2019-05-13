@@ -12,8 +12,10 @@ import org.springframework.stereotype.Controller;
 import sjsu.edu.cmpe275.OHConstants;
 import sjsu.edu.cmpe275.api.controller.interfaces.INormalAuthAPI;
 import sjsu.edu.cmpe275.api.persistence.model.Hackathon;
+import sjsu.edu.cmpe275.api.persistence.model.HackathonTeamProfile;
 import sjsu.edu.cmpe275.api.persistence.model.Organization;
 import sjsu.edu.cmpe275.api.persistence.model.Profile;
+import sjsu.edu.cmpe275.api.persistence.model.mapper.HackathonTeamProfileToHackathonTeamResponse;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.HackathonToHackathonReponseMapper;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.OrganizationToOrganizationByNameResponseMapper;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.OrganizationToOrganizationResponseMapper;
@@ -56,6 +58,9 @@ public class NormalAuthAPI implements INormalAuthAPI {
 
 	@Autowired
 	private OrganizationToOrganizationResponseMapper organizationToOrganizationResponseMapper;
+
+	@Autowired
+	private HackathonTeamProfileToHackathonTeamResponse hackathonTeamProfileToHackathonTeamResponse;
 
 	@Override
 	public ResponseEntity<Object> getProfile(String token, String email) {
@@ -139,11 +144,19 @@ public class NormalAuthAPI implements INormalAuthAPI {
 	@Override
 	public ResponseEntity<Object> detailHackathon(String token, String email, String role, String eventName)
 			throws ParseException {
-		Hackathon hackathon = hackathonManagementService.retrieveHackathonDetail(email, role, eventName);
-		if(OHConstants.ADMIN_ROLE.equals(role)) {
-			return new ResponseEntity<Object>(hackathonReponseMapper.map(hackathon, true, true, false, null), HttpStatus.OK);
-		}else if(OHConstants.HACKER_ROLE.equals(role)){
-			return new ResponseEntity<Object>(hackathonReponseMapper.map(hackathon, false, true, true, email), HttpStatus.OK);
+		if (OHConstants.ADMIN_ROLE.equals(role)) {
+			Hackathon hackathon = hackathonManagementService.retrieveHackathonDetail(email, role, eventName);
+			return new ResponseEntity<Object>(hackathonReponseMapper.map(hackathon, true, true, false, null),
+					HttpStatus.OK);
+		} else if (OHConstants.HACKER_ROLE.equals(role)) {
+			Hackathon hackathon = hackathonManagementService.retrieveHackathonDetail(email, role, eventName);
+			return new ResponseEntity<Object>(hackathonReponseMapper.map(hackathon, false, true, true, email),
+					HttpStatus.OK);
+		} else if (OHConstants.JUDGE_ROLE.equals(role)) {
+			List<HackathonTeamProfile> hackteamProfile = hackathonManagementService.retrieveHackathonDetailJudge(email,
+					role, eventName);
+			return new ResponseEntity<Object>(hackathonTeamProfileToHackathonTeamResponse.map(hackteamProfile),
+					HttpStatus.OK);
 		}
 		return null;
 	}

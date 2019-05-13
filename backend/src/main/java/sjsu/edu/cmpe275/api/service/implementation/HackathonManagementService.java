@@ -24,9 +24,11 @@ import sjsu.edu.cmpe275.api.persistence.model.Organization;
 import sjsu.edu.cmpe275.api.persistence.model.Profile;
 import sjsu.edu.cmpe275.api.persistence.repository.HacathonTeamProfileRepository;
 import sjsu.edu.cmpe275.api.persistence.repository.HackathonRepository;
+import sjsu.edu.cmpe275.api.resources.GradeRequest;
 import sjsu.edu.cmpe275.api.resources.HackathonRequest;
 import sjsu.edu.cmpe275.api.resources.Quotation;
 import sjsu.edu.cmpe275.api.resources.TeamMemberRequest;
+import sjsu.edu.cmpe275.api.resources.TeamProfileResponse;
 import sjsu.edu.cmpe275.api.resources.TeamRegisterRequest;
 import sjsu.edu.cmpe275.api.service.intefaces.IHackathonManagementService;
 import sjsu.edu.cmpe275.api.service.intefaces.IOrganizationManagementService;
@@ -256,20 +258,21 @@ public class HackathonManagementService implements IHackathonManagementService {
 	public Quotation fetchQuotation(String email, String eventName) {
 		Quotation quotation = new Quotation();
 		Profile profile = profileManagementService.getProfile(email);
-		if(profile==null) {
+		if (profile == null) {
 			throw new BadRequestException("User Profile does not exist");
 		}
 		Organization profileOrganization = profile.getOrganization();
 		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
-		if(!hackathonWrapper.isPresent()) {
+		if (!hackathonWrapper.isPresent()) {
 			throw new BadRequestException("Hackathon event does not exist");
 		}
 		Hackathon hackathon = hackathonWrapper.get();
 		boolean organizationPresent = false;
 
-		HackathonTeamProfile hackathonTeamProfile=hacathonTeamProfileRepository.findByHackathonAndProfile(eventName, email);
-		if (profileOrganization != null) {	
-			String profileOrganizationName=profileOrganization.getName();
+		HackathonTeamProfile hackathonTeamProfile = hacathonTeamProfileRepository.findByHackathonAndProfile(eventName,
+				email);
+		if (profileOrganization != null) {
+			String profileOrganizationName = profileOrganization.getName();
 			List<Organization> hackathonSponsors = hackathon.getSponsors();
 			for (Organization sponsor : hackathonSponsors) {
 				if (sponsor.getName().equals(profileOrganizationName)) {
@@ -299,7 +302,6 @@ public class HackathonManagementService implements IHackathonManagementService {
 		return quotation;
 	}
 
-
 	@Override
 	public Hackathon retrieveHackathonDetail(String email, String role, String eventName) throws ParseException {
 		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
@@ -320,7 +322,7 @@ public class HackathonManagementService implements IHackathonManagementService {
 		} else if (role.equals(OHConstants.HACKER_ROLE)) {
 			if (hackathon.getJudges().stream().anyMatch(judge -> judge.getEmail().equals(email))) {
 				throw new BadRequestException("user is a judge for this event");
-			}else {
+			} else {
 				return hackathon;
 			}
 		} else if (role.equals(OHConstants.JUDGE_ROLE)) {
@@ -333,8 +335,9 @@ public class HackathonManagementService implements IHackathonManagementService {
 			throw new BadRequestException("invalid role value");
 		}
 	}
-	
-	public List<HackathonTeamProfile> retrieveHackathonDetailJudge(String email, String role, String eventName) throws ParseException {
+
+	public List<HackathonTeamProfile> retrieveHackathonDetailJudge(String email, String role, String eventName)
+			throws ParseException {
 		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
 		if (!hackathonWrapper.isPresent()) {
 			throw new BadRequestException("hackathon doesn't exist");
@@ -358,30 +361,31 @@ public class HackathonManagementService implements IHackathonManagementService {
 			throw new BadRequestException("invalid role value");
 		}
 	}
-	
+
 	@Override
 	public boolean makePayment(Quotation quotation) throws ParseException {
-		boolean result=true;
-		String eventName=quotation.getEventName();
-		String  email=quotation.getEmail();
-		HackathonTeamProfile hackathonTeamProfile=hacathonTeamProfileRepository.findByHackathonAndProfile(eventName, email);
-		if(hackathonTeamProfile==null) {
+		boolean result = true;
+		String eventName = quotation.getEventName();
+		String email = quotation.getEmail();
+		HackathonTeamProfile hackathonTeamProfile = hacathonTeamProfileRepository.findByHackathonAndProfile(eventName,
+				email);
+		if (hackathonTeamProfile == null) {
 			throw new BadRequestException("Hackathon team profile does not exist");
 		}
-		if(hackathonTeamProfile.isPaid()) {
-			result=false;
+		if (hackathonTeamProfile.isPaid()) {
+			result = false;
 			throw new BadRequestException("User has already made payment");
 		}
 		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
-		if(!hackathonWrapper.isPresent()) {
+		if (!hackathonWrapper.isPresent()) {
 			throw new BadRequestException("Hackathon event does not exist");
 		}
 		Hackathon hackathon = hackathonWrapper.get();
-		Date eventCloseDate=hackathon.getCloseDate();
+		Date eventCloseDate = hackathon.getCloseDate();
 		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date currentDate = inputFormatter.parse(inputFormatter.format(new Date()));
-		if(currentDate.after(eventCloseDate)) {
-			result= false;
+		if (currentDate.after(eventCloseDate)) {
+			result = false;
 			throw new BadRequestException("Event has already started, no payments will be accepted now");
 		}
 		hackathonTeamProfile.setPaid(true);
@@ -389,47 +393,80 @@ public class HackathonManagementService implements IHackathonManagementService {
 		return result;
 
 	}
-	
+
 	public boolean submitCode(String teamName, String eventName, String url) throws ParseException {
-		boolean validationsPassed=true;
-		List<HackathonTeamProfile> hackathonTeamProfiles= hacathonTeamProfileRepository.findByHackathonAndTeam(eventName, teamName);
-		boolean notRegistered=false;
-		for(HackathonTeamProfile hackathonProfile: hackathonTeamProfiles) {
-			if(!hackathonProfile.isPaid()){
-				notRegistered= true;
+		boolean validationsPassed = true;
+		List<HackathonTeamProfile> hackathonTeamProfiles = hacathonTeamProfileRepository
+				.findByHackathonAndTeam(eventName, teamName);
+		boolean notRegistered = false;
+		for (HackathonTeamProfile hackathonProfile : hackathonTeamProfiles) {
+			if (!hackathonProfile.isPaid()) {
+				notRegistered = true;
 				break;
 			}
 		}
-		if(notRegistered) {
-			validationsPassed=false;
+		if (notRegistered) {
+			validationsPassed = false;
 			throw new BadRequestException("All team members have not yet completed registration !!");
 		}
 		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
-		if(!hackathonWrapper.isPresent()) {
+		if (!hackathonWrapper.isPresent()) {
 			throw new BadRequestException("Hackathon event does not exist");
 		}
 		Hackathon hackathon = hackathonWrapper.get();
-		Date eventOpenDate=hackathon.getOpenDate();
-		Date eventCloseDate=hackathon.getCloseDate();
+		Date eventOpenDate = hackathon.getOpenDate();
+		Date eventCloseDate = hackathon.getCloseDate();
 		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date currentDate = inputFormatter.parse(inputFormatter.format(new Date()));
-		if(currentDate.after(eventCloseDate)) {
-			validationsPassed= false;
+		if (currentDate.after(eventCloseDate)) {
+			validationsPassed = false;
 			throw new BadRequestException("Event has been closed for submissions, no url can be submitted now");
 		}
-		if(currentDate.before(eventOpenDate)) {
-			validationsPassed= false;
-			throw new BadRequestException("Event has not been opened for submissions, urls can only be submitted after open date");
+		if (currentDate.before(eventOpenDate)) {
+			validationsPassed = false;
+			throw new BadRequestException(
+					"Event has not been opened for submissions, urls can only be submitted after open date");
 		}
-		if(validationsPassed) {
-			for(HackathonTeamProfile hackathonProfile: hackathonTeamProfiles) {
-				if(hackathonProfile.isLead()) {
+		if (validationsPassed) {
+			for (HackathonTeamProfile hackathonProfile : hackathonTeamProfiles) {
+				if (hackathonProfile.isLead()) {
 					hackathonProfile.setSubmission(url);
 					hacathonTeamProfileRepository.save(hackathonProfile);
 				}
 			}
 		}
 		return validationsPassed;
-		
+
+	}
+
+	@Override
+	@Transactional
+	public boolean gradeHackathon(GradeRequest gradeRequest) {
+		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(gradeRequest.getEventName());
+		if (!hackathonWrapper.isPresent()) {
+			throw new BadRequestException("hackathon doesn't exist");
+		}
+		Profile profile = profileManagementService.getProfile(gradeRequest.getJudge());
+		if (profile == null) {
+			throw new BadRequestException("user with given email doesn't exist");
+		}
+		if (profile.isAmdin()) {
+			throw new BadRequestException("user with given email is not a judge");
+		}
+
+		Hackathon hackathon = hackathonWrapper.get();
+		//isOpenCheck
+		if (hackathon.getJudges().stream().anyMatch(judge -> judge.getEmail().equals(gradeRequest.getJudge()))) {
+			Map<String, TeamProfileResponse> grades = gradeRequest.getTeams().stream().collect(Collectors.toMap(t->t.getTeamName(), t->t));
+			List<HackathonTeamProfile> teams = hacathonTeamProfileRepository.findByHackathon(hackathon);
+			for(HackathonTeamProfile team: teams) {
+				team.setScore(grades.get(team.getTeamName()).getScore());
+				hacathonTeamProfileRepository.save(team);
+			}
+			return true;
+		} else {
+			throw new BadRequestException("user is not a judge for this event");
+		}
+
 	}
 }

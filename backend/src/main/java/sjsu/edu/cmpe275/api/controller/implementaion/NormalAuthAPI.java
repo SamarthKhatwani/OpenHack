@@ -155,8 +155,8 @@ public class NormalAuthAPI implements INormalAuthAPI {
 		} else if (OHConstants.JUDGE_ROLE.equals(role)) {
 			List<HackathonTeamProfile> hackteamProfile = hackathonManagementService.retrieveHackathonDetailJudge(email,
 					role, eventName);
-			return new ResponseEntity<Object>(hackathonTeamProfileToHackathonTeamResponse.map(hackteamProfile),
-					HttpStatus.OK);
+			return new ResponseEntity<Object>(
+					hackathonTeamProfileToHackathonTeamResponse.map(hackteamProfile, eventName), HttpStatus.OK);
 		}
 		return null;
 	}

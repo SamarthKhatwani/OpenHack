@@ -14,11 +14,12 @@ import sjsu.edu.cmpe275.api.resources.TeamProfileResponse;
 @Component
 public class HackathonTeamProfileToHackathonTeamResponse {
 
-	public HacakthonTeamResponse map(List<HackathonTeamProfile> teamProfiles) {
+	public HacakthonTeamResponse map(List<HackathonTeamProfile> teamProfiles, String eventName) {
 		HacakthonTeamResponse response = new HacakthonTeamResponse();
 		response.setMessage("Successful");
 		response.setSuccess(true);
 		List<TeamProfileResponse> teams = response.getTeams();
+		response.setEventName(eventName);
 		Map<String, List<HackathonTeamProfile>> teamNametoProfileMap = teamProfiles.stream().collect(Collectors.groupingBy(t -> t.getTeamName() ));
 		for (Entry<String, List<HackathonTeamProfile>> entry : teamNametoProfileMap.entrySet()) {
 			TeamProfileResponse team = new TeamProfileResponse();

@@ -3,30 +3,17 @@ package sjsu.edu.cmpe275.api.resources;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HacakthonTeamResponse {
-	private boolean success;
+import javax.validation.constraints.NotNull;
 
-	private String message;
-	
+public class GradeRequest {
+
+	@NotNull
 	private String eventName;
 	
+	@NotNull
+	private String judge;
+
 	private List<TeamProfileResponse> teams = new ArrayList<>();
-
-	public boolean isSuccess() {
-		return success;
-	}
-
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
 
 	public String getEventName() {
 		return eventName;
@@ -34,6 +21,14 @@ public class HacakthonTeamResponse {
 
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
+	}
+
+	public String getJudge() {
+		return judge;
+	}
+
+	public void setJudge(String judge) {
+		this.judge = judge;
 	}
 
 	public List<TeamProfileResponse> getTeams() {

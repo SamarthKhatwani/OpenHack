@@ -271,7 +271,7 @@ public class HackathonManagementService implements IHackathonManagementService {
 
 		HackathonTeamProfile hackathonTeamProfile = hacathonTeamProfileRepository.findByHackathonAndProfile(eventName,
 				email);
-		if (profileOrganization != null) {
+		if (profile.getOrganizationApprovalStatus() && profileOrganization != null) {
 			String profileOrganizationName = profileOrganization.getName();
 			List<Organization> hackathonSponsors = hackathon.getSponsors();
 			for (Organization sponsor : hackathonSponsors) {

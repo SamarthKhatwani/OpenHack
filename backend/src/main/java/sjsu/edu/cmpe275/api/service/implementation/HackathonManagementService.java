@@ -82,7 +82,6 @@ public class HackathonManagementService implements IHackathonManagementService {
 		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(teamRegisterRequest.getEventName());
 		Hackathon hackathon = validateRegister(hackathonWrapper, teamRegisterRequest, userToBeRegistered, roles);
 
-		Profile lead = null;
 		int i = 0;
 		for (Profile user : userToBeRegistered) {
 			HackathonTeamProfile member = new HackathonTeamProfile();
@@ -97,7 +96,6 @@ public class HackathonManagementService implements IHackathonManagementService {
 			member.setTeamName(teamRegisterRequest.getTeamName());
 			hacathonTeamProfileRepository.save(member);
 		}
-		// hacathonTeamProfileRepository.save(hackathon);
 		return true;
 	}
 
@@ -116,9 +114,7 @@ public class HackathonManagementService implements IHackathonManagementService {
 		if (hackathon.isFinalized()) {
 			throw new BadRequestException("Hackathon already finalized");
 		}
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date currentDate = inputFormatter.parse(inputFormatter.format(new Date()));
-		if (hackathon.getOpenDate().compareTo(currentDate) < 0) {
+		if (hackathon.isOpen()) {
 			throw new BadRequestException("Hackathon already started can't register");
 		}
 		List<String> reservedNames = hackathon.getTeams().stream().map(team -> team.getTeamName())
@@ -215,11 +211,10 @@ public class HackathonManagementService implements IHackathonManagementService {
 
 	private void mapBasicHackathonRequestParam(HackathonRequest hackathonRequest, Hackathon hackathon)
 			throws ParseException {
-		hackathon.setCloseDate(hackathonRequest.getCloseDate());
+		hackathon.setOpen(hackathonRequest.isOpen());
 		hackathon.setDescription(hackathonRequest.getDescription());
 		hackathon.setDiscount(hackathonRequest.getDiscount());
 		hackathon.setEndDate(hackathonRequest.getEndDate());
-		hackathon.setOpenDate(hackathonRequest.getOpenDate());
 		hackathon.setRegistrationFee(hackathonRequest.getRegistrationFee());
 		hackathon.setStartDate(hackathonRequest.getStartDate());
 		hackathon.setTeamMaxSize(hackathonRequest.getTeamMaxSize());
@@ -380,14 +375,6 @@ public class HackathonManagementService implements IHackathonManagementService {
 		if (!hackathonWrapper.isPresent()) {
 			throw new BadRequestException("Hackathon event does not exist");
 		}
-		Hackathon hackathon = hackathonWrapper.get();
-		Date eventCloseDate = hackathon.getCloseDate();
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date currentDate = inputFormatter.parse(inputFormatter.format(new Date()));
-		if (currentDate.after(eventCloseDate)) {
-			result = false;
-			throw new BadRequestException("Event has already started, no payments will be accepted now");
-		}
 		hackathonTeamProfile.setPaid(true);
 		hacathonTeamProfileRepository.save(hackathonTeamProfile);
 		return result;
@@ -414,18 +401,11 @@ public class HackathonManagementService implements IHackathonManagementService {
 			throw new BadRequestException("Hackathon event does not exist");
 		}
 		Hackathon hackathon = hackathonWrapper.get();
-		Date eventOpenDate = hackathon.getOpenDate();
-		Date eventCloseDate = hackathon.getCloseDate();
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date currentDate = inputFormatter.parse(inputFormatter.format(new Date()));
-		if (currentDate.after(eventCloseDate)) {
-			validationsPassed = false;
-			throw new BadRequestException("Event has been closed for submissions, no url can be submitted now");
-		}
-		if (currentDate.before(eventOpenDate)) {
+	
+		if (!hackathon.isOpen()) {
 			validationsPassed = false;
 			throw new BadRequestException(
-					"Event has not been opened for submissions, urls can only be submitted after open date");
+					"Event has not been opened for submissions, urls can only be submitted after hackathon is open");
 		}
 		if (validationsPassed) {
 			for (HackathonTeamProfile hackathonProfile : hackathonTeamProfiles) {
@@ -455,7 +435,9 @@ public class HackathonManagementService implements IHackathonManagementService {
 		}
 
 		Hackathon hackathon = hackathonWrapper.get();
-		//isOpenCheck
+		if(hackathon.isOpen()) {
+			throw new BadRequestException("hackathon is currently open can't grade now");
+		}
 		if (hackathon.getJudges().stream().anyMatch(judge -> judge.getEmail().equals(gradeRequest.getJudge()))) {
 			Map<String, TeamProfileResponse> grades = gradeRequest.getTeams().stream().collect(Collectors.toMap(t->t.getTeamName(), t->t));
 			List<HackathonTeamProfile> teams = hacathonTeamProfileRepository.findByHackathon(hackathon);

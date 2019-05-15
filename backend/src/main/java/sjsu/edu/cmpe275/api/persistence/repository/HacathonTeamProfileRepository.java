@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import sjsu.edu.cmpe275.api.persistence.model.Hackathon;
 import sjsu.edu.cmpe275.api.persistence.model.HackathonTeamProfile;
 
 public interface HacathonTeamProfileRepository extends CrudRepository<HackathonTeamProfile, String> {
@@ -22,5 +23,7 @@ public interface HacathonTeamProfileRepository extends CrudRepository<HackathonT
 	@Query(value="SELECT * from hackathon_team_profile h where h.hackathon_id = ?1 and h.team_name= ?2", nativeQuery=true)
 	public List<HackathonTeamProfile> findByHackathonAndTeam(String eventName, String teamName);
 
+
+	public List<HackathonTeamProfile> findByHackathon(Hackathon hackathon);
 
 }

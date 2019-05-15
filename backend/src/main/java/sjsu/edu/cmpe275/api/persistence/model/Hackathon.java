@@ -23,8 +23,7 @@ public class Hackathon implements Serializable{
 	private Date startDate;
 	private Date endDate;
 
-	private Date openDate;
-	private Date closeDate;
+	private boolean isOpen;
 
 	private String description;
 	private int teamMinSize;
@@ -81,28 +80,12 @@ public class Hackathon implements Serializable{
 		this.endDate = endDate;
 	}
 
-	public Date getOpenDate() throws ParseException {
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = inputFormatter.parse(inputFormatter.format(openDate));
-		return date;
+	public boolean isOpen() {
+		return isOpen;
 	}
 
-	public void setOpenDate(Date openDate) throws ParseException {
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = inputFormatter.parse(inputFormatter.format(openDate));
-		this.openDate = openDate;
-	}
-
-	public Date getCloseDate() throws ParseException {
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = inputFormatter.parse(inputFormatter.format(closeDate));
-		return date;
-	}
-
-	public void setCloseDate(Date closeDate) throws ParseException {
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = inputFormatter.parse(inputFormatter.format(closeDate));
-		this.closeDate = closeDate;
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
 	}
 
 	public String getDescription() {

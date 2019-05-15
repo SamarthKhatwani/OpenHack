@@ -135,7 +135,7 @@ export default class HackathonDetail extends Component {
                         <div class="rajat_hackathon_form_div">
                             <form class="rajat_hackathon_registration_form" onSubmit={this.submission.bind(this)}>
                                 <div class="form-group">
-                                    <label for="eventName">Github URL</label>
+                                    <label for="url">Github URL</label>
                                     <input type="text" class="form-control" name="url" onChange={this.onChange.bind(this)} value={this.state.url} placeholder="URL" required />
                                 </div>
                                 <button type="submit" class="btn rajat_register" disabled={!isEnable}>Submit</button>

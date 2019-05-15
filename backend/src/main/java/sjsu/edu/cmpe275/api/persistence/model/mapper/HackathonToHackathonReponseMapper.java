@@ -28,17 +28,16 @@ public class HackathonToHackathonReponseMapper {
 	public HackathonResponse map(Hackathon hackathon, boolean mapJudge, boolean mapSponsor, boolean mapTeam,
 			String email) throws ParseException {
 		HackathonResponse response = new HackathonResponse();
-		response.setCloseDate(hackathon.getCloseDate());
 		response.setDescription(hackathon.getDescription());
 		response.setDiscount(hackathon.getDiscount());
 		response.setEndDate(hackathon.getEndDate());
 		response.setEventName(hackathon.getEventName());
 		response.setFinalized(hackathon.isFinalized());
-		response.setOpenDate(hackathon.getOpenDate());
 		response.setRegistrationFee(hackathon.getRegistrationFee());
 		response.setStartDate(hackathon.getStartDate());
 		response.setTeamMaxSize(hackathon.getTeamMaxSize());
 		response.setTeamMinSize(hackathon.getTeamMinSize());
+		response.setOpen(hackathon.isOpen());
 		if (mapJudge) {
 			response.setJudges(hackathon.getJudges().stream().map(h -> h.getEmail()).collect(Collectors.toList()));
 		}

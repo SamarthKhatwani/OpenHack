@@ -47,8 +47,8 @@ export default class CreateHackathon extends Component {
                     description: response.description,
                     startDate: new Date(response.startDate).toISOString().substr(0, 10),
                     endDate: new Date(response.endDate).toISOString().substr(0, 10),
-                    judges: response.judges.join(','),
-                    sponsors: response.sponsors.join(','),
+                    judges: response.judges.join(', '),
+                    sponsors: response.sponsors.join(', '),
                     teamMaxSize: response.teamMaxSize,
                     teamMinSize: response.teamMinSize,
                     registrationFee: response.registrationFee,
@@ -75,8 +75,8 @@ export default class CreateHackathon extends Component {
         console.log(this.state);
         let { eventName, description, startDate, endDate, judges, sponsors, teamMaxSize, teamMinSize,
             registrationFee, discount, isOpen, isFinalized } = this.state
-        WebService.getInstance().createUpdateHackathon( { eventName, description, startDate, endDate, judges: judges.split(','), 
-            sponsors: sponsors.split(','), teamMaxSize, teamMinSize, registrationFee, discount, 
+        WebService.getInstance().createUpdateHackathon( { eventName, description, startDate, endDate, judges: judges.split(',').map(str=>str.trim()), 
+            sponsors: sponsors.split(',').map(str=>str.trim()), teamMaxSize, teamMinSize, registrationFee, discount, 
             isOpen, isFinalized },(response) => {
             console.log(response);
             if (response.success) {

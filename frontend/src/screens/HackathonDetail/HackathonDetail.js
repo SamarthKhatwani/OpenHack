@@ -86,13 +86,13 @@ export default class HackathonDetail extends Component {
                             <p><span class="rajat_hackathon_detail_heading">End Date: </span><span class="glyphicon glyphicon-calendar" aria-hidden="true"> </span>{new Date(this.state.details.endDate).toDateString()}</p>
                         </div>
                         <div class="col-sm-3">
-                            <p><span class="rajat_hackathon_detail_heading">Open Date: </span><span class="glyphicon glyphicon-calendar" aria-hidden="true"> </span>{new Date(this.state.details.openDate).toDateString()}</p>
+                            <p><span class="rajat_hackathon_detail_heading">Open for submission: </span>{this.state.details.open?"Yes":"No"}</p>
                         </div>
                         <div class="col-sm-3">
-                            <p><span class="rajat_hackathon_detail_heading">Close Date: </span><span class="glyphicon glyphicon-calendar" aria-hidden="true"> </span>{new Date(this.state.details.closeDate).toDateString()}</p>
+                            <p><span class="rajat_hackathon_detail_heading">Sponsors: </span>{this.state.details.sponsors.join(", ")}</p>
                         </div>
                         <div class="col-sm-3">
-                            <p><span class="rajat_hackathon_detail_heading">Registration Fee: $</span>{this.state.registrationFee}</p>
+                            <p><span class="rajat_hackathon_detail_heading">Registration Fee: $</span>{this.state.details.registrationFee}</p>
                         </div>
                         <div class="col-sm-3">
                             <p><span class="rajat_hackathon_detail_heading">Discount: </span>{this.state.details.discount}</p>
@@ -207,7 +207,7 @@ export default class HackathonDetail extends Component {
             let temp = team.split(';');
             return {
                 "role": temp[1],
-                "email": temp[0]
+                "email": temp[0].trim()
             }
         });
         let req = {

@@ -14,6 +14,8 @@ const URI = {
     RESPOND_REQUEST:"/respondRequestOrganizaion",
     CREATE_UPDATE_HACKATHON:"/createUpdateHackathon",
     FETCH_PRICE:"/fetchPrice",
-    LIST_HACKATHON:"/listHackathon"
+    LIST_HACKATHON:"/listHackathon",
+    DETAIL_HACKATHON:"/detailHackathon",
+    REGISTER_HACKATHON: "/registerHackathon"
 };
 export default URI;

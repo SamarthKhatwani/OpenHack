@@ -56,5 +56,10 @@ public interface INormalAuthAPI {
 			@RequestParam(value = "role", required = true) String role,
 			@RequestParam(value = "eventName", required = true) String eventName) throws ParseException;
 	
+	@RequestMapping(value = "/leaderBoard", produces = {
+			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
+	public ResponseEntity<Object> leaderBoard(@RequestHeader(value = "Authorization") String token,
+			@RequestParam(value = "eventName", required = true) String eventName) throws ParseException;
+	
 	
 }

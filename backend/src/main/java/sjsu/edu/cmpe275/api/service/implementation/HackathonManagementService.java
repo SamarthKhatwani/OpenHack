@@ -4,11 +4,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -401,7 +404,7 @@ public class HackathonManagementService implements IHackathonManagementService {
 			throw new BadRequestException("Hackathon event does not exist");
 		}
 		Hackathon hackathon = hackathonWrapper.get();
-	
+
 		if (!hackathon.isOpen()) {
 			validationsPassed = false;
 			throw new BadRequestException(
@@ -435,13 +438,14 @@ public class HackathonManagementService implements IHackathonManagementService {
 		}
 
 		Hackathon hackathon = hackathonWrapper.get();
-		if(hackathon.isOpen()) {
+		if (hackathon.isOpen()) {
 			throw new BadRequestException("hackathon is currently open can't grade now");
 		}
 		if (hackathon.getJudges().stream().anyMatch(judge -> judge.getEmail().equals(gradeRequest.getJudge()))) {
-			Map<String, TeamProfileResponse> grades = gradeRequest.getTeams().stream().collect(Collectors.toMap(t->t.getTeamName(), t->t));
+			Map<String, TeamProfileResponse> grades = gradeRequest.getTeams().stream()
+					.collect(Collectors.toMap(t -> t.getTeamName(), t -> t));
 			List<HackathonTeamProfile> teams = hacathonTeamProfileRepository.findByHackathon(hackathon);
-			for(HackathonTeamProfile team: teams) {
+			for (HackathonTeamProfile team : teams) {
 				team.setScore(grades.get(team.getTeamName()).getScore());
 				hacathonTeamProfileRepository.save(team);
 			}
@@ -450,5 +454,20 @@ public class HackathonManagementService implements IHackathonManagementService {
 			throw new BadRequestException("user is not a judge for this event");
 		}
 
+	}
+
+	@Override
+	public SortedMap<Float, Map<String, List<HackathonTeamProfile>>> retrieveLeaderBoardTeams(String eventName) {
+		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
+		if (!hackathonWrapper.isPresent()) {
+			throw new BadRequestException("hackathon doesn't exist");
+		}
+		Hackathon hackathon = hackathonWrapper.get();
+		if (!hackathon.isFinalized()) {
+			throw new BadRequestException("hackathon is yet to be finalized");
+		}
+		List<HackathonTeamProfile> teams = hacathonTeamProfileRepository.findByHackathon(hackathon);
+		return teams.stream().collect(Collectors.groupingBy(team -> team.getScore(),
+				() -> new TreeMap<>(Collections.reverseOrder()), Collectors.groupingBy(team -> team.getTeamName())));
 	}
 }

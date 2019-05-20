@@ -2,6 +2,8 @@ package sjsu.edu.cmpe275.api.service.intefaces;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 
 import sjsu.edu.cmpe275.api.persistence.model.Hackathon;
 import sjsu.edu.cmpe275.api.persistence.model.HackathonTeamProfile;
@@ -29,4 +31,6 @@ public interface IHackathonManagementService {
 	public List<HackathonTeamProfile> retrieveHackathonDetailJudge(String email, String role, String eventName) throws ParseException;
 	
 	public boolean gradeHackathon(GradeRequest grradeRequest);
+	
+	public SortedMap<Float, Map<String, List<HackathonTeamProfile>>> retrieveLeaderBoardTeams(String eventName);
 }

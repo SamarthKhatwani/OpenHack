@@ -23,8 +23,7 @@ export default class CreateHackathon extends Component {
             teamMinSize: "",
             registrationFee: "",
             discount: "",
-            openDate: "",
-            closeDate: "",
+            isOpen: false,
             isFinalized: false,
             failedCreation:false
         };
@@ -54,8 +53,7 @@ export default class CreateHackathon extends Component {
                     teamMinSize: response.teamMinSize,
                     registrationFee: response.registrationFee,
                     discount: response.discount,
-                    openDate: new Date(response.openDate).toISOString().substr(0, 10),
-                    closeDate: new Date(response.closeDate).toISOString().substr(0, 10),
+                    isOpen: response.isOpen,
                     isFinalized: response.finalized,
                  });
             }
@@ -76,10 +74,10 @@ export default class CreateHackathon extends Component {
         event.preventDefault();
         console.log(this.state);
         let { eventName, description, startDate, endDate, judges, sponsors, teamMaxSize, teamMinSize,
-            registrationFee, discount, openDate, closeDate, isFinalized } = this.state
+            registrationFee, discount, isOpen, isFinalized } = this.state
         WebService.getInstance().createUpdateHackathon( { eventName, description, startDate, endDate, judges: judges.split(','), 
             sponsors: sponsors.split(','), teamMaxSize, teamMinSize, registrationFee, discount, 
-            openDate, closeDate, isFinalized },(response) => {
+            isOpen, isFinalized },(response) => {
             console.log(response);
             if (response.success) {
                 alert(response.message);
@@ -196,31 +194,9 @@ export default class CreateHackathon extends Component {
                                             <div class="col-sm-6"></div>
                                         </div>
                                     </div>
-                                    <div class="hackathon_open_close_dates rajat_form_row">
-                                        <div class="row">
-                                            <div class='col-sm-6'>
-                                                <div class="form-group">
-                                                    <label for="openDate">Open Date</label>
-                                                    <div class='input-group date' id='openDate'>
-                                                        <input type='date' class="form-control" name="openDate" onChange={this.onChange.bind(this)} value={this.state.openDate} required />
-                                                        <span class="input-group-addon">
-                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class='col-sm-6'>
-                                                <div class="form-group">
-                                                    <label for="closeDate">Close Date</label>
-                                                    <div class='input-group date' id='closeDate'>
-                                                        <input type='date' class="form-control" name="closeDate" onChange={this.onChange.bind(this)} value={this.state.closeDate} required />
-                                                        <span class="input-group-addon">
-                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" class="form-check-input" name="isOpen" onChange={this.onChange.bind(this)} value={this.state.isOpen} />
+                                        <label class="form-check-label" for="isOpen">Is hackathon open for submission?</label>
                                     </div>
                                     <div class="form-group">
                                         <input type="checkbox" class="form-check-input" name="isFinalized" onChange={this.onChange.bind(this)} value={this.state.isFinalized} />

@@ -441,6 +441,9 @@ public class HackathonManagementService implements IHackathonManagementService {
 		if (hackathon.isOpen()) {
 			throw new BadRequestException("hackathon is currently open can't grade now");
 		}
+		if(hackathon.isFinalized()) {
+			throw new BadRequestException("hackathon is finalized can't grade now");
+		}
 		if (hackathon.getJudges().stream().anyMatch(judge -> judge.getEmail().equals(gradeRequest.getJudge()))) {
 			Map<String, TeamProfileResponse> grades = gradeRequest.getTeams().stream()
 					.collect(Collectors.toMap(t -> t.getTeamName(), t -> t));

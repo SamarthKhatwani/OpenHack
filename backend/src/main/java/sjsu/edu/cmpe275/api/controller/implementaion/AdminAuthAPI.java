@@ -75,10 +75,17 @@ public class AdminAuthAPI implements IAdminAuthAPI {
 		response.setRevenueFromSponsor(hackathon.getSponsors().size()*1000f);
 		float exp = 0f;
 		for(Expense expense :hackathon.getExpenses()) {
+			sjsu.edu.cmpe275.api.resources.Expense resExpense = new sjsu.edu.cmpe275.api.resources.Expense();
+			resExpense.setAmount(expense.getAmount());
+			resExpense.setDescription(expense.getDescription());
+			resExpense.setTimeOfExpense(expense.getTimeOfExpense());
+			resExpense.setTitle(expense.getTitle());
+			response.getExpenses().add(resExpense);
 			exp+=expense.getAmount();
 		}
 		response.setTotalExpenses(exp);
 		response.setProfit(total+response.getRevenueFromSponsor()-exp);
+		
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
 

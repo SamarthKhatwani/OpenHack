@@ -12,6 +12,8 @@ public class FinancialReport {
 	@JsonIgnoreProperties(value= {"score", "rank"})
 	private List<LeaderBoardTeam> teams = new ArrayList<>();
 	
+	private List<Expense> expenses = new ArrayList<>();
+	
 	private Float revenueFromRegistration;
 	
 	private Float revenueFromSponsor;
@@ -76,6 +78,14 @@ public class FinancialReport {
 
 	public void setProfit(Float profit) {
 		this.profit = profit;
+	}
+
+	public List<Expense> getExpenses() {
+		return expenses;
+	}
+
+	public void setExpenses(List<Expense> expenses) {
+		this.expenses = expenses;
 	}
 
 }

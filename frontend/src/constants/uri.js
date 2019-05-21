@@ -3,7 +3,7 @@ const URI = {
 //  BASE_URL : "http://localhost:8080",
 //  BASE_URL : "http://10.0.0.196:8080",
 //  BASE_URL: "http://10.0.0.87:8080",
-    BASE_URL: "http://ec2-18-191-93-151.us-east-2.compute.amazonaws.com:8080",
+    BASE_URL: "http://ec2-18-222-232-226.us-east-2.compute.amazonaws.com:8080",
     LOOKUP_SCREEN_NAME: "/lookupScreenName",
     SIGNUP: "/signup",
     GET_PROFILE: "/getProfile",
@@ -19,8 +19,8 @@ const URI = {
     MAKE_PAYMENT: "/makePayment",
     REGISTER_HACKATHON: "/registerHackathon",
     SUBMIT_HACKATHON: "/submitCode",
-    REGISTER_HACKATHON: "/registerHackathon",
-    MAKE_PAYMENT: "/makePayment",
-    SUBMIT_HACKATHON: "/submitCode",
+    SAVE_GRADES:"/grade",
+    GET_LEADERBOARD: "/leaderBoard",
+    GET_FINANCIAL_REPORT:"/financialReport"
 };
 export default URI;

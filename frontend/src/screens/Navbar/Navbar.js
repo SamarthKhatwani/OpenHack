@@ -7,6 +7,11 @@ import { history } from '../../router/history';
 //create the Navbar Component
 class Navbar extends Component {
 
+    constructor(props) {
+        super(props);
+        this.user = JSON.parse(localStorage.getItem(AppConstants.USER_DETAILS));
+    }
+
     render() {
         return (
             <div>
@@ -27,9 +32,12 @@ class Navbar extends Component {
         if (localStorage.getItem(AppConstants.AUTH_TOKEN)) {
             return (
                 <Fragment>
-                    <div class="nav-item item-link">
-                        <a class="nav-link">My Judgements</a>
-                    </div>
+                   { !this.user.admin ?
+                       <div class="nav-item item-link">
+                            <Link to="/myJudgement"><a class="nav-link">My Judgements</a></Link>
+                        </div>
+                        : null
+                    }
                     <div class="nav-item item-link">
                         <Link to="/myOrganization"><a class="nav-link">My Organizations</a></Link>
                     </div>

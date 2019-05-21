@@ -146,6 +146,7 @@ export default class Home extends Component {
                     localStorage.setItem(AppConstants.AUTH_TOKEN, token);
                     localStorage.setItem(AppConstants.USER_FIREBASE_DETAILS, JSON.stringify(socialAuthUser.user));
                     WebService.getInstance().getProfile((response)=>{
+                        console.log(response);
                         if(response.success){
                             localStorage.setItem(AppConstants.USER_DETAILS, JSON.stringify(response));
                             history.push('/dashboard'); 
@@ -154,11 +155,13 @@ export default class Home extends Component {
                             this.setState({ errorMessage: response.message, loginFailed: true });
                         }
                     },(error)=>{
+                        console.log(error);
                         this.setState({ errorMessage: error.message, loginFailed: true });
                     })
                 });
             }
         }).catch(error => {
+            debugger;
             console.log(error);
             this.setState({ errorMessage: error.message, loginFailed: true })
         });
@@ -210,6 +213,7 @@ export default class Home extends Component {
                     localStorage.setItem(AppConstants.USER_FIREBASE_DETAILS, JSON.stringify(authUser.user));
                     WebService.getInstance().getProfile((response)=>{
                         if(response.success){
+                            console.log(response);
                             localStorage.setItem(AppConstants.USER_DETAILS, JSON.stringify(response));
                             history.push('/dashboard'); 
                         }

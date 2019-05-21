@@ -15,30 +15,45 @@ export default class HackathonDetail extends Component {
             isAckPositive: null,
             ackMessage: null,
             url: null,
-            teamName:null,
-            teamMember:null
+            teamName: null,
+            teamMember: null,
+            role: 'hacker',
+            eventName: null,
+            teams: []
         };
         this.user = JSON.parse(localStorage.getItem(AppConstants.USER_DETAILS));
     }
 
     componentDidMount() {
-        console.log(this.props.location.state.eventName);
-        this.getHackathonDetails(this.props.location.state.eventName, this.user.admin ? "admin" : "hacker")
+        console.log(this.props.location.state.eventName, this.props.location.state.role);
+        this.setState({ eventName: this.props.location.state.eventName, role: this.props.location.state.role }, () => {
+            this.getHackathonDetails(this.state.eventName, this.state.role);
+        })
     }
 
     getHackathonDetails(eventName, role) {
         WebService.getInstance().getHackathonDetail(eventName, role, (response) => {
             console.log(response);
-            let team = Object.keys(response.team);
-            let url = null
-            if (team.length != 0 && response.team[team[0]].submission) {
-                url = response.team[team[0]].submission
-            }
             if (response.success) {
-                this.setState({ 
-                    details: response,
-                    url
-                 });
+                if (this.state.role == 'hacker') {
+                    let team = Object.keys(response.team);
+                    let url = null
+                    if (team.length != 0 && response.team[team[0]].submission) {
+                        url = response.team[team[0]].submission
+                    }
+                    if (response.success) {
+                        this.setState({
+                            details: response,
+                            url
+                        });
+                    }
+                }
+                else if (this.state.role == "judge") {
+                    this.setState({ teams: response.teams });
+                }
+            }
+            else {
+                this.setState({ isAckPositive: false, ackMessage: response.message })
             }
         }, (error) => {
             console.log(error);
@@ -69,10 +84,81 @@ export default class HackathonDetail extends Component {
                 <div className="row create-row">
                     {this.renderAcknowledgement()}
                 </div>
-                {this.state.details ? this.renderDetails() : null}
-                {this.state.details ? this.renderDetailsInput() : null}
+                {this.state.details && this.state.role == 'hacker' ? this.renderDetails() : null}
+                {this.state.role == 'judge' && this.state.teams ? this.renderEvaluation() : null}
+                {this.state.role == 'hacker' && this.state.details ? this.renderDetailsInput() : null}
             </div>
         );
+    }
+
+    onChangeScore(event) {
+        console.log(event.target.value);
+        let team = this.state.teams[event.target.name];
+        let teams = this.state.teams;
+        team['score'] = event.target.value;
+        teams.splice(event.target.name, 1, team);
+        this.setState({ teams });
+    }
+
+    renderEvaluation() {
+        let views = [];
+        console.log(this.state.teams);
+
+        return (
+            <div class="container">
+                <h2>{this.state.eventName}</h2>
+                <br />
+                <form onSubmit={this.onSubmitScore.bind(this)}>
+                    <table class="table table-bordered ">
+                        <thead>
+                            <tr>
+                                <th>Team Name</th>
+                                <th>Submission</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.state.teams.map((team, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{team.teamName}</td>
+                                            <td>{team.submission}</td>
+                                            <td><input className="form-control" name={index} type="number" onChange={this.onChangeScore.bind(this)} value={parseFloat(team.score)} min="0" max="10" step="0.1" required /></td>
+                                        </tr>
+                                    );
+                                })
+
+                            }
+                        </tbody>
+                    </table>
+                    <div className="row" style={{ textAlign: "center" }}>
+                        <button type="submit" className="btn btn-lg rajat_register">Save Score</button>
+                    </div>
+                </form>
+            </div>
+        );
+    }
+
+    onSubmitScore(event) {
+        event.preventDefault();
+        let req = {
+            "judge": this.user.email,
+            "eventName": this.state.eventName,
+            "teams": this.state.teams
+        }
+        WebService.getInstance().saveHackathonGrade(req, (response) => {
+            console.log(response);
+            if(response.success){
+                this.setState({ isAckPositive: true, ackMessage: response.message })
+            }
+            else{
+                this.setState({ isAckPositive: false, ackMessage: response.message })
+            }
+        }, (error) => {
+            console.log(error);
+            this.setState({ isAckPositive: false, ackMessage: error })
+        });
     }
 
     renderDetails() {
@@ -94,7 +180,7 @@ export default class HackathonDetail extends Component {
                             <p><span class="rajat_hackathon_detail_heading">End Date: </span><span class="glyphicon glyphicon-calendar" aria-hidden="true"> </span>{new Date(this.state.details.endDate).toDateString()}</p>
                         </div>
                         <div class="col-sm-3">
-                            <p><span class="rajat_hackathon_detail_heading">Open for submission: </span>{this.state.details.open?"Yes":"No"}</p>
+                            <p><span class="rajat_hackathon_detail_heading">Open for submission: </span>{this.state.details.open ? "Yes" : "No"}</p>
                         </div>
                         <div class="col-sm-3">
                             <p><span class="rajat_hackathon_detail_heading">Sponsors: </span>{this.state.details.sponsors.join(", ")}</p>
@@ -124,7 +210,7 @@ export default class HackathonDetail extends Component {
         }
         else {
             if (this.state.details.team[team[0]].allPaid) {
-                return this.renderSubmission(true, );
+                return this.renderSubmission(true);
             }
             else {
                 return this.renderSubmission(false);
@@ -132,8 +218,8 @@ export default class HackathonDetail extends Component {
         }
     }
 
-    renderSubmission(isEnable, submission = ""){
-        return(
+    renderSubmission(isEnable, submission = "") {
+        return (
             <div class="rajat_hackathon_form_wrapper">
                 <div class="row">
                     <div class="col-md-4 rajat_hackathon_form_details">
@@ -152,36 +238,35 @@ export default class HackathonDetail extends Component {
 
                     </div>
                 </div>
-
             </div>
         );
     }
 
-    submission(event){
+    submission(event) {
         event.preventDefault();
         let team = Object.keys(this.state.details.team);
-        let teamName= team[0];
+        let teamName = team[0];
         let req = {
             teamName,
-            eventName:this.state.details.eventName,
-            url:this.state.url
+            eventName: this.state.details.eventName,
+            url: this.state.url
         };
-        WebService.getInstance().submitHackathon(req,(response)=>{
-            if(response.success){
+        WebService.getInstance().submitHackathon(req, (response) => {
+            if (response.success) {
                 this.getHackathonDetails(this.props.location.state.eventName, 'hacker');
-                this.setState({ackMessage:response.message, isAckPositive: true });
+                this.setState({ ackMessage: response.message, isAckPositive: true });
             }
-            else{
-                this.setState({ackMessage:response.message, isAckPositive: false })
+            else {
+                this.setState({ ackMessage: response.message, isAckPositive: false })
             }
-        },(error)=>{
+        }, (error) => {
             console.log(error);
-            this.setState({ackMessage:error, isAckPositive: false })
+            this.setState({ ackMessage: error, isAckPositive: false })
         })
     }
 
-    onChange(event){
-        this.setState({ [event.target.name]: event.target.value ,  ackMessage: null });
+    onChange(event) {
+        this.setState({ [event.target.name]: event.target.value, ackMessage: null });
     }
 
 
@@ -232,16 +317,16 @@ export default class HackathonDetail extends Component {
         }
         WebService.getInstance().registerHackathon(req, (response) => {
             console.log(response);
-            if(response.success){
+            if (response.success) {
                 this.getHackathonDetails(this.props.location.state.eventName, 'hacker');
-                this.setState({ackMessage:response.message, isAckPositive: true })
+                this.setState({ ackMessage: response.message, isAckPositive: true })
             }
-            else{
-                this.setState({ackMessage:response.message, isAckPositive: true })  
+            else {
+                this.setState({ ackMessage: response.message, isAckPositive: true })
             }
         }, (error) => {
             console.log(error);
-            this.setState({ackMessage:error, isAckPositive: false })
+            this.setState({ ackMessage: error, isAckPositive: false })
         })
     }
 }

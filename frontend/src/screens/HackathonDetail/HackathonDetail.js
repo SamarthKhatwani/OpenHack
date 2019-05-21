@@ -29,8 +29,16 @@ export default class HackathonDetail extends Component {
     getHackathonDetails(eventName, role) {
         WebService.getInstance().getHackathonDetail(eventName, role, (response) => {
             console.log(response);
+            let team = Object.keys(response.team);
+            let url = null
+            if (team.length != 0 && response.team[team[0]].submission) {
+                url = response.team[team[0]].submission
+            }
             if (response.success) {
-                this.setState({ details: response });
+                this.setState({ 
+                    details: response,
+                    url
+                 });
             }
         }, (error) => {
             console.log(error);

@@ -7,7 +7,7 @@ import WebService from '../../services/WebService';
 import { history } from '../../router/history';
 var Modal = require('react-bootstrap-modal')
 
-export default class MyJudgement extends Component {
+export default class LeaderBoard extends Component {
 
     constructor(props) {
         super(props);
@@ -15,14 +15,15 @@ export default class MyJudgement extends Component {
             modalIsOpen: false,
             result: [],
             isAckPositive: null,
-            ackMessage: null
+            ackMessage: null,
+            eventName: ""
         };
         this.user = JSON.parse(localStorage.getItem(AppConstants.USER_DETAILS));
     }
 
     componentDidMount() {
         console.log(this.props.location.state.result)
-        this.setState({result: this.props.location.state.result});
+        this.setState({ result: this.props.location.state.result, eventName: this.props.location.state.eventName });
     }
 
     renderAcknowledgement() {
@@ -49,45 +50,106 @@ export default class MyJudgement extends Component {
                     {this.renderAcknowledgement()}
                 </div>
                 <div className="row hack">
-                    {this.renderHackathon()}
+                    {this.renderLeaderBoard()}
                 </div>
             </div>
         );
     }
 
-    renderHackathon() {
-        let views = []
-        if(this.state.hackathons.length == 0){
-            return(
-                <h3>No Hackathons Available for Judgement</h3>
-            )
-        }
-        else{
-            this.state.hackathons.map((hack, index) => {
-                views.push(
-                        <div class="card rajat_hack_hacakathon_list_card" onClick={()=>{this.onHackClick(hack.eventName)}}>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8 rajat_hackathon_list_description_col">
-                                        <h4 class="card-title">{hack.eventName}</h4>
-                                        <p class="card-text rajat_hackathon_list_description">{hack.description}</p>
-                                    </div>
-                                    <div class="col-md-4 rajat_hackathon_info">
-                                        <p><span class="rajat_muted_span">Starts On  </span>{new Date(hack.startDate).toDateString()}</p>
-                                        <p><span class="rajat_muted_span">Ends On  </span>{new Date(hack.endDate).toDateString()}</p>
-                                        <p><span class="rajat_muted_span">Team Size  </span>{hack.teamMinSize + ' to ' + hack.teamMaxSize +' members'}</p>
-                                        <p><span class="rajat_muted_span">Registration Fee  $</span>{hack.registrationFee}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                );
-            });
-            return views;
-        }
+    renderLeaderBoard() {
+        let views = [];
+        console.log(this.state.result);
+
+        return (
+            <div class="container">
+                <h2>{this.state.eventName + '  Leader Board'}</h2>
+                <br />
+                <table class="table table-bordered ">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team Name</th>
+                            <th>Team Members</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            this.state.result.map((team, index) => {
+                                if (index == 0) {
+                                    return (
+                                        <tr key={index} style={{ backgroundColor: "#ff7575", fontWeight: "bold" }}>
+                                            <td>{team.rank}</td>
+                                            <td>{team.teamName}</td>
+                                            <td>
+                                                {team.teamMembers.map((name) => {
+                                                    return (
+                                                        <p><span class="glyphicon glyphicon-user" style={{fontSize:"10px", marginRight:"5px"}}></span>{name.email}</p>
+                                                    )
+                                                })}
+                                            </td>
+                                            <td>{team.score}</td>
+                                        </tr>
+                                    );
+                                }
+                                else if (index == 1) {
+                                    return (
+                                        <tr key={index} style={{ backgroundColor: "#47efc2", fontWeight: "bold" }}>
+                                            <td>{team.rank}</td>
+                                            <td>{team.teamName}</td>
+                                            <td>
+                                                {team.teamMembers.map((name) => {
+                                                    return (
+                                                        <p><span class="glyphicon glyphicon-user" style={{fontSize:"10px", marginRight:"5px"}}></span>{name.email}</p>
+                                                    )
+                                                })}
+                                            </td>
+                                            <td>{team.score}</td>
+                                        </tr>
+                                    );
+                                }
+                                else if (index == 2) {
+                                    return (
+                                        <tr key={index} style={{ backgroundColor: "#47a6ef", fontWeight: "bold" }}>
+                                            <td>{team.rank}</td>
+                                            <td>{team.teamName}</td>
+                                            <td>
+                                                {team.teamMembers.map((name) => {
+                                                    return (
+                                                        <p><span class="glyphicon glyphicon-user" style={{fontSize:"10px", marginRight:"5px"}}></span>{name.email}</p>
+                                                    )
+                                                })}
+                                            </td>
+                                            <td>{team.score}</td>
+                                        </tr>
+                                    );
+                                }
+                                else {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{team.rank}</td>
+                                            <td>{team.teamName}</td>
+                                            <td>
+                                                {team.teamMembers.map((name) => {
+                                                    return (
+                                                        <p><span class="glyphicon glyphicon-user" style={{fontSize:"10px", marginRight:"5px"}}></span>{name.email}</p>
+                                                    )
+                                                })}
+                                            </td>
+                                            <td>{team.score}</td>
+                                        </tr>
+                                    );
+                                }
+                            })
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        );
     }
 
-    onHackClick(eventName){
-        history.push('/detail',{eventName:eventName, role:'judge'})
+    onHackClick(eventName) {
+        history.push('/detail', { eventName: eventName, role: 'judge' })
     }
 }

@@ -127,7 +127,7 @@ export default class Dashboard extends Component {
         WebService.getInstance().fetchLeaderBoard(eventName, (response)=>{  
             console.log(response);
             if(response.success){
-
+                history.push('/leaderBoard', { eventName: eventName, result: response.result })
             }
             else{
                 this.setState({ isAckPositive: false, ackMessage: response.message })

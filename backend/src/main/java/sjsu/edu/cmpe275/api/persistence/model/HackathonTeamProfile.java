@@ -1,5 +1,7 @@
 package sjsu.edu.cmpe275.api.persistence.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -34,6 +36,8 @@ public class HackathonTeamProfile {
 	
 	private Float score;
 
+	private Date timeOfPayment;
+	
 	public String getHackathonTeamProfile() {
 		return hackathonTeamProfile;
 	}
@@ -112,6 +116,14 @@ public class HackathonTeamProfile {
 
 	public void setScore(Float score) {
 		this.score = score;
+	}
+
+	public Date getTimeOfPayment() {
+		return timeOfPayment;
+	}
+
+	public void setTimeOfPayment(Date timeOfPayment) {
+		this.timeOfPayment = timeOfPayment;
 	}
 
 }

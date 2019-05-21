@@ -378,6 +378,8 @@ public class HackathonManagementService implements IHackathonManagementService {
 		if (!hackathonWrapper.isPresent()) {
 			throw new BadRequestException("Hackathon event does not exist");
 		}
+		hackathonTeamProfile.setAmountPaid(quotation.getDiscountedPrice());
+		hackathonTeamProfile.setTimeOfPayment(new Date());
 		hackathonTeamProfile.setPaid(true);
 		hacathonTeamProfileRepository.save(hackathonTeamProfile);
 		return result;

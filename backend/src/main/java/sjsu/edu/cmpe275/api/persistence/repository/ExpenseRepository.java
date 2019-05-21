@@ -1,4 +1,4 @@
-package sjsu.edu.cmpe275.api.persistence.model.mapper;
+package sjsu.edu.cmpe275.api.persistence.repository;
 
 import org.springframework.data.repository.CrudRepository;
 

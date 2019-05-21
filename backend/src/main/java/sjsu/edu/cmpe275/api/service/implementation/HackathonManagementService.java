@@ -25,7 +25,7 @@ import sjsu.edu.cmpe275.api.persistence.model.Hackathon;
 import sjsu.edu.cmpe275.api.persistence.model.HackathonTeamProfile;
 import sjsu.edu.cmpe275.api.persistence.model.Organization;
 import sjsu.edu.cmpe275.api.persistence.model.Profile;
-import sjsu.edu.cmpe275.api.persistence.model.mapper.ExpenseRepository;
+import sjsu.edu.cmpe275.api.persistence.repository.ExpenseRepository;
 import sjsu.edu.cmpe275.api.persistence.repository.HacathonTeamProfileRepository;
 import sjsu.edu.cmpe275.api.persistence.repository.HackathonRepository;
 import sjsu.edu.cmpe275.api.resources.Expense;

@@ -47,6 +47,9 @@ public class Hackathon implements Serializable{
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "hackathon")
 	private List<HackathonTeamProfile> teams = new ArrayList<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "hackathon")
+	private List<Expense> expenses = new ArrayList<>();
 
 	public String getEventName() {
 		return eventName;
@@ -160,6 +163,12 @@ public class Hackathon implements Serializable{
 		this.teams = teams;
 	}
 
+	public List<Expense> getExpenses() {
+		return expenses;
+	}
 
+	public void setExpenses(List<Expense> expenses) {
+		this.expenses = expenses;
+	}
 
 }

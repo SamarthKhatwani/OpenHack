@@ -33,4 +33,8 @@ public interface IHackathonManagementService {
 	public boolean gradeHackathon(GradeRequest grradeRequest);
 	
 	public SortedMap<Float, Map<String, List<HackathonTeamProfile>>> retrieveLeaderBoardTeams(String eventName);
+
+	public List<HackathonTeamProfile> retrieveTeamsProfileInHackathon(String eventName);
+	
+	public Map<String, List<HackathonTeamProfile>> retrieveTeamsInHackathon(String eventName);
 }

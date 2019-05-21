@@ -23,9 +23,8 @@ export default class CreateHackathon extends Component {
             teamMinSize: "",
             registrationFee: "",
             discount: "",
-            openDate: "",
-            closeDate: "",
-            isFinalized: false,
+            open: false,
+            finalized: false,
             failedCreation:false
         };
     }
@@ -48,15 +47,14 @@ export default class CreateHackathon extends Component {
                     description: response.description,
                     startDate: new Date(response.startDate).toISOString().substr(0, 10),
                     endDate: new Date(response.endDate).toISOString().substr(0, 10),
-                    judges: response.judges.join(','),
-                    sponsors: response.sponsors.join(','),
+                    judges: response.judges.join(', '),
+                    sponsors: response.sponsors.join(', '),
                     teamMaxSize: response.teamMaxSize,
                     teamMinSize: response.teamMinSize,
                     registrationFee: response.registrationFee,
                     discount: response.discount,
-                    openDate: new Date(response.openDate).toISOString().substr(0, 10),
-                    closeDate: new Date(response.closeDate).toISOString().substr(0, 10),
-                    isFinalized: response.finalized,
+                    open: response.open,
+                    finalized: response.finalized,
                  });
             }
             else{
@@ -69,17 +67,21 @@ export default class CreateHackathon extends Component {
     }
 
     onChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value, isFormDirty: true, failedCreation: false });
+        if(event.target.name === "open" || event.target.name==="finalized"){
+            this.setState({ [event.target.name]: event.target.checked, isFormDirty: true, failedCreation: false });
+        }else{
+            this.setState({ [event.target.name]: event.target.value, isFormDirty: true, failedCreation: false });
+        }
     }
 
     onSubmit(event) {
         event.preventDefault();
         console.log(this.state);
         let { eventName, description, startDate, endDate, judges, sponsors, teamMaxSize, teamMinSize,
-            registrationFee, discount, openDate, closeDate, isFinalized } = this.state
-        WebService.getInstance().createUpdateHackathon( { eventName, description, startDate, endDate, judges: judges.split(','), 
-            sponsors: sponsors.split(','), teamMaxSize, teamMinSize, registrationFee, discount, 
-            openDate, closeDate, isFinalized },(response) => {
+            registrationFee, discount, open, finalized } = this.state
+        WebService.getInstance().createUpdateHackathon( { eventName, description, startDate, endDate, judges: judges.split(',').map(str=>str.trim()), 
+            sponsors: sponsors.split(',').map(str=>str.trim()), teamMaxSize, teamMinSize, registrationFee, discount, 
+            open, finalized },(response) => {
             console.log(response);
             if (response.success) {
                 alert(response.message);
@@ -196,35 +198,13 @@ export default class CreateHackathon extends Component {
                                             <div class="col-sm-6"></div>
                                         </div>
                                     </div>
-                                    <div class="hackathon_open_close_dates rajat_form_row">
-                                        <div class="row">
-                                            <div class='col-sm-6'>
-                                                <div class="form-group">
-                                                    <label for="openDate">Open Date</label>
-                                                    <div class='input-group date' id='openDate'>
-                                                        <input type='date' class="form-control" name="openDate" onChange={this.onChange.bind(this)} value={this.state.openDate} required />
-                                                        <span class="input-group-addon">
-                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class='col-sm-6'>
-                                                <div class="form-group">
-                                                    <label for="closeDate">Close Date</label>
-                                                    <div class='input-group date' id='closeDate'>
-                                                        <input type='date' class="form-control" name="closeDate" onChange={this.onChange.bind(this)} value={this.state.closeDate} required />
-                                                        <span class="input-group-addon">
-                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" class="form-check-input" name="open" onChange={this.onChange.bind(this)} checked={this.state.open} />
+                                        <label class="form-check-label" for="open">Is hackathon open for submission?</label>
                                     </div>
                                     <div class="form-group">
-                                        <input type="checkbox" class="form-check-input" name="isFinalized" onChange={this.onChange.bind(this)} value={this.state.isFinalized} />
-                                        <label class="form-check-label" for="isFinalized">Is Hackathon Finalized?</label>
+                                        <input type="checkbox" class="form-check-input" name="finalized" onChange={this.onChange.bind(this)} checked={this.state.finalized} />
+                                        <label class="form-check-label" for="finalized">Is Hackathon Finalized?</label>
                                     </div>
                                     <button type="submit" class="btn rajat_register">Submit</button>
                                 </form>

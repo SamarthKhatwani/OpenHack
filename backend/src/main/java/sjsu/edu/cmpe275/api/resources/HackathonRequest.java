@@ -13,10 +13,8 @@ public class HackathonRequest {
 	private Date startDate;
 	@NotNull
 	private Date endDate;
-	@NotNull
-	private Date openDate;
-	@NotNull
-	private Date closeDate;
+
+	private boolean isOpen;
 	
 	private String description;
 	
@@ -58,20 +56,12 @@ public class HackathonRequest {
 		this.endDate = endDate;
 	}
 
-	public Date getOpenDate() {
-		return openDate;
+	public boolean isOpen() {
+		return isOpen;
 	}
 
-	public void setOpenDate(Date openDate) {
-		this.openDate = openDate;
-	}
-
-	public Date getCloseDate() {
-		return closeDate;
-	}
-
-	public void setCloseDate(Date closeDate) {
-		this.closeDate = closeDate;
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
 	}
 
 	public String getDescription() {

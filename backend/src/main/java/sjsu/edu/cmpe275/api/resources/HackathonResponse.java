@@ -17,8 +17,7 @@ public class HackathonResponse {
 	private List<String> judges;
 	private List<String> sponsors;
 	private Float discount;
-	private Date openDate;
-	private Date closeDate;
+	private boolean isOpen;
 	private boolean isFinalized;
 	private Map<String, TeamDetailResponse> team;
 
@@ -118,20 +117,12 @@ public class HackathonResponse {
 		this.discount = discount;
 	}
 
-	public Date getOpenDate() {
-		return openDate;
+	public boolean isOpen() {
+		return isOpen;
 	}
 
-	public void setOpenDate(Date openDate) {
-		this.openDate = openDate;
-	}
-
-	public Date getCloseDate() {
-		return closeDate;
-	}
-
-	public void setCloseDate(Date closeDate) {
-		this.closeDate = closeDate;
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
 	}
 
 	public boolean isFinalized() {

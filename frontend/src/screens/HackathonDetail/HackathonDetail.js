@@ -29,8 +29,16 @@ export default class HackathonDetail extends Component {
     getHackathonDetails(eventName, role) {
         WebService.getInstance().getHackathonDetail(eventName, role, (response) => {
             console.log(response);
+            let team = Object.keys(response.team);
+            let url = null
+            if (team.length != 0 && response.team[team[0]].submission) {
+                url = response.team[team[0]].submission
+            }
             if (response.success) {
-                this.setState({ details: response });
+                this.setState({ 
+                    details: response,
+                    url
+                 });
             }
         }, (error) => {
             console.log(error);
@@ -86,10 +94,10 @@ export default class HackathonDetail extends Component {
                             <p><span class="rajat_hackathon_detail_heading">End Date: </span><span class="glyphicon glyphicon-calendar" aria-hidden="true"> </span>{new Date(this.state.details.endDate).toDateString()}</p>
                         </div>
                         <div class="col-sm-3">
-                            <p><span class="rajat_hackathon_detail_heading">Open Date: </span><span class="glyphicon glyphicon-calendar" aria-hidden="true"> </span>{new Date(this.state.details.openDate).toDateString()}</p>
+                            <p><span class="rajat_hackathon_detail_heading">Open for submission: </span>{this.state.details.open?"Yes":"No"}</p>
                         </div>
                         <div class="col-sm-3">
-                            <p><span class="rajat_hackathon_detail_heading">Close Date: </span><span class="glyphicon glyphicon-calendar" aria-hidden="true"> </span>{new Date(this.state.details.closeDate).toDateString()}</p>
+                            <p><span class="rajat_hackathon_detail_heading">Sponsors: </span>{this.state.details.sponsors.join(", ")}</p>
                         </div>
                         <div class="col-sm-3">
                             <p><span class="rajat_hackathon_detail_heading">Registration Fee: $</span>{this.state.details.registrationFee}</p>
@@ -116,7 +124,7 @@ export default class HackathonDetail extends Component {
         }
         else {
             if (this.state.details.team[team[0]].allPaid) {
-                return this.renderSubmission(true, team[0]);
+                return this.renderSubmission(true, );
             }
             else {
                 return this.renderSubmission(false);
@@ -152,9 +160,10 @@ export default class HackathonDetail extends Component {
     submission(event){
         event.preventDefault();
         let team = Object.keys(this.state.details.team);
+        let teamName= team[0];
         let req = {
-            teamName:team[0],
-            eventName:this.props.location.state.eventName,
+            teamName,
+            eventName:this.state.details.eventName,
             url:this.state.url
         };
         WebService.getInstance().submitHackathon(req,(response)=>{
@@ -193,7 +202,7 @@ export default class HackathonDetail extends Component {
                                 </div>
                                 <div class="teamMembers">
                                     <label for="judges">Team members</label>
-                                    <input type="text" name="teamMember" class="form-control" onChange={this.onChange.bind(this)} value={this.state.teamMember} placeholder="Example: memberemail@gmail.com; memberRole, memberemail@gmail.com; memberRole" />
+                                    <input type="text" name="teamMember" class="form-control" onChange={this.onChange.bind(this)} value={this.state.teamMember} placeholder="Example: memberemail@gmail.com; memberRole, memberemail@gmail.com; memberRole" required />
                                 </div>
                                 <button type="submit" class="btn rajat_register">Submit</button>
                             </form>
@@ -212,7 +221,7 @@ export default class HackathonDetail extends Component {
             let temp = team.split(';');
             return {
                 "role": temp[1],
-                "email": temp[0]
+                "email": temp[0].trim()
             }
         });
         let req = {

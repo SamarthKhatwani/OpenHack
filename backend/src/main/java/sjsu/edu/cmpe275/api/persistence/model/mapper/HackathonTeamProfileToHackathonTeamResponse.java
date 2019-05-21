@@ -25,8 +25,10 @@ public class HackathonTeamProfileToHackathonTeamResponse {
 			TeamProfileResponse team = new TeamProfileResponse();
 			team.setTeamName(entry.getKey());
 			for(HackathonTeamProfile teamProfile: entry.getValue()) {
-				team.setSubmission(teamProfile.getSubmission());
-				team.setScore(teamProfile.getScore());
+				if(teamProfile.isLead()){
+					team.setSubmission(teamProfile.getSubmission());
+					team.setScore(teamProfile.getScore());
+				}
 			}
 			teams.add(team);
 		}

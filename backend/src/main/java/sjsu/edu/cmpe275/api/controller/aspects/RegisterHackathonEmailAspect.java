@@ -83,4 +83,8 @@ public class RegisterHackathonEmailAspect {
 		return response;
 	}
 
+	@AfterReturning(pointcut = "execution(* sjsu.edu.cmpe275.api.controller.interfaces.IAdminAuthAPI.createUpdateHackathon(..))", returning = "response")
+	public ResponseEntity<Object> sendLeaderBoardEmail(JoinPoint joinPoint, ResponseEntity<Object> response) {
+		return response;
+	}
 }

@@ -23,8 +23,8 @@ export default class CreateHackathon extends Component {
             teamMinSize: "",
             registrationFee: "",
             discount: "",
-            isOpen: false,
-            isFinalized: false,
+            open: false,
+            finalized: false,
             failedCreation:false
         };
     }
@@ -53,8 +53,8 @@ export default class CreateHackathon extends Component {
                     teamMinSize: response.teamMinSize,
                     registrationFee: response.registrationFee,
                     discount: response.discount,
-                    isOpen: response.isOpen,
-                    isFinalized: response.finalized,
+                    open: response.open,
+                    finalized: response.finalized,
                  });
             }
             else{
@@ -67,17 +67,21 @@ export default class CreateHackathon extends Component {
     }
 
     onChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value, isFormDirty: true, failedCreation: false });
+        if(event.target.name === "open" || event.target.name==="finalized"){
+            this.setState({ [event.target.name]: event.target.checked, isFormDirty: true, failedCreation: false });
+        }else{
+            this.setState({ [event.target.name]: event.target.value, isFormDirty: true, failedCreation: false });
+        }
     }
 
     onSubmit(event) {
         event.preventDefault();
         console.log(this.state);
         let { eventName, description, startDate, endDate, judges, sponsors, teamMaxSize, teamMinSize,
-            registrationFee, discount, isOpen, isFinalized } = this.state
+            registrationFee, discount, open, finalized } = this.state
         WebService.getInstance().createUpdateHackathon( { eventName, description, startDate, endDate, judges: judges.split(',').map(str=>str.trim()), 
             sponsors: sponsors.split(',').map(str=>str.trim()), teamMaxSize, teamMinSize, registrationFee, discount, 
-            isOpen, isFinalized },(response) => {
+            open, finalized },(response) => {
             console.log(response);
             if (response.success) {
                 alert(response.message);
@@ -195,12 +199,12 @@ export default class CreateHackathon extends Component {
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="checkbox" class="form-check-input" name="isOpen" onChange={this.onChange.bind(this)} value={this.state.isOpen} />
-                                        <label class="form-check-label" for="isOpen">Is hackathon open for submission?</label>
+                                        <input type="checkbox" class="form-check-input" name="open" onChange={this.onChange.bind(this)} checked={this.state.open} />
+                                        <label class="form-check-label" for="open">Is hackathon open for submission?</label>
                                     </div>
                                     <div class="form-group">
-                                        <input type="checkbox" class="form-check-input" name="isFinalized" onChange={this.onChange.bind(this)} value={this.state.isFinalized} />
-                                        <label class="form-check-label" for="isFinalized">Is Hackathon Finalized?</label>
+                                        <input type="checkbox" class="form-check-input" name="finalized" onChange={this.onChange.bind(this)} checked={this.state.finalized} />
+                                        <label class="form-check-label" for="finalized">Is Hackathon Finalized?</label>
                                     </div>
                                     <button type="submit" class="btn rajat_register">Submit</button>
                                 </form>

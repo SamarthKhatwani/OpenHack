@@ -198,7 +198,7 @@ public class HackathonManagementService implements IHackathonManagementService {
 					}));
 			for (Entry<String, List<HackathonTeamProfile>> teamEntry : hackathonTeamProfilemap.entrySet()) {
 				if (teamEntry.getValue().stream().anyMatch(team -> {
-					return !team.isPaid() || team.getScore() == null;
+					return team.isPaid() && team.getScore() == null;
 				})) {
 					canFinalize = false;
 					break;
@@ -467,7 +467,7 @@ public class HackathonManagementService implements IHackathonManagementService {
 			throw new BadRequestException("hackathon is yet to be finalized");
 		}
 		List<HackathonTeamProfile> teams = hacathonTeamProfileRepository.findByHackathon(hackathon);
-		return teams.stream().collect(Collectors.groupingBy(team -> team.getScore(),
+		return teams.stream().collect(Collectors.groupingBy(team -> team.getScore()==null?-1:team.getScore(),
 				() -> new TreeMap<>(Collections.reverseOrder()), Collectors.groupingBy(team -> team.getTeamName())));
 	}
 }

@@ -17,6 +17,7 @@ const URI = {
     LIST_HACKATHON:"/listHackathon",
     DETAIL_HACKATHON:"/detailHackathon",
     REGISTER_HACKATHON: "/registerHackathon",
-    MAKE_PAYMENT:"/makePayment"
+    MAKE_PAYMENT:"/makePayment",
+    SUBMIT_HACKATHON: "/submitCode",
 };
 export default URI;

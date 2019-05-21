@@ -151,7 +151,13 @@ export default class HackathonDetail extends Component {
 
     submission(event){
         event.preventDefault();
-        let req = {};
+        let team = Object.keys(this.state.details.team);
+        let teamName= team[0];
+        let req = {
+            teamName,
+            eventName:this.state.details.eventName,
+            url:this.state.url
+        };
         WebService.getInstance().submitHackathon(req,(response)=>{
             if(response.success){
                 this.getHackathonDetails(this.props.location.state.eventName, 'hacker');

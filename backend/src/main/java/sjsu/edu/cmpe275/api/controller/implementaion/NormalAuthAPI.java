@@ -194,9 +194,9 @@ public class NormalAuthAPI implements INormalAuthAPI {
 						allPaid = false;
 					}
 					teamMembers.add(teamMember);
+					leaderBoardTeam.setScore(teamProfile.getScore());
 				}
 				leaderBoardTeam.setAllPaid(allPaid);
-				
 			}
 		}
 		return new ResponseEntity<Object>(leaderBoardResponse, HttpStatus.OK);

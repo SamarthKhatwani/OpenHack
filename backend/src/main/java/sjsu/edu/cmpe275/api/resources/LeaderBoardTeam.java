@@ -11,6 +11,8 @@ public class LeaderBoardTeam {
 	private int rank;
 	
 	private boolean allPaid;
+	
+	private Float score;
 
 	public String getTeamName() {
 		return teamName;
@@ -42,5 +44,13 @@ public class LeaderBoardTeam {
 
 	public void setAllPaid(boolean allPaid) {
 		this.allPaid = allPaid;
+	}
+
+	public Float getScore() {
+		return score;
+	}
+
+	public void setScore(Float score) {
+		this.score = score;
 	}
 }

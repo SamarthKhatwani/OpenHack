@@ -21,6 +21,7 @@ import sjsu.edu.cmpe275.api.resources.HackathonRequest;
 import sjsu.edu.cmpe275.api.resources.HackathonResponse;
 import sjsu.edu.cmpe275.api.resources.LeaderBoardTeam;
 import sjsu.edu.cmpe275.api.resources.MemberDetail;
+import sjsu.edu.cmpe275.api.resources.ResponseMessage;
 import sjsu.edu.cmpe275.api.service.intefaces.IHackathonManagementService;
 
 @Controller
@@ -87,6 +88,12 @@ public class AdminAuthAPI implements IAdminAuthAPI {
 		response.setProfit(total+response.getRevenueFromSponsor()-exp);
 		
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Object> addExpense(String token, sjsu.edu.cmpe275.api.resources.Expense expense) {
+		hackathonManagementService.addExpense(expense);
+		return new ResponseEntity<Object>(new ResponseMessage(true, "Successful"), HttpStatus.OK);
 	}
 
 }

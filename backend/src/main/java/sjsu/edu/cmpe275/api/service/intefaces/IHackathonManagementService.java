@@ -7,6 +7,7 @@ import java.util.SortedMap;
 
 import sjsu.edu.cmpe275.api.persistence.model.Hackathon;
 import sjsu.edu.cmpe275.api.persistence.model.HackathonTeamProfile;
+import sjsu.edu.cmpe275.api.resources.Expense;
 import sjsu.edu.cmpe275.api.resources.GradeRequest;
 import sjsu.edu.cmpe275.api.resources.HackathonRequest;
 import sjsu.edu.cmpe275.api.resources.Quotation;
@@ -37,4 +38,6 @@ public interface IHackathonManagementService {
 	public List<HackathonTeamProfile> retrieveTeamsProfileInHackathon(String eventName);
 	
 	public Map<String, List<HackathonTeamProfile>> retrieveTeamsInHackathon(String eventName);
+
+	public boolean addExpense(Expense expense);
 }

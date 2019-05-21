@@ -3,6 +3,8 @@ package sjsu.edu.cmpe275.api.resources;
 import java.util.Date;
 
 public class Expense {
+	private String eventName;
+	
 	private String title;
 
 	private String description;
@@ -41,6 +43,14 @@ public class Expense {
 
 	public void setAmount(Float amount) {
 		this.amount = amount;
+	}
+
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
 	}
 	
 }

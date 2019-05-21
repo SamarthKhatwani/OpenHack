@@ -25,8 +25,10 @@ import sjsu.edu.cmpe275.api.persistence.model.Hackathon;
 import sjsu.edu.cmpe275.api.persistence.model.HackathonTeamProfile;
 import sjsu.edu.cmpe275.api.persistence.model.Organization;
 import sjsu.edu.cmpe275.api.persistence.model.Profile;
+import sjsu.edu.cmpe275.api.persistence.model.mapper.ExpenseRepository;
 import sjsu.edu.cmpe275.api.persistence.repository.HacathonTeamProfileRepository;
 import sjsu.edu.cmpe275.api.persistence.repository.HackathonRepository;
+import sjsu.edu.cmpe275.api.resources.Expense;
 import sjsu.edu.cmpe275.api.resources.GradeRequest;
 import sjsu.edu.cmpe275.api.resources.HackathonRequest;
 import sjsu.edu.cmpe275.api.resources.Quotation;
@@ -45,6 +47,9 @@ public class HackathonManagementService implements IHackathonManagementService {
 
 	@Autowired
 	private HacathonTeamProfileRepository hacathonTeamProfileRepository;
+	
+	@Autowired
+	private ExpenseRepository expenseRepository;
 
 	@Autowired
 	private IProfileManagementService profileManagementService;
@@ -486,5 +491,22 @@ public class HackathonManagementService implements IHackathonManagementService {
 	public Map<String, List<HackathonTeamProfile>> retrieveTeamsInHackathon(String eventName) {
 		List<HackathonTeamProfile> teams = retrieveTeamsProfileInHackathon(eventName);
 		return teams.stream().collect(Collectors.groupingBy(team -> team.getTeamName()));
+	}
+
+	@Override
+	public boolean addExpense(Expense expense) {
+		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(expense.getEventName());
+		if (!hackathonWrapper.isPresent()) {
+			throw new BadRequestException("hackathon doesn't exist");
+		}
+		Hackathon hackathon = hackathonWrapper.get();
+		sjsu.edu.cmpe275.api.persistence.model.Expense newExpense = new sjsu.edu.cmpe275.api.persistence.model.Expense();
+		newExpense.setAmount(expense.getAmount());
+		newExpense.setDescription(expense.getDescription());
+		newExpense.setHackathon(hackathon);
+		newExpense.setTimeOfExpense(new Date());
+		newExpense.setTitle(expense.getTitle());
+		expenseRepository.save(newExpense);
+		return true;
 	}
 }

@@ -92,7 +92,7 @@ export default class HackathonDetail extends Component {
                             <p><span class="rajat_hackathon_detail_heading">Close Date: </span><span class="glyphicon glyphicon-calendar" aria-hidden="true"> </span>{new Date(this.state.details.closeDate).toDateString()}</p>
                         </div>
                         <div class="col-sm-3">
-                            <p><span class="rajat_hackathon_detail_heading">Registration Fee: $</span>{this.state.registrationFee}</p>
+                            <p><span class="rajat_hackathon_detail_heading">Registration Fee: $</span>{this.state.details.registrationFee}</p>
                         </div>
                         <div class="col-sm-3">
                             <p><span class="rajat_hackathon_detail_heading">Discount: </span>{this.state.details.discount}</p>
@@ -116,7 +116,7 @@ export default class HackathonDetail extends Component {
         }
         else {
             if (this.state.details.team[team[0]].allPaid) {
-                return this.renderSubmission(true, );
+                return this.renderSubmission(true, team[0]);
             }
             else {
                 return this.renderSubmission(false);
@@ -151,7 +151,12 @@ export default class HackathonDetail extends Component {
 
     submission(event){
         event.preventDefault();
-        let req = {};
+        let team = Object.keys(this.state.details.team);
+        let req = {
+            teamName:team[0],
+            eventName:this.props.location.state.eventName,
+            url:this.state.url
+        };
         WebService.getInstance().submitHackathon(req,(response)=>{
             if(response.success){
                 this.getHackathonDetails(this.props.location.state.eventName, 'hacker');
@@ -188,7 +193,7 @@ export default class HackathonDetail extends Component {
                                 </div>
                                 <div class="teamMembers">
                                     <label for="judges">Team members</label>
-                                    <input type="text" name="teamMember" class="form-control" onChange={this.onChange.bind(this)} value={this.state.teamMember} placeholder="Example: memberemail@gmail.com; memberRole, memberemail@gmail.com; memberRole" required />
+                                    <input type="text" name="teamMember" class="form-control" onChange={this.onChange.bind(this)} value={this.state.teamMember} placeholder="Example: memberemail@gmail.com; memberRole, memberemail@gmail.com; memberRole" />
                                 </div>
                                 <button type="submit" class="btn rajat_register">Submit</button>
                             </form>

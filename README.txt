@@ -35,6 +35,12 @@ How To run
         run following command at terminal:
             java -jar open-hack-0.0.1-SNAPSHOT.jar
 
+Bonus Feature:
+    1. Financial Report
+        Registration Fee Payment Report
+        Hackathon Earning Report
+    2. Hackthon LeaderBoard
+
 Commit History
 -----------------------
 commit f485ec85936148c48156f3789fa6b5b6fc964e08

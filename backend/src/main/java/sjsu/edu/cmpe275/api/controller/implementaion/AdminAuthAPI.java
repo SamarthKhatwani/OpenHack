@@ -82,7 +82,7 @@ public class AdminAuthAPI implements IAdminAuthAPI {
 			resExpense.setTimeOfExpense(expense.getTimeOfExpense());
 			resExpense.setTitle(expense.getTitle());
 			response.getExpenses().add(resExpense);
-			exp+=expense.getAmount();
+			exp+=expense.getAmount()==null?0f:expense.getAmount();
 		}
 		response.setTotalExpenses(exp);
 		response.setProfit(total+response.getRevenueFromSponsor()-exp);

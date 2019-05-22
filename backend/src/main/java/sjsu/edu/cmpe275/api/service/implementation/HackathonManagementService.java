@@ -244,7 +244,9 @@ public class HackathonManagementService implements IHackathonManagementService {
 			hackathonRepository.findAll().forEach(hackathons::add);
 			return hackathons;
 		} else if (role.equals(OHConstants.HACKER_ROLE)) {
-			String currentDate = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(new Date());
+			DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = inputFormatter.parse(inputFormatter.format(new Date()));
+			String currentDate = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(date);
 			List<String> hackathons = hacathonTeamProfileRepository.findHackathonByProfile(email);
 			hackathons.add("###");
 			return hackathonRepository.findHackathonBeforeStartAndNameIn(currentDate, hackathons);
@@ -487,7 +489,12 @@ public class HackathonManagementService implements IHackathonManagementService {
 
 	@Override
 	public Map<String, List<HackathonTeamProfile>> retrieveTeamsInHackathon(String eventName) {
-		List<HackathonTeamProfile> teams = retrieveTeamsProfileInHackathon(eventName);
+		Optional<Hackathon> hackathonWrapper = hackathonRepository.findByEventName(eventName);
+		if (!hackathonWrapper.isPresent()) {
+			throw new BadRequestException("hackathon doesn't exist");
+		}
+		Hackathon hackathon = hackathonWrapper.get();
+		List<HackathonTeamProfile> teams = hacathonTeamProfileRepository.findByHackathon(hackathon);
 		return teams.stream().collect(Collectors.groupingBy(team -> team.getTeamName()));
 	}
 

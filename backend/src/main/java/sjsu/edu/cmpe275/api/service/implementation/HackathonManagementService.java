@@ -248,6 +248,7 @@ public class HackathonManagementService implements IHackathonManagementService {
 			final Calendar cal = Calendar.getInstance();
 		    cal.add(Calendar.DATE, -1);
 		    List<String> exclusions = hackathonRepository.findHackathonByJudge(email);
+		    exclusions.add("###");
 			return hackathonRepository.findHackathonBeforeStartAndNameIn( cal.getTime(), hackathons, exclusions);
 		} else if (role.equals(OHConstants.JUDGE_ROLE)) {
 			return profile.getHackathonJudge();

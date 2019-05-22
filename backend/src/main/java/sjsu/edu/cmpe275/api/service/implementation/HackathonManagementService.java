@@ -1,9 +1,8 @@
 package sjsu.edu.cmpe275.api.service.implementation;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -244,12 +243,13 @@ public class HackathonManagementService implements IHackathonManagementService {
 			hackathonRepository.findAll().forEach(hackathons::add);
 			return hackathons;
 		} else if (role.equals(OHConstants.HACKER_ROLE)) {
-			DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-			Date date = inputFormatter.parse(inputFormatter.format(new Date()));
-			String currentDate = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(date);
 			List<String> hackathons = hacathonTeamProfileRepository.findHackathonByProfile(email);
 			hackathons.add("###");
-			return hackathonRepository.findHackathonBeforeStartAndNameIn(currentDate, hackathons);
+			final Calendar cal = Calendar.getInstance();
+		    cal.add(Calendar.DATE, -1);
+		    List<String> exclusions = hackathonRepository.findHackathonByJudge(email);
+		    exclusions.add("###");
+			return hackathonRepository.findHackathonBeforeStartAndNameIn( cal.getTime(), hackathons, exclusions);
 		} else if (role.equals(OHConstants.JUDGE_ROLE)) {
 			return profile.getHackathonJudge();
 		} else {

@@ -1,0 +1,125 @@
+.report{
+    width: inherit;
+    margin-top: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+    padding-right: 0px;
+}
+
+.report .create-row{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column
+}
+
+.report .stats{
+    margin: 20px;
+}
+
+.report .rajat_container{
+    background-color: #ffffff;
+}
+
+.report h1, h2, h3, h4, h5{
+    font-family: 'Gugi', cursive;
+}
+
+.report .rajat_hackathon_detail_view_heading_div{
+    padding-top: 50px;
+}
+
+.report .rajat_hackathon_detail_view_description_div p{
+    font-family: 'Gugi', cursive;
+}
+
+.report .rajat_hackathon_detail_view_description_div{
+    padding-top: 10px;
+}
+
+.report .rajat_hackathon_detail_view_details_div{
+    margin-top: 20px;
+    font-family: 'Gugi', cursive;
+    font-weight: bold;
+    color: #363636;
+}
+
+
+.report .rajat_hackathon_detail_heading{
+    font-family: 'Gugi', cursive;
+    color: #363636;
+    font-weight: 100;
+    border-bottom: 1px solid #363636;
+    /* background-color: #a4d4b9; */
+    font-size: 15px;
+    margin-right: 10px;
+}
+
+.report .Collapsible {
+    background-color: white; 
+    width: 95%;
+}
+  
+.report .Collapsible__contentInner {
+    padding: 10px;
+    border: 1px solid #ebebeb;
+    border-top: 0; 
+}
+
+.report .Collapsible__contentInner p {
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 20px; 
+}
+
+.report .Collapsible__contentInner p:last-child {
+    margin-bottom: 0; 
+}
+  
+.report .Collapsible__trigger {
+    display: block;
+    font-weight: bold;
+    font-size: large;
+    text-decoration: none;
+    color: #333333;
+    position: relative;
+    border: 1px solid white;
+    padding: 10px;
+    background: #77aa8e;
+    color: white; 
+}
+
+.report .Collapsible__trigger:after {
+    font-family: 'FontAwesome';
+    content: '\f107';
+    font-weight: bold;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: block;
+    transition: transform 300ms; 
+}
+.report .Collapsible__trigger.is-open:after {
+    transform: rotateZ(180deg); 
+}
+
+.report .Collapsible__trigger.is-disabled {
+    opacity: 0.5;
+    background-color: grey; 
+}
+  
+  .report .CustomTriggerCSS {
+    background-color: lightcoral;
+    transition: background-color 200ms ease; 
+}
+  
+  .report .CustomTriggerCSS--open {
+    background-color: darkslateblue; 
+}
+  
+  .report .Collapsible__custom-sibling {
+    padding: 5px;
+    font-size: 12px;
+    background-color: #CBB700;
+    color: black; 
+}

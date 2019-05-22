@@ -108,7 +108,7 @@ export default class Dashboard extends Component {
                                     <br />
                                     {
                                         this.user.admin ?
-                                            <button type="button" class="btn btn-info">
+                                            <button type="button" class="btn btn-info" onClick={(event)=> {this.getFinancialReport(hack.eventName); event.stopPropagation()}}>
                                                 <span class="glyphicon glyphicon-file">  </span> Financial Report
                                         </button>
                                             : null
@@ -121,6 +121,21 @@ export default class Dashboard extends Component {
             });
             return views;
         }
+    }
+
+    getFinancialReport(eventName){
+        WebService.getInstance().fetchFinancialReport(this.user.email, eventName, (response)=>{  
+            console.log(response);
+            if(response){
+                history.push('/financialReport', { details: response })
+            }
+            else{
+                this.setState({ isAckPositive: false, ackMessage: response })
+            }
+        },(error)=>{
+            console.log(error);
+            this.setState({ isAckPositive: false, ackMessage: error })
+        })
     }
 
     getLeaderBoard(eventName){

@@ -76,12 +76,12 @@ export default class LeaderBoard extends Component {
                     <tbody>
                         {
                             this.state.result.map((team, index) => {
-                                if (index == 0) {
+                                if (team.rank == 1) {
                                     return (
                                         <tr key={index} style={{ backgroundColor: "#ff7575", fontWeight: "bold" }}>
                                             <td>{team.rank}</td>
                                             <td>{team.teamName}</td>
-                                            <td>
+                                            <td style={{textAlign:"justify"}}>
                                                 {team.teamMembers.map((name) => {
                                                     return (
                                                         <p><span class="glyphicon glyphicon-user" style={{fontSize:"10px", marginRight:"5px"}}></span>{name.email}</p>
@@ -92,12 +92,12 @@ export default class LeaderBoard extends Component {
                                         </tr>
                                     );
                                 }
-                                else if (index == 1) {
+                                else if (team.rank == 2) {
                                     return (
                                         <tr key={index} style={{ backgroundColor: "#47efc2", fontWeight: "bold" }}>
                                             <td>{team.rank}</td>
                                             <td>{team.teamName}</td>
-                                            <td>
+                                            <td style={{textAlign:"justify"}}>
                                                 {team.teamMembers.map((name) => {
                                                     return (
                                                         <p><span class="glyphicon glyphicon-user" style={{fontSize:"10px", marginRight:"5px"}}></span>{name.email}</p>
@@ -108,12 +108,12 @@ export default class LeaderBoard extends Component {
                                         </tr>
                                     );
                                 }
-                                else if (index == 2) {
+                                else if (team.rank == 3) {
                                     return (
                                         <tr key={index} style={{ backgroundColor: "#47a6ef", fontWeight: "bold" }}>
                                             <td>{team.rank}</td>
                                             <td>{team.teamName}</td>
-                                            <td>
+                                            <td style={{textAlign:"justify"}}>
                                                 {team.teamMembers.map((name) => {
                                                     return (
                                                         <p><span class="glyphicon glyphicon-user" style={{fontSize:"10px", marginRight:"5px"}}></span>{name.email}</p>
@@ -129,7 +129,7 @@ export default class LeaderBoard extends Component {
                                         <tr key={index}>
                                             <td>{team.rank}</td>
                                             <td>{team.teamName}</td>
-                                            <td>
+                                            <td style={{textAlign:"justify"}}>
                                                 {team.teamMembers.map((name) => {
                                                     return (
                                                         <p><span class="glyphicon glyphicon-user" style={{fontSize:"10px", marginRight:"5px"}}></span>{name.email}</p>

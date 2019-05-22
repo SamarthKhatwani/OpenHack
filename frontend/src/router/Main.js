@@ -9,6 +9,7 @@ import Payment from '../screens/Payment/Payment';
 import HackathonDetail from '../screens/HackathonDetail/HackathonDetail';
 import MyJudgement from '../screens/MyJudgement/MyJudgement';
 import LeaderBoard from '../screens/LeaderBoard/LeaderBoard';
+import FinancialReport from '../screens/FinancialReport/FinancialReport';
 //Create a Main Component
 class Main extends Component {
     render() {
@@ -23,7 +24,8 @@ class Main extends Component {
                 <Route path="/payment" component={Payment}/>       
                 <Route path="/detail" component={HackathonDetail}/> 
                 <Route path="/myJudgement" component={MyJudgement}/> 
-                <Route path="/leaderBoard" component={LeaderBoard}/>                
+                <Route path="/leaderBoard" component={LeaderBoard}/>   
+                <Route path="/financialReport" component={FinancialReport}/>                
             </div>
         )
     }

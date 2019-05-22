@@ -244,9 +244,7 @@ public class HackathonManagementService implements IHackathonManagementService {
 			hackathonRepository.findAll().forEach(hackathons::add);
 			return hackathons;
 		} else if (role.equals(OHConstants.HACKER_ROLE)) {
-			DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-			Date date = inputFormatter.parse(inputFormatter.format(new Date()));
-			String currentDate = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(date);
+			String currentDate = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(new Date());
 			List<String> hackathons = hacathonTeamProfileRepository.findHackathonByProfile(email);
 			hackathons.add("###");
 			return hackathonRepository.findHackathonBeforeStartAndNameIn(currentDate, hackathons);

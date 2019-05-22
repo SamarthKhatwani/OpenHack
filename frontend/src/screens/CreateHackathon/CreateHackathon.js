@@ -45,8 +45,8 @@ export default class CreateHackathon extends Component {
                 this.setState({ 
                     eventName: response.eventName,
                     description: response.description,
-                    startDate: new Date(response.startDate).toISOString().substr(0, 10),
-                    endDate: new Date(response.endDate).toISOString().substr(0, 10),
+                    startDate: new Date(response.startDate).toISOString(),
+                    endDate: new Date(response.endDate).toISOString(),
                     judges: response.judges.join(', '),
                     sponsors: response.sponsors.join(', '),
                     teamMaxSize: response.teamMaxSize,
@@ -79,7 +79,7 @@ export default class CreateHackathon extends Component {
         console.log(this.state);
         let { eventName, description, startDate, endDate, judges, sponsors, teamMaxSize, teamMinSize,
             registrationFee, discount, open, finalized } = this.state
-        WebService.getInstance().createUpdateHackathon( { eventName, description, startDate, endDate, judges: judges.split(',').map(str=>str.trim()), 
+        WebService.getInstance().createUpdateHackathon( { eventName, description, startDate: (new Date(startDate)).getTime(), endDate: (new Date(endDate)).getTime(), judges: judges.split(',').map(str=>str.trim()), 
             sponsors: sponsors.split(',').map(str=>str.trim()), teamMaxSize, teamMinSize, registrationFee, discount, 
             open, finalized },(response) => {
             console.log(response);
@@ -136,7 +136,7 @@ export default class CreateHackathon extends Component {
                                                 <div class="form-group">
                                                     <label for="startDate">Start Date</label>
                                                     <div class='input-group date' >
-                                                        <input type='date' name='startDate' class="form-control" onChange={this.onChange.bind(this)} value={this.state.startDate} required />
+                                                        <input type='date' name='startDate' class="form-control" onChange={this.onChange.bind(this)} value={this.state.startDate.substr(0, 10)} required />
                                                         <span class="input-group-addon">
                                                             <span class="glyphicon glyphicon-calendar"></span>
                                                         </span>
@@ -147,7 +147,7 @@ export default class CreateHackathon extends Component {
                                                 <div class="form-group">
                                                     <label for="endDate">End Date</label>
                                                     <div class='input-group date'>
-                                                        <input type='date' class="form-control" name="endDate" onChange={this.onChange.bind(this)} value={this.state.endDate} required />
+                                                        <input type='date' class="form-control" name="endDate" onChange={this.onChange.bind(this)} value={this.state.endDate.substr(0, 10)} required />
                                                         <span class="input-group-addon">
                                                             <span class="glyphicon glyphicon-calendar"></span>
                                                         </span>

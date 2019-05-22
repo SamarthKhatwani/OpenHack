@@ -19,4 +19,8 @@ public interface HackathonRepository extends CrudRepository<Hackathon, Long> {
 	@Query(value="SELECT h.hackathon_id from hackathon_judge h where h.judge_id= ?1", nativeQuery=true)
 	public List<String> findHackathonByJudge(String email);
 	
+	@Query(value="SELECT h.judge_id from hackathon_judge h where h.hackathon_id= ?1", nativeQuery=true)
+	public List<String> findJudgeByHackathon(String eventName);
+	
+	
 }

@@ -96,8 +96,8 @@ export default class Dashboard extends Component {
                                     <p class="card-text rajat_hackathon_list_description">{hack.description}</p>
                                 </div>
                                 <div class="col-md-3 rajat_hackathon_info">
-                                    <p><span class="rajat_muted_span">Starts On  </span>{new Date(hack.startDate).toDateString()}</p>
-                                    <p><span class="rajat_muted_span">Ends On  </span>{new Date(hack.endDate).toDateString()}</p>
+                                    <p><span class="rajat_muted_span">Starts On  </span>{new Date(hack.startDate).toISOString().substr(0,10)}</p>
+                                    <p><span class="rajat_muted_span">Ends On  </span>{new Date(hack.endDate).toISOString().substr(0,10)}</p>
                                     <p><span class="rajat_muted_span">Team Size  </span>{hack.teamMinSize + ' to ' + hack.teamMaxSize + ' members'}</p>
                                     <p><span class="rajat_muted_span">Registration Fee  $</span>{hack.registrationFee}</p>
                                 </div>

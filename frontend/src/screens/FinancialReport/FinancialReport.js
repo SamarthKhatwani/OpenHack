@@ -134,7 +134,7 @@ export default class FinancialReport extends Component {
                                         <td>{expense.title}</td>
                                         <td>{expense.description}</td>
                                         <td>{new Date(expense.timeOfExpense).toDateString()}</td>
-                                        <td>{expense.amount}</td>
+                                        <td>{'$' + expense.amount}</td>
                                     </tr>
                                 );
                             })
@@ -163,8 +163,8 @@ export default class FinancialReport extends Component {
                             return (
                                 <tr key={index}>
                                     <td>{member.email}</td>
-                                    <td>{member.amountPaid}</td>
-                                    <td>{new Date(member.timeOfPayment).toDateString()}</td>
+                                    <td>{ member.paid ? '$' + member.amountPaid : "---"}</td>
+                                    <td>{member.paid ? new Date(member.timeOfPayment).toString() : "---"}</td>
                                     <td>{member.paid ? "Paid" : "Unpaid"}</td>
                                 </tr>
                             );

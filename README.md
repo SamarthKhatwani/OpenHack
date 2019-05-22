@@ -9,3 +9,30 @@ http://275openhack.s3-website.us-east-2.amazonaws.com/
 3. Samarth  Khatwani 013592072 <samarth.khatwami@sjsu.edu>
 4. Yash Kumar Mahajan 013766675 <yashkumar.mahajan@sjsu.edu>
 
+## Pre-requisite:
+### Backend
+1. Maven and Java (1.8 or higher) should be installed.
+2. MySQL database server should be installed and up and runnging
+3. create a database named openHack, using following command:<br>
+```sql
+CREATE DATABASE openHack;
+```
+4. Optional - eclipse
+### Frontend
+1. ReactJs and npm should be installed
+
+## How To run
+### Backend
+1. clone this repository
+2. Do necessary changes for database in application.properties file located in resource folder
+3. If you have eclipse installed, open the project in backend directory. And run it as spring boot application
+4. If eclipse is not installed, open terminal and run following command:
+```sh
+mvn clean install -DskipTests
+```
+5. go to target folder once build is successful
+6. run following command at terminal:
+```sh
+java -jar open-hack-0.0.1-SNAPSHOT.jar
+```
+

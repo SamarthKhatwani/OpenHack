@@ -5,6 +5,7 @@ import AppConstants from "../../constants/AppConstants";
 import Navbar from '../Navbar/Navbar';
 import WebService from '../../services/WebService';
 import { history } from '../../router/history';
+const queryString = require('query-string');
 var Modal = require('react-bootstrap-modal')
 
 export default class LeaderBoard extends Component {
@@ -18,12 +19,28 @@ export default class LeaderBoard extends Component {
             ackMessage: null,
             eventName: ""
         };
-        this.user = JSON.parse(localStorage.getItem(AppConstants.USER_DETAILS));
     }
 
-    componentDidMount() {
-        console.log(this.props.location.state.result)
-        this.setState({ result: this.props.location.state.result, eventName: this.props.location.state.eventName });
+    componentDidMount(){
+        let query = queryString.parse(window.location.search);
+        if(query.eventName){
+            this.getLeaderBoard(query.eventName)
+        }
+    }
+
+    getLeaderBoard(eventName) {
+        WebService.getInstance().fetchLeaderBoard(eventName, (response) => {
+            console.log(response);
+            if (response.success) {
+                this.setState({result:response.result});
+            }
+            else {
+                this.setState({ isAckPositive: false, ackMessage: response.message })
+            }
+        }, (error) => {
+            console.log(error);
+            this.setState({ isAckPositive: false, ackMessage: error })
+        })
     }
 
     renderAcknowledgement() {

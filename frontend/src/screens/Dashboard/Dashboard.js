@@ -116,7 +116,7 @@ export default class Dashboard extends Component {
                                     {
                                         this.user.admin && !hack.finalized ?
                                             <Fragment>
-                                                <button type="button" class="btn btn-info" onClick={(event) => {this.openModal(hack.eventName); event.stopPropagation() }}>
+                                                <button type="button" class="btn btn-info" onClick={(event) => { this.openModal(hack.eventName); event.stopPropagation() }}>
                                                     <span class="glyphicon glyphicon-usd">  </span> Add Expenses
                                             </button>
                                                 <br />
@@ -157,18 +157,10 @@ export default class Dashboard extends Component {
     }
 
     getLeaderBoard(eventName) {
-        WebService.getInstance().fetchLeaderBoard(eventName, (response) => {
-            console.log(response);
-            if (response.success) {
-                history.push('/leaderBoard', { eventName: eventName, result: response.result })
-            }
-            else {
-                this.setState({ isAckPositive: false, ackMessage: response.message })
-            }
-        }, (error) => {
-            console.log(error);
-            this.setState({ isAckPositive: false, ackMessage: error })
-        })
+        history.push({
+            pathname: '/leaderBoard',
+            search: '?eventName=' + eventName,
+        });
     }
 
     onHackClick(eventName) {
@@ -188,21 +180,26 @@ export default class Dashboard extends Component {
         this.setState({ modalIsOpen: false });
     }
 
-    addExpenses(event){
+
+    onChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+
+    addExpenses(event) {
         event.preventDefault();
-        let {eventName, title, description, amount} = this.state;
-        let req = {eventName, title, description, amount};
-        WebService.getInstance().addExpense(req, (response)=>{
-            console.log(response);
-            if(response.success){
+        let { eventName, title, description, amount } = this.state;
+        let req = { eventName, title, description, amount };
+        console.log(req);
+        WebService.getInstance().addExpense(req, (response) => {
+            if (response.success) {
                 this.setState({ isAckPositive: true, ackMessage: response.message })
                 this.closeModal();
             }
-            else{
+            else {
                 this.setState({ isAckPositive: true, ackMessage: response.message })
                 this.closeModal();
             }
-        },(error)=>{
+        }, (error) => {
             console.log(error);
             this.setState({ isAckPositive: false, ackMessage: error })
             this.closeModal();

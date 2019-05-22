@@ -18,6 +18,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import sjsu.edu.cmpe275.api.persistence.model.HackathonTeamProfile;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.LeaderBoardResponseMapper;
 import sjsu.edu.cmpe275.api.persistence.repository.HacathonTeamProfileRepository;
+import sjsu.edu.cmpe275.api.persistence.repository.HackathonRepository;
 import sjsu.edu.cmpe275.api.resources.HackathonResponse;
 import sjsu.edu.cmpe275.api.resources.LeaderBoardResponse;
 import sjsu.edu.cmpe275.api.resources.LeaderBoardTeam;
@@ -58,6 +59,9 @@ public class RegisterHackathonEmailAspect {
 
 	@Autowired
 	private LeaderBoardResponseMapper leaderBoardResponseMapper;
+	
+	@Autowired
+	private HackathonRepository hackathonRepository;
 
 	@AfterReturning(pointcut = "execution(* sjsu.edu.cmpe275.api.controller.interfaces.IHackerAuthAPI.registerHackathon(..))", returning = "response")
 	public ResponseEntity<Object> sendEmailAspect(JoinPoint joinPoint, ResponseEntity<Object> response) {
@@ -139,8 +143,17 @@ public class RegisterHackathonEmailAspect {
 					javaMailSender.send(message);
 				}
 			}
+			List<String> judges = hackathonRepository.findJudgeByHackathon(hack.getEventName());
+			for(String judge: judges) {
+				SimpleMailMessage message = new SimpleMailMessage();
+				message.setTo(judge);
+				message.setSubject("Leader board is ready for " + hack.getEventName());
+				message.setText(subject + "\nclick the link below to see leader board \n" + url);
+				javaMailSender.send(message);
+			}
 			
 		}
+		
 		return response;
 	}
 }

@@ -19,7 +19,10 @@ CREATE DATABASE openHack;
 ```
 4. Optional - eclipse
 ### Frontend
-1. ReactJs and npm should be installed
+1. ReactJs and npm should be installed, Open Command Propmt in Front End Folder.
+2. Run npm install
+3. After successful installation of node module, Run npm start to Start Front End.
+4. HomeAway HomePage can be accessible at http://localhost:3000
 
 ## How To run
 ### Backend

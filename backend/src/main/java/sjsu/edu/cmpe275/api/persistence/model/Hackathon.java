@@ -60,26 +60,26 @@ public class Hackathon implements Serializable{
 	}
 
 	public Date getStartDate() throws ParseException {
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = inputFormatter.parse(inputFormatter.format(startDate));
-		return date;
+//		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+//		Date date = inputFormatter.parse(inputFormatter.format(startDate));
+		return this.startDate;
 	}
 
 	public void setStartDate(Date startDate) throws ParseException {
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = inputFormatter.parse(inputFormatter.format(startDate));
+//		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+//		Date date = inputFormatter.parse(inputFormatter.format(startDate));
 		this.startDate = startDate;
 	}
 
 	public Date getEndDate() throws ParseException {
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = inputFormatter.parse(inputFormatter.format(endDate));
-		return date;
+//		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+//		Date date = inputFormatter.parse(inputFormatter.format(endDate));
+		return this.endDate;
 	}
 
 	public void setEndDate(Date endDate) throws ParseException {
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = inputFormatter.parse(inputFormatter.format(endDate));
+//		DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+//		Date date = inputFormatter.parse(inputFormatter.format(endDate));
 		this.endDate = endDate;
 	}
 

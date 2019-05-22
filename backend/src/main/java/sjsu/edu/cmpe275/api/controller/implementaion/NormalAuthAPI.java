@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.SortedMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +19,13 @@ import sjsu.edu.cmpe275.api.persistence.model.Organization;
 import sjsu.edu.cmpe275.api.persistence.model.Profile;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.HackathonTeamProfileToHackathonTeamResponse;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.HackathonToHackathonReponseMapper;
+import sjsu.edu.cmpe275.api.persistence.model.mapper.LeaderBoardResponseMapper;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.OrganizationToOrganizationByNameResponseMapper;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.OrganizationToOrganizationResponseMapper;
 import sjsu.edu.cmpe275.api.persistence.model.mapper.ProfileToProfileResponseMapper;
 import sjsu.edu.cmpe275.api.resources.AllHackathonResponse;
 import sjsu.edu.cmpe275.api.resources.HackathonResponse;
 import sjsu.edu.cmpe275.api.resources.LeaderBoardResponse;
-import sjsu.edu.cmpe275.api.resources.LeaderBoardTeam;
-import sjsu.edu.cmpe275.api.resources.MemberDetail;
 import sjsu.edu.cmpe275.api.resources.OrganizationByNameResponse;
 import sjsu.edu.cmpe275.api.resources.OrganizationMembershipRequest;
 import sjsu.edu.cmpe275.api.resources.OrganizationMembershipResponse;
@@ -68,6 +66,9 @@ public class NormalAuthAPI implements INormalAuthAPI {
 	@Autowired
 	private HackathonTeamProfileToHackathonTeamResponse hackathonTeamProfileToHackathonTeamResponse;
 
+	@Autowired
+	private LeaderBoardResponseMapper leaderBoardResponseMapper;
+	
 	@Override
 	public ResponseEntity<Object> getProfile(String token, String email) {
 		Profile profile = profileManagementService.getProfile(email);
@@ -171,34 +172,7 @@ public class NormalAuthAPI implements INormalAuthAPI {
 	public ResponseEntity<Object> leaderBoard(String token, String eventName) throws ParseException {
 		SortedMap<Float, Map<String, List<HackathonTeamProfile>>> teamsByScore = hackathonManagementService
 				.retrieveLeaderBoardTeams(eventName);
-		LeaderBoardResponse leaderBoardResponse = new LeaderBoardResponse();
-		leaderBoardResponse.setMessage("Successful");
-		leaderBoardResponse.setSuccess(true);
-		List<LeaderBoardTeam> result = leaderBoardResponse.getResult();
-		int rank =0;
-		for(Entry<Float, Map<String, List<HackathonTeamProfile>>> entry : teamsByScore.entrySet()) {
-			rank++;
-			for(Entry<String, List<HackathonTeamProfile>> teamEntry: entry.getValue().entrySet()) {
-				LeaderBoardTeam leaderBoardTeam = new LeaderBoardTeam();
-				result.add(leaderBoardTeam);
-				leaderBoardTeam.setRank(rank);
-				leaderBoardTeam.setTeamName(teamEntry.getKey());
-				List<MemberDetail> teamMembers = leaderBoardTeam.getTeamMembers();
-				boolean allPaid = true;
-				for(HackathonTeamProfile teamProfile: teamEntry.getValue()) {
-					MemberDetail teamMember = new MemberDetail();
-					String[] split = teamProfile.getHackathonTeamProfile().split(OHConstants.DELIMIT_HACK_TEAM_PROFILE);
-					teamMember.setEmail(split[2]);
-					teamMember.setPaid(teamProfile.isPaid());
-					if(!teamProfile.isPaid()) {
-						allPaid = false;
-					}
-					teamMembers.add(teamMember);
-					leaderBoardTeam.setScore(teamProfile.getScore());
-				}
-				leaderBoardTeam.setAllPaid(allPaid);
-			}
-		}
+		LeaderBoardResponse leaderBoardResponse = leaderBoardResponseMapper.mapLeaderBoardResponse(teamsByScore);
 		return new ResponseEntity<Object>(leaderBoardResponse, HttpStatus.OK);
 	}
 }

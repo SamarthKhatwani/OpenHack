@@ -63,8 +63,10 @@
     position: block;
 }
 
-.dashboard .rajat_hackathon_list_description_col{
-    border-right: 2px solid #fba747
+.dashboard .rajat_hackathon_info{
+    border-left: 2px solid #fba747;
+    border-right: 2px solid #fba747;
+    height: inherit
 }
 
 .dashboard .rajat_hackathon_list_description{

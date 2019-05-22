@@ -21,6 +21,7 @@ const URI = {
     SUBMIT_HACKATHON: "/submitCode",
     SAVE_GRADES:"/grade",
     GET_LEADERBOARD: "/leaderBoard",
-    GET_FINANCIAL_REPORT:"/financialReport"
+    GET_FINANCIAL_REPORT:"/financialReport",
+    ADD_EXPENSE:"/addExpense"
 };
 export default URI;

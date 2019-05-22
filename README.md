@@ -38,4 +38,13 @@ mvn clean install -DskipTests
 ```sh
 java -jar open-hack-0.0.1-SNAPSHOT.jar
 ```
+## Bonus Features
+  1. Financial Report
+      Registration Fee Payment Report
+      Hackathon Earning Report
+  2. Hackthon LeaderBoard
+
+
+    
+
 

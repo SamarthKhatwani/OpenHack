@@ -178,6 +178,10 @@ export default class WebService extends AxiosService {
         this.postCall(URI.SAVE_GRADES, details, success, failure, true);
     }
 
+    addExpense(details, success, failure) {
+        this.postCall(URI.ADD_EXPENSE, details, success, failure, true);
+    }
+
     fetchLeaderBoard(eventName, success, failure) {
         this.getCall(URI.GET_LEADERBOARD + "?eventName=" + eventName, success, failure, true);
     }

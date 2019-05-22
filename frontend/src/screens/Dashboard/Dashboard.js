@@ -15,7 +15,8 @@ export default class Dashboard extends Component {
             modalIsOpen: false,
             hackathons: [],
             isAckPositive: null,
-            ackMessage: null
+            ackMessage: null,
+            eventName: null
         };
         this.user = JSON.parse(localStorage.getItem(AppConstants.USER_DETAILS));
         console.log(this.user);
@@ -100,17 +101,34 @@ export default class Dashboard extends Component {
                                     <p><span class="rajat_muted_span">Team Size  </span>{hack.teamMinSize + ' to ' + hack.teamMaxSize + ' members'}</p>
                                     <p><span class="rajat_muted_span">Registration Fee  $</span>{hack.registrationFee}</p>
                                 </div>
-                                <div class="col-md-3" style={{textAlign: "center"}}>
-                                    <button type="button" class="btn btn-info" onClick={(event)=> {this.getLeaderBoard(hack.eventName); event.stopPropagation()}}>
-                                        <span class="glyphicon glyphicon-th-list">  </span> LeaderBoard
-                                    </button>
-                                    <br />
-                                    <br />
+                                <div class="col-md-3" style={{ textAlign: "center" }}>
+                                    {
+                                        hack.finalized ?
+                                            <Fragment>
+                                                <button type="button" class="btn btn-info" onClick={(event) => { this.getLeaderBoard(hack.eventName); event.stopPropagation() }}>
+                                                    <span class="glyphicon glyphicon-th-list">  </span> LeaderBoard
+                                                </button>
+                                                <br />
+                                                <br />
+                                            </Fragment>
+                                            : null
+                                    }
+                                    {
+                                        this.user.admin && !hack.finalized ?
+                                            <Fragment>
+                                                <button type="button" class="btn btn-info" onClick={(event) => {this.openModal(hack.eventName); event.stopPropagation() }}>
+                                                    <span class="glyphicon glyphicon-usd">  </span> Add Expenses
+                                            </button>
+                                                <br />
+                                                <br />
+                                            </Fragment>
+                                            : null
+                                    }
                                     {
                                         this.user.admin ?
-                                            <button type="button" class="btn btn-info" onClick={(event)=> {this.getFinancialReport(hack.eventName); event.stopPropagation()}}>
+                                            <button type="button" class="btn btn-info" onClick={(event) => { this.getFinancialReport(hack.eventName); event.stopPropagation() }}>
                                                 <span class="glyphicon glyphicon-file">  </span> Financial Report
-                                        </button>
+                                            </button>
                                             : null
                                     }
                                 </div>
@@ -123,31 +141,31 @@ export default class Dashboard extends Component {
         }
     }
 
-    getFinancialReport(eventName){
-        WebService.getInstance().fetchFinancialReport(this.user.email, eventName, (response)=>{  
+    getFinancialReport(eventName) {
+        WebService.getInstance().fetchFinancialReport(this.user.email, eventName, (response) => {
             console.log(response);
-            if(response){
+            if (response) {
                 history.push('/financialReport', { details: response })
             }
-            else{
+            else {
                 this.setState({ isAckPositive: false, ackMessage: response })
             }
-        },(error)=>{
+        }, (error) => {
             console.log(error);
             this.setState({ isAckPositive: false, ackMessage: error })
         })
     }
 
-    getLeaderBoard(eventName){
-        WebService.getInstance().fetchLeaderBoard(eventName, (response)=>{  
+    getLeaderBoard(eventName) {
+        WebService.getInstance().fetchLeaderBoard(eventName, (response) => {
             console.log(response);
-            if(response.success){
+            if (response.success) {
                 history.push('/leaderBoard', { eventName: eventName, result: response.result })
             }
-            else{
+            else {
                 this.setState({ isAckPositive: false, ackMessage: response.message })
             }
-        },(error)=>{
+        }, (error) => {
             console.log(error);
             this.setState({ isAckPositive: false, ackMessage: error })
         })
@@ -162,29 +180,61 @@ export default class Dashboard extends Component {
         }
     }
 
-    openModal() {
-        this.setState({ modalIsOpen: true });
+    openModal(eventName) {
+        this.setState({ modalIsOpen: true, eventName });
     }
 
     closeModal() {
         this.setState({ modalIsOpen: false });
     }
 
-    renderCreateModal() {
+    addExpenses(event){
+        event.preventDefault();
+        let {eventName, title, description, amount} = this.state;
+        let req = {eventName, title, description, amount};
+        WebService.getInstance().addExpense(req, (response)=>{
+            console.log(response);
+            if(response.success){
+                this.setState({ isAckPositive: true, ackMessage: response.message })
+                this.closeModal();
+            }
+            else{
+                this.setState({ isAckPositive: true, ackMessage: response.message })
+                this.closeModal();
+            }
+        },(error)=>{
+            console.log(error);
+            this.setState({ isAckPositive: false, ackMessage: error })
+            this.closeModal();
+        });
+    }
+
+    renderCreateModal(eventName) {
         return (
             <Modal show={this.state.modalIsOpen}
                 onHide={this.closeModal.bind(this)}
                 aria-labelledby="ModalHeader">
-                <form>
+                <form onSubmit={this.addExpenses.bind(this)}>
                     <Modal.Header closeButton>
-                        <Modal.Title id='ModalHeader'>Create Your Organization</Modal.Title>
+                        <Modal.Title id='ModalHeader'>{"Add Expenses for " + this.state.expenseEventName}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-
+                        <div class="form-group-md">
+                            <label>Expense Title <span className="required"> *</span></label>
+                            <input type="text" class="form-control form-control-md" onChange={this.onChange} name="title" value={this.state.name} placeholder="Title" required />
+                        </div>
+                        <div class="form-group-md">
+                            <label>Expense Description<span className="required"> *</span></label>
+                            <input type="text" class="form-control form-control-md" onChange={this.onChange} name="description" value={this.state.description} placeholder="Description" required />
+                        </div>
+                        <div class="form-group-md">
+                            <label>Expense Amount $<span className="required"> *</span></label>
+                            <input type="number" class="form-control form-control-md" onChange={this.onChange} name="amount" value={this.state.address} placeholder="Amount" required />
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Modal.Dismiss className='btn btn-default'>Cancel</Modal.Dismiss>
-                        <button type="submit" className='btn btn-primary'>Create</button>
+                        <button type="submit" className='btn btn-primary'>Add</button>
                     </Modal.Footer>
                 </form>
             </Modal>

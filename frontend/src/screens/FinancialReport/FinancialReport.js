@@ -133,7 +133,7 @@ export default class FinancialReport extends Component {
                                     <tr key={index}>
                                         <td>{expense.title}</td>
                                         <td>{expense.description}</td>
-                                        <td>{new Date(expense.timeOfExpense).toDateString()}</td>
+                                        <td>{this.formatDate(new Date(expense.timeOfExpense))}</td>
                                         <td>{'$' + expense.amount}</td>
                                     </tr>
                                 );
@@ -164,7 +164,7 @@ export default class FinancialReport extends Component {
                                 <tr key={index}>
                                     <td>{member.email}</td>
                                     <td>{ member.paid ? '$' + member.amountPaid : "---"}</td>
-                                    <td>{member.paid ? new Date(member.timeOfPayment).toString() : "---"}</td>
+                                    <td>{member.paid ? this.formatDate(new Date(member.timeOfPayment)) : "---"}</td>
                                     <td>{member.paid ? "Paid" : "Unpaid"}</td>
                                 </tr>
                             );
@@ -175,4 +175,15 @@ export default class FinancialReport extends Component {
             </table>
         );
     }
+
+    formatDate(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+      }
 }

@@ -20,7 +20,10 @@ Pre-requisite:
             CREATE DATABASE openHack;
         Optional - eclipse
     Frontend
-        ReactJs and npm should be installed
+        ReactJs and npm should be installed, Open Command Propmt in Front End Folder.
+        Run npm install
+        After successful installation of node module, Run npm start to Start Front End.
+        OpenHack HomePage can be accessible at http://localhost:3000
 How To run
     Backend
         clone this repository
